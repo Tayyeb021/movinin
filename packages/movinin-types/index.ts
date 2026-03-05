@@ -2,6 +2,45 @@ export enum UserType {
   Admin = 'ADMIN',
   Agency = 'AGENCY',
   User = 'USER',
+  Tenant = 'TENANT',
+}
+
+// BTMS enums
+export enum UnitStatus {
+  Vacant = 'VACANT',
+  Occupied = 'OCCUPIED',
+  UnderMaintenance = 'UNDER_MAINTENANCE',
+}
+
+export enum FurnishingStatus {
+  Unfurnished = 'UNFURNISHED',
+  SemiFurnished = 'SEMI_FURNISHED',
+  FullyFurnished = 'FULLY_FURNISHED',
+}
+
+export enum FurnishingCondition {
+  New = 'NEW',
+  Good = 'GOOD',
+  NeedsRepair = 'NEEDS_REPAIR',
+}
+
+export enum RentStatus {
+  Pending = 'PENDING',
+  Paid = 'PAID',
+  Partial = 'PARTIAL',
+  Overdue = 'OVERDUE',
+}
+
+export enum MaintenancePriority {
+  Low = 'LOW',
+  Medium = 'MEDIUM',
+  High = 'HIGH',
+}
+
+export enum MaintenanceStatus {
+  Open = 'OPEN',
+  InProgress = 'IN_PROGRESS',
+  Completed = 'COMPLETED',
 }
 
 export enum AppType {
@@ -413,6 +452,91 @@ export interface GetPropertiesPayload {
   language?: string
   from?: Date
   to?: Date
+}
+
+// BTMS interfaces
+export interface FurnishingItem {
+  itemKey: string
+  quantity: number
+  condition: FurnishingCondition
+  notes?: string
+}
+
+export interface Unit {
+  _id?: string
+  property: string | Property
+  name: string
+  rent: number
+  securityDeposit: number
+  size?: number
+  furnishingStatus: FurnishingStatus
+  status: UnitStatus
+  checklist?: FurnishingItem[]
+}
+
+export interface TenantAssignment {
+  _id?: string
+  user: string | User
+  unit: string | Unit
+  moveInDate: Date
+  contractStart: Date
+  contractEnd: Date
+  active: boolean
+}
+
+export interface RentEntry {
+  _id?: string
+  unit: string | Unit
+  tenant: string | TenantAssignment
+  period: string
+  dueDate: Date
+  amount: number
+  status: RentStatus
+  paidAmount?: number
+  paidAt?: Date
+}
+
+export interface MaintenanceTicket {
+  _id?: string
+  property: string | Property
+  unit: string | Unit
+  category: string
+  description: string
+  priority: MaintenancePriority
+  status: MaintenanceStatus
+  cost?: number
+  createdBy: string | User
+  createdAt: Date
+  closedAt?: Date
+}
+
+export interface GetPublicUnitsPayload {
+  location?: string
+  minRent?: number
+  maxRent?: number
+  furnishingStatus?: FurnishingStatus[]
+  page?: number
+  size?: number
+}
+
+export interface ManagerDashboard {
+  totalProperties: number
+  totalUnits: number
+  occupiedUnits: number
+  vacantUnits: number
+  monthlyRentDue: number
+  rentCollected: number
+  overdueCount: number
+  openMaintenanceCount: number
+}
+
+export interface TenantDashboard {
+  tenant: TenantAssignment
+  unit: Unit
+  property: Property
+  currentRentDue?: RentEntry
+  rentHistory: RentEntry[]
+  openMaintenanceTickets: MaintenanceTicket[]
 }
 
 export interface UpdateLanguagePayload {

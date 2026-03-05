@@ -85,7 +85,7 @@ const userSchema = new Schema<env.User>(
     },
     type: {
       type: String,
-      enum: [movininTypes.UserType.Admin, movininTypes.UserType.Agency, movininTypes.UserType.User],
+      enum: [movininTypes.UserType.Admin, movininTypes.UserType.Agency, movininTypes.UserType.User, movininTypes.UserType.Tenant],
       default: movininTypes.UserType.User,
     },
     blacklisted: {
@@ -98,6 +98,14 @@ const userSchema = new Schema<env.User>(
     },
     customerId: {
       type: String,
+    },
+    subscriptionStatus: {
+      type: String,
+      enum: ['active', 'expired', 'cancelled'],
+    },
+    planId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Plan',
     },
     expireAt: {
       //

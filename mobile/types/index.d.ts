@@ -37,6 +37,18 @@ type StackParams = {
     Notifications: {
         d?: number
     }
+    Rentals: {
+        d?: number
+    }
+    Rental: {
+        id: string
+    }
+    TenantDashboard: {
+        d?: number
+    }
+    TenantMaintenance: {
+        d?: number
+    }
     Settings: {
         d?: number
     }

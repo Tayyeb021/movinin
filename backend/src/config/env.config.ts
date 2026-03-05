@@ -68,10 +68,14 @@ export const BATCH_SIZE = Number.parseInt(__env__('MI_BATCH_SIZE', false, '1000'
 
 /**
  * Server Port. Default is 4004.
+ * Uses process.env.PORT when set (e.g. Railway, Heroku) so no need to set MI_PORT in production.
  *
  * @type {number}
  */
-export const PORT = Number.parseInt(__env__('MI_PORT', false, '4004'), 10)
+export const PORT = Number.parseInt(
+  process.env.PORT || __env__('MI_PORT', false, '4004'),
+  10
+)
 
 /**
  * Indicate whether HTTPS is enabled or not.
@@ -476,6 +480,8 @@ export interface User extends Document {
   payLater?: boolean
   customerId?: string
   expireAt?: Date
+  subscriptionStatus?: 'active' | 'expired' | 'cancelled'
+  planId?: Types.ObjectId
 }
 
 /**
@@ -688,6 +694,7 @@ export interface Property extends Document {
   available?: boolean
   rentalTerm: movininTypes.RentalTerm
   blockOnPay?: boolean
+  notes?: string
 }
 
 /**
@@ -719,6 +726,80 @@ export interface PropertyInfo extends Document {
   hidden?: boolean
   cancellation?: boolean
   rentalTerm: movininTypes.RentalTerm
+}
+
+/**
+ * Plan (BTMS subscription).
+ */
+export interface Plan extends Document {
+  name: string
+  key: string
+}
+
+/**
+ * FurnishingItem (BTMS).
+ */
+export interface FurnishingItem {
+  itemKey: string
+  quantity: number
+  condition: movininTypes.FurnishingCondition
+  notes?: string
+}
+
+/**
+ * Unit Document (BTMS).
+ */
+export interface Unit extends Document {
+  property: Types.ObjectId
+  name: string
+  rent: number
+  securityDeposit: number
+  size?: number
+  furnishingStatus: movininTypes.FurnishingStatus
+  status: movininTypes.UnitStatus
+  checklist?: FurnishingItem[]
+}
+
+/**
+ * Tenant Document (BTMS - tenant assignment to unit).
+ */
+export interface Tenant extends Document {
+  user: Types.ObjectId
+  unit: Types.ObjectId
+  moveInDate: Date
+  contractStart: Date
+  contractEnd: Date
+  active: boolean
+}
+
+/**
+ * RentEntry Document (BTMS).
+ */
+export interface RentEntry extends Document {
+  unit: Types.ObjectId
+  tenant: Types.ObjectId
+  period: string
+  dueDate: Date
+  amount: number
+  status: movininTypes.RentStatus
+  paidAmount?: number
+  paidAt?: Date
+}
+
+/**
+ * MaintenanceTicket Document (BTMS).
+ */
+export interface MaintenanceTicket extends Document {
+  property: Types.ObjectId
+  unit: Types.ObjectId
+  category: string
+  description: string
+  priority: movininTypes.MaintenancePriority
+  status: movininTypes.MaintenanceStatus
+  cost?: number
+  createdBy: Types.ObjectId
+  createdAt: Date
+  closedAt?: Date
 }
 
 /**

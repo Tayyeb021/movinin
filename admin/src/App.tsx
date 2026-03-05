@@ -42,6 +42,12 @@ const Countries = lazy(() => import('@/pages/Countries'))
 const CreateCountry = lazy(() => import('@/pages/CreateCountry'))
 const UpdateCountry = lazy(() => import('@/pages/UpdateCountry'))
 const Scheduler = lazy(() => import('@/pages/Scheduler'))
+const ManagerDashboard = lazy(() => import('@/pages/ManagerDashboard'))
+const BTMSTenants = lazy(() => import('@/pages/BTMSTenants'))
+const BTMSMaintenance = lazy(() => import('@/pages/BTMSMaintenance'))
+const BTMSUnits = lazy(() => import('@/pages/BTMSUnits'))
+const CreateUnit = lazy(() => import('@/pages/CreateUnit'))
+const UpdateUnit = lazy(() => import('@/pages/UpdateUnit'))
 
 const AppLayout = () => {
   const location = useLocation()
@@ -107,6 +113,12 @@ const router = createBrowserRouter([
       { path: '/create-country', element: <CreateCountry /> },
       { path: '/update-country', element: <UpdateCountry /> },
       { path: '/scheduler', element: <Scheduler /> },
+      { path: '/btms-dashboard', element: <ManagerDashboard /> },
+      { path: '/btms-tenants', element: <BTMSTenants /> },
+      { path: '/btms-maintenance', element: <BTMSMaintenance /> },
+      { path: '/btms-units/:propertyId', element: <BTMSUnits /> },
+      { path: '/btms-create-unit', element: <CreateUnit /> },
+      { path: '/btms-update-unit/:id', element: <UpdateUnit /> },
       { path: '*', element: <NoMatch /> }
     ]
   }

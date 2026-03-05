@@ -370,6 +370,26 @@ const Header = ({
                   )}
                   <ListItem
                     onClick={() => {
+                      navigate('/rentals')
+                      handleSideMenuClose()
+                    }}
+                  >
+                    <ListItemIcon><HomeIcon /></ListItemIcon>
+                    <ListItemText primary="Rentals" />
+                  </ListItem>
+                  {isSignedIn && user?.type === 'TENANT' && (
+                    <ListItem
+                      onClick={() => {
+                        navigate('/tenant-dashboard')
+                        handleSideMenuClose()
+                      }}
+                    >
+                      <ListItemIcon><BookingsIcon /></ListItemIcon>
+                      <ListItemText primary="My tenancy" />
+                    </ListItem>
+                  )}
+                  <ListItem
+                    onClick={() => {
                       navigate('/agencies')
                       handleSideMenuClose()
                     }}

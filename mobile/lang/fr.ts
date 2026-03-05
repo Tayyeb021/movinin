@@ -178,4 +178,7 @@ export const fr = {
   PROPERTY_TYPE: 'Type de propriété',
   SELECT_FROM_DATE: 'Veuillez saisir la date de début de location',
   PAYMENT_FAILED: 'Paiement échoué.',
+  RENTALS: 'Locations',
+  MY_TENANCY: 'Ma location',
+  MAINTENANCE: 'Maintenance',
 }

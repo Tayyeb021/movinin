@@ -133,7 +133,10 @@ const propertySchema = new Schema<env.Property>(
     blockOnPay: {
       type: Boolean,
       default: true,
-    }
+    },
+    notes: {
+      type: String,
+    },
   },
   {
     timestamps: true,

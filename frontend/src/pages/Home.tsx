@@ -52,10 +52,18 @@ const Home = () => {
   }
 
   const onLoad = async () => {
-    const _countries = await CountryService.getCountriesWithLocations('', true, env.MIN_LOCATIONS)
-    setCountries(_countries)
-    const _locations = await LocationService.getLocationsWithPosition()
-    setLocations(_locations)
+    try {
+      const _countries = await CountryService.getCountriesWithLocations('', true, env.MIN_LOCATIONS)
+      setCountries(Array.isArray(_countries) ? _countries : [])
+    } catch {
+      setCountries([])
+    }
+    try {
+      const _locations = await LocationService.getLocationsWithPosition()
+      setLocations(Array.isArray(_locations) ? _locations : [])
+    } catch {
+      setLocations([])
+    }
 
     const observer = new IntersectionObserver(handleIntersection)
     const video = document.getElementById('cover') as HTMLVideoElement
@@ -173,7 +181,7 @@ const Home = () => {
           </div>
         </div>
 
-        {countries.length > 0 && (
+        {Array.isArray(countries) && countries.length > 0 && (
           <div className="destinations">
             <h1>{strings.DESTINATIONS_TITLE}</h1>
             <div className="tabs">
@@ -189,14 +197,14 @@ const Home = () => {
                 }}
               >
                 {
-                  countries.map((country, index) => (
+                  (Array.isArray(countries) ? countries : []).map((country, index) => (
                     <Tab key={country._id} label={country.name?.toUpperCase()} {...a11yProps(index)} />
                   ))
                 }
               </Tabs>
 
               {
-                countries.map((country, index) => (
+                (Array.isArray(countries) ? countries : []).map((country, index) => (
                   <TabPanel key={country._id} value={tabValue} index={index}>
                     <LocationCarrousel
                       locations={country.locations!}

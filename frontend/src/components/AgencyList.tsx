@@ -11,8 +11,12 @@ const AgencyList = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      const _agencies = await AgencyService.getAllAgencies()
-      setAgencies(_agencies)
+      try {
+        const _agencies = await AgencyService.getAllAgencies()
+        setAgencies(Array.isArray(_agencies) ? _agencies : [])
+      } catch {
+        setAgencies([])
+      }
     }
 
     fetch()
@@ -21,7 +25,7 @@ const AgencyList = () => {
   return (
     <div className="agency-list">
       {
-        agencies.map((agency) => (
+        (Array.isArray(agencies) ? agencies : []).map((agency) => (
           <div key={agency._id} className="agency" title={agency.fullName}>
             <div className="img">
               <img src={movininHelper.joinURL(env.CDN_USERS, agency.avatar)} alt={agency.fullName} />

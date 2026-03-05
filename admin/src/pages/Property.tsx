@@ -12,7 +12,8 @@ import {
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
-  Bookmarks as BookingsIcon
+  Bookmarks as BookingsIcon,
+  MeetingRoom as UnitsIcon
 } from '@mui/icons-material'
 import * as movininTypes from ':movinin-types'
 import * as movininHelper from ':movinin-helper'
@@ -164,6 +165,11 @@ const Property = () => {
                 <AgencyBadge agency={property.agency} />
                 {edit && (
                   <div className="action">
+                    <Tooltip title="BTMS Units">
+                      <IconButton onClick={() => navigate(`/btms-units/${property._id}`)}>
+                        <UnitsIcon />
+                      </IconButton>
+                    </Tooltip>
                     <Tooltip title={strings.VIEW_BOOKINGS}>
                       <IconButton onClick={() => navigate(`/property-bookings?p=${property._id}`)}>
                         <BookingsIcon />

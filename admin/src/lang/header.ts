@@ -17,6 +17,7 @@ const strings = new LocalizedStrings({
     SETTINGS: 'Paramètres',
     SIGN_OUT: 'Déconnexion',
     COUNTRIES: 'Pays',
+    BTMS_DASHBOARD: 'Tableau de bord BTMS',
   },
   en: {
     DASHBOARD: 'Dashboard',
@@ -33,6 +34,7 @@ const strings = new LocalizedStrings({
     SETTINGS: 'Settings',
     SIGN_OUT: 'Sign out',
     COUNTRIES: 'Countries',
+    BTMS_DASHBOARD: 'BTMS Dashboard',
   },
 })
 

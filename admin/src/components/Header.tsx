@@ -336,6 +336,15 @@ const Header = ({
                 </ListItem>
                 <ListItem
                   onClick={() => {
+                    navigate('/btms-dashboard')
+                    handleSideMenuClose()
+                  }}
+                >
+                  <ListItemIcon><DashboardIcon /></ListItemIcon>
+                  <ListItemText primary={strings.BTMS_DASHBOARD} />
+                </ListItem>
+                <ListItem
+                  onClick={() => {
                     navigate('/users')
                     handleSideMenuClose()
                   }}

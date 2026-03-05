@@ -6,6 +6,15 @@ import User from '../models/User'
 import * as logger from '../utils/logger'
 import * as authHelper from '../utils/authHelper'
 
+const DEFAULT_PASSWORD = 'M00vinin'
+
+const DEMO_USERS: { email: string; fullName: string; type: movininTypes.UserType }[] = [
+  { email: env.ADMIN_EMAIL, fullName: 'Admin', type: movininTypes.UserType.Admin },
+  { email: 'agency@movinin.io', fullName: 'Demo Agency', type: movininTypes.UserType.Agency },
+  { email: 'user@movinin.io', fullName: 'Demo User', type: movininTypes.UserType.User },
+  { email: 'tenant@movinin.io', fullName: 'Demo Tenant', type: movininTypes.UserType.Tenant },
+]
+
 try {
   const connected = await databaseHelper.connect(env.DB_URI, env.DB_SSL, env.DB_DEBUG)
 
@@ -14,27 +23,32 @@ try {
     process.exit(1)
   }
 
-  // create admin user if it doesn't exist
-  const adminUser = await User.findOne({ email: env.ADMIN_EMAIL })
+  const passwordHash = await authHelper.hashPassword(DEFAULT_PASSWORD)
 
-  if (!adminUser) {
-    const password = 'M00vinin'
-    const passwordHash = await authHelper.hashPassword(password)
-
-    const newAdmin = new User({
-      fullName: 'admin',
-      email: env.ADMIN_EMAIL,
-      password: passwordHash,
-      language: env.DEFAULT_LANGUAGE,
-      type: movininTypes.UserType.Admin,
-      active: true,
-      verified: true,
-    })
-    await newAdmin.save()
-    logger.info('Admin user created successfully')
-  } else {
-    logger.info('Admin user already exists')
+  for (const { email, fullName, type } of DEMO_USERS) {
+    const existing = await User.findOne({ email })
+    if (!existing) {
+      const newUser = new User({
+        fullName,
+        email,
+        password: passwordHash,
+        language: env.DEFAULT_LANGUAGE,
+        type,
+        active: true,
+        verified: true,
+      })
+      await newUser.save()
+      logger.info(`${type} user created: ${email}`)
+    } else {
+      existing.password = passwordHash
+      existing.fullName = fullName
+      existing.active = true
+      existing.verified = true
+      await existing.save()
+      logger.info(`${type} user password reset: ${email}`)
+    }
   }
+
   process.exit(0)
 } catch (err) {
   logger.error('Error during setup:', err)
