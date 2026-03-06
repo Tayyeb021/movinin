@@ -53,7 +53,9 @@ Railway injects `PORT`. The backend uses `process.env.PORT` when set (e.g. on Ra
 
 ## 2. Deploy frontend and admin on Railway (Railpack)
 
-Admin and frontend depend on the monorepo `packages` folder, so **Root Directory must be the repository root** (leave empty), not `admin` or `frontend`. Use the provided Railpack configs.
+**If you see `can't cd to ../packages/currency-converter`:** Railway is building only the `admin` (or `frontend`) folder. You must use the **repository root** as Root Directory so `packages/` is available. See **[RAILWAY.md](./RAILWAY.md)** for step-by-step settings.
+
+Admin and frontend depend on the monorepo `packages` folder, so **Root Directory must be the repository root** (leave empty or `.`), not `admin` or `frontend`. Use the provided Railpack configs.
 
 ### 2.1 Frontend
 

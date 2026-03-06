@@ -7,5 +7,11 @@
     "build": {
       "commands": ["cd admin && npm run build"]
     }
+  },
+  "deploy": {
+    "inputs": [
+      "...",
+      { "step": "build", "include": ["admin/build"] }
+    ]
   }
 }
