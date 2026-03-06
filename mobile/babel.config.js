@@ -11,7 +11,7 @@ module.exports = function (api) {
           blocklist: null,
           allowlist: null,
           safe: true,
-          allowUndefined: false,
+          allowUndefined: true,
         },
       ],
       [

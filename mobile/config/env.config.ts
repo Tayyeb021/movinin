@@ -81,7 +81,7 @@ export const WEBSITE_NAME: string = String(MI_WEBSITE_NAME || "Movin' In")
  *
  * @type {string}
  */
-export const API_HOST: string = MI_API_HOST
+export const API_HOST: string = typeof MI_API_HOST === 'string' ? MI_API_HOST : ''
 
 /**
  * Axios timeout in milliseconds.
@@ -137,14 +137,14 @@ export const BOOKINGS_PAGE_SIZE: number = Number.parseInt(MI_BOOKINGS_PAGE_SIZE,
  *
  * @type {string}
  */
-export const CDN_USERS: string = MI_CDN_USERS
+export const CDN_USERS: string = typeof MI_CDN_USERS === 'string' ? MI_CDN_USERS : ''
 
 /**
  * Property images CDN.
  *
  * @type {string}
  */
-export const CDN_PROPERTIES: string = MI_CDN_PROPERTIES
+export const CDN_PROPERTIES: string = typeof MI_CDN_PROPERTIES === 'string' ? MI_CDN_PROPERTIES : ''
 
 /**
  * Page offset.

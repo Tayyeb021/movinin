@@ -18,7 +18,6 @@
         "foregroundImage": "./assets/icon.png"
       },
       "icon": "./assets/icon.png",
-      "googleServicesFile": "./google-services.json",
       "package": "com.movinin"
     },
     "ios": {
@@ -48,21 +47,17 @@
       "expo-asset",
       "expo-font"
     ],
-    "owner": "aelassas",
-    "extra": {
-      "eas": {
-        "projectId": "68f84550-e978-45b5-9de1-da514eb547fe"
-      }
-    },
-    "updates": {
-      "url": "https://u.expo.dev/68f84550-e978-45b5-9de1-da514eb547fe"
-    },
     "experiments": {
       "tsconfigPaths": true
     },
     "runtimeVersion": {
       "policy": "appVersion"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "be290071-e80b-4b29-91a0-95698818c749"
+      }
+    },
+    "owner": "mtayyedd"
   }
 }
-
