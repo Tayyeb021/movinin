@@ -1,0 +1,11 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "steps": {
+    "install": {
+      "commands": ["cd frontend && npm ci"]
+    },
+    "build": {
+      "commands": ["cd frontend && npm run build"]
+    }
+  }
+}
