@@ -1,6 +1,6 @@
 # Deploy: Railway (backend, frontend, admin) + APK (mobile)
 
-**Environment variables:** See **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)** for a full list of variables for backend, frontend, admin, and mobile.
+**Environment variables:** See **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)** for backend, frontend, admin, and mobile.
 
 ---
 
@@ -9,9 +9,9 @@
 ### 1.1 Create project and connect repo
 
 1. Go to [railway.app](https://railway.app) and sign in.
-2. **New Project** → **Deploy from GitHub repo** (or GitLab) and select the `movinin` repo.
-3. **Root Directory:** leave **empty** (repository root). The backend needs the `packages` folder, so it must build from repo root.
-4. **Railpack:** Set variable `RAILPACK_CONFIG_FILE=railpack.backend.json` so the build runs `cd backend && npm ci` and `cd backend && npm run build`; the start command runs the backend from `backend/`.
+2. **New Project** → **Deploy from GitHub repo** and select the `movinin` repo.
+3. **Root Directory:** leave **empty** (repository root). Backend needs the full repo for `packages/` and `railpack.backend.json`.
+4. **Variables:** Set `RAILPACK_CONFIG_FILE=railpack.backend.json`. Build runs `cd backend && npm ci` and `cd backend && npm run build`; start command is in the railpack config.
 
 ### 1.3 Database (MongoDB)
 
@@ -51,45 +51,26 @@ Railway injects `PORT`. The backend uses `process.env.PORT` when set (e.g. on Ra
 
 ---
 
-## 2. Deploy frontend and admin on Railway (Railpack)
+## 2. Deploy frontend and admin
 
-**If you see `can't cd to ../packages/currency-converter`:** Railway is building only the `admin` (or `frontend`) folder. You must use the **repository root** as Root Directory so `packages/` is available. See **[RAILWAY.md](./RAILWAY.md)** for step-by-step settings.
+Use **repository root** or **assign root directly** per service. (If your host only sends one folder and the build fails on `packages/`, use **repository root** for that service and set the build command to run from the app folder, e.g. `cd frontend && npm ci && npm run build`.)
 
-**If you see `node: command not found` when the container starts (Frontend or Admin):**
-
-1. **Start Command must be empty.** In Railway → that service → **Settings** → find **Start Command** (or "Custom start command" / "Override start command") → **clear the field** and save. Do **not** set `npm start`, `node`, or any command.
-2. **Set `RAILPACK_STATIC_FILE_ROOT`** so Railpack treats the service as static (Caddy, not Node).  
-   - Frontend: `RAILPACK_STATIC_FILE_ROOT=frontend/build`  
-   - Admin: `RAILPACK_STATIC_FILE_ROOT=admin/build`
-3. **Redeploy** after changing settings. The repo’s `railpack.frontend.json` and `railpack.admin.json` now set `"provider": "staticfile"` so the build uses the static/Caddy path.
-
-Admin and frontend depend on the monorepo `packages` folder, so **Root Directory must be the repository root** (leave empty or `.`), not `admin` or `frontend`. Use the provided Railpack configs.
+- **Vercel:** Create two projects (or one monorepo). Set **Root Directory** to `frontend` for the frontend app and `admin` for the admin app. Set **Output Directory** to `build` (Vite default). Add env vars from [ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#2-frontend) and [ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#3-admin).
+- **Railway:** Create one service per app. Set **Root Directory** to `frontend` or `admin` so each service builds from that folder. Build: default (`npm ci`, `npm run build`). Set **Output Directory** / static serve to `build`. Leave **Start Command** empty for static. Add the same env vars.
 
 ### 2.1 Frontend
 
-1. Add a **new service** for the frontend.
-2. **Root directory:** leave **empty** (repo root).
-3. **Start Command:** leave **empty** (do not set `npm start` or `node` — the static image uses Caddy).
-4. **Variables:** set `RAILPACK_CONFIG_FILE=railpack.frontend.json` and `RAILPACK_STATIC_FILE_ROOT=frontend/build`.
-5. In **Variables**, set at least:
-   - `VITE_MI_API_HOST` = **YOUR_BACKEND_URL** (no trailing slash)
-   - `VITE_MI_CDN_USERS` = **YOUR_BACKEND_URL**/cdn/movinin/users
-   - `VITE_MI_CDN_PROPERTIES` = **YOUR_BACKEND_URL**/cdn/movinin/properties
-   - `VITE_MI_CDN_LOCATIONS` = **YOUR_BACKEND_URL**/cdn/movinin/locations
-6. Generate a domain for the frontend and set **backend** variable `MI_FRONTEND_HOST` = that URL with trailing slash.
-
-Template: **frontend/.env.production.example** (replace `YOUR_BACKEND_URL`).
+1. **Root Directory:** set to **`frontend`** (direct root for the app).
+2. **Variables:** at least `VITE_MI_API_HOST` = **YOUR_BACKEND_URL** (no trailing slash), plus `VITE_MI_CDN_USERS`, `VITE_MI_CDN_PROPERTIES`, `VITE_MI_CDN_LOCATIONS` = **YOUR_BACKEND_URL**/cdn/movinin/… (see **frontend/.env.production.example**).
+3. Generate a domain and set **backend** variable `MI_FRONTEND_HOST` = that URL with trailing slash.
 
 ### 2.2 Admin
 
-1. Add another **new service** for the admin app.
-2. **Root directory:** leave **empty** (repo root).
-3. **Start Command:** leave **empty** (do not set `npm start` or `node` — the static image uses Caddy).
-4. **Variables:** set `RAILPACK_CONFIG_FILE=railpack.admin.json` and `RAILPACK_STATIC_FILE_ROOT=admin/build`.
-5. In **Variables**, set the same `VITE_MI_API_HOST` and all `VITE_MI_CDN_*` to **YOUR_BACKEND_URL** (see **admin/.env.production.example**).
-6. Generate a domain for admin and set **backend** variable `MI_ADMIN_HOST` = that URL with trailing slash.
+1. **Root Directory:** set to **`admin`** (direct root for the app).
+2. **Variables:** same `VITE_MI_API_HOST` and `VITE_MI_CDN_*` as frontend (see **admin/.env.production.example**).
+3. Generate a domain and set **backend** variable `MI_ADMIN_HOST` = that URL with trailing slash.
 
-Full variable list: **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)#2-frontend)** and **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)#3-admin)**.
+Full variable list: **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#2-frontend)** and **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#3-admin)**.
 
 ---
 
@@ -154,9 +135,9 @@ Requires Android SDK and correct environment (e.g. `ANDROID_HOME`). Still set `M
 
 | Goal | Action |
 |------|--------|
-| **Backend** | Root = repo root. `RAILPACK_CONFIG_FILE=railpack.backend.json`. Set variables from [ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#1-backend-railway). Generate domain → **YOUR_BACKEND_URL**. |
-| **Frontend** | Root = repo root. `RAILPACK_CONFIG_FILE=railpack.frontend.json`, `RAILPACK_STATIC_FILE_ROOT=frontend/build`. Set `VITE_MI_API_HOST` and CDN URLs (see [ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)#2-frontend). Set `MI_FRONTEND_HOST` on backend. |
-| **Admin** | Root = repo root. `RAILPACK_CONFIG_FILE=railpack.admin.json`, `RAILPACK_STATIC_FILE_ROOT=admin/build`. Set VITE vars (see [ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)#3-admin). Set `MI_ADMIN_HOST` on backend. |
+| **Backend** | Root = **repository root** (empty). `RAILPACK_CONFIG_FILE=railpack.backend.json`. Set variables from [ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#1-backend-railway). Generate domain → **YOUR_BACKEND_URL**. |
+| **Frontend** | Root = **`frontend`** (direct). Output = `build`. Set `VITE_MI_API_HOST` and CDN URLs ([ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#2-frontend)). Set `MI_FRONTEND_HOST` on backend. |
+| **Admin** | Root = **`admin`** (direct). Output = `build`. Set VITE vars ([ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md#3-admin)). Set `MI_ADMIN_HOST` on backend. |
 | **APK** | Set `MI_API_HOST` to **YOUR_BACKEND_URL** (EAS env or `mobile/.env`), run `cd mobile && npm run build:android`, download APK from EAS. |
 
 After deployment, backend, frontend, and admin use the same backend URL; the APK uses that backend for all API calls.
