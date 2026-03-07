@@ -10,7 +10,6 @@
   },
   "deploy": {
     "inputs": [
-      "...",
       { "step": "build", "include": ["admin/build"] }
     ]
   }
