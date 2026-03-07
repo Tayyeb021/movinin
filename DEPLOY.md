@@ -55,19 +55,22 @@ Railway injects `PORT`. The backend uses `process.env.PORT` when set (e.g. on Ra
 
 **If you see `can't cd to ../packages/currency-converter`:** Railway is building only the `admin` (or `frontend`) folder. You must use the **repository root** as Root Directory so `packages/` is available. See **[RAILWAY.md](./RAILWAY.md)** for step-by-step settings.
 
+**If you see `node: command not found` when the container starts (Frontend or Admin):** The deploy image for these services is static (Caddy + built files) and does not include Node.js. In Railway → Frontend/Admin service → **Settings** → **Start Command**, clear any custom start command (leave it empty). Railpack will use Caddy to serve the static files.
+
 Admin and frontend depend on the monorepo `packages` folder, so **Root Directory must be the repository root** (leave empty or `.`), not `admin` or `frontend`. Use the provided Railpack configs.
 
 ### 2.1 Frontend
 
 1. Add a **new service** for the frontend.
 2. **Root directory:** leave **empty** (repo root).
-3. **Variables:** set `RAILPACK_CONFIG_FILE=railpack.frontend.json` and `RAILPACK_STATIC_FILE_ROOT=frontend/build`.
-4. In **Variables**, set at least:
+3. **Start Command:** leave **empty** (do not set `npm start` or `node` — the static image uses Caddy).
+4. **Variables:** set `RAILPACK_CONFIG_FILE=railpack.frontend.json` and `RAILPACK_STATIC_FILE_ROOT=frontend/build`.
+5. In **Variables**, set at least:
    - `VITE_MI_API_HOST` = **YOUR_BACKEND_URL** (no trailing slash)
    - `VITE_MI_CDN_USERS` = **YOUR_BACKEND_URL**/cdn/movinin/users
    - `VITE_MI_CDN_PROPERTIES` = **YOUR_BACKEND_URL**/cdn/movinin/properties
    - `VITE_MI_CDN_LOCATIONS` = **YOUR_BACKEND_URL**/cdn/movinin/locations
-5. Generate a domain for the frontend and set **backend** variable `MI_FRONTEND_HOST` = that URL with trailing slash.
+6. Generate a domain for the frontend and set **backend** variable `MI_FRONTEND_HOST` = that URL with trailing slash.
 
 Template: **frontend/.env.production.example** (replace `YOUR_BACKEND_URL`).
 
@@ -75,9 +78,10 @@ Template: **frontend/.env.production.example** (replace `YOUR_BACKEND_URL`).
 
 1. Add another **new service** for the admin app.
 2. **Root directory:** leave **empty** (repo root).
-3. **Variables:** set `RAILPACK_CONFIG_FILE=railpack.admin.json` and `RAILPACK_STATIC_FILE_ROOT=admin/build`.
-4. In **Variables**, set the same `VITE_MI_API_HOST` and all `VITE_MI_CDN_*` to **YOUR_BACKEND_URL** (see **admin/.env.production.example**).
-5. Generate a domain for admin and set **backend** variable `MI_ADMIN_HOST` = that URL with trailing slash.
+3. **Start Command:** leave **empty** (do not set `npm start` or `node` — the static image uses Caddy).
+4. **Variables:** set `RAILPACK_CONFIG_FILE=railpack.admin.json` and `RAILPACK_STATIC_FILE_ROOT=admin/build`.
+5. In **Variables**, set the same `VITE_MI_API_HOST` and all `VITE_MI_CDN_*` to **YOUR_BACKEND_URL** (see **admin/.env.production.example**).
+6. Generate a domain for admin and set **backend** variable `MI_ADMIN_HOST` = that URL with trailing slash.
 
 Full variable list: **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)#2-frontend)** and **[ENV_DEPLOYMENT.md](./ENV_DEPLOYMENT.md)#3-admin)**.
 

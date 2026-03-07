@@ -123,12 +123,12 @@ export const getTenantDashboard = async (req: Request, res: Response) => {
     ) ?? rentHistory.find((r) => r.status === movininTypes.RentStatus.Pending || r.status === movininTypes.RentStatus.Overdue)
 
     const payload: movininTypes.TenantDashboard = {
-      tenant: tenantDoc as movininTypes.TenantAssignment,
-      unit: unitDoc as movininTypes.Unit,
-      property: propertyDoc as movininTypes.Property,
-      currentRentDue: currentRentDue as movininTypes.RentEntry | undefined,
-      rentHistory: rentHistory as movininTypes.RentEntry[],
-      openMaintenanceTickets: openTickets as movininTypes.MaintenanceTicket[],
+      tenant: tenantDoc as unknown as movininTypes.TenantAssignment,
+      unit: unitDoc as unknown as movininTypes.Unit,
+      property: propertyDoc as unknown as movininTypes.Property,
+      currentRentDue: currentRentDue as unknown as movininTypes.RentEntry | undefined,
+      rentHistory: rentHistory as unknown as movininTypes.RentEntry[],
+      openMaintenanceTickets: openTickets as unknown as movininTypes.MaintenanceTicket[],
     }
     res.json(payload)
   } catch (err) {

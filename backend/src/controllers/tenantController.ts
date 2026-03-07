@@ -30,6 +30,7 @@ export const getMyTenancy = async (req: Request, res: Response) => {
   } catch (err) {
     logger.error(`[tenant.getMyTenancy] ${i18n.t('DB_ERROR')}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)
+    return undefined
   }
 }
 

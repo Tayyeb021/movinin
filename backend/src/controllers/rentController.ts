@@ -18,7 +18,7 @@ export const getRentEntries = async (req: Request, res: Response) => {
     const userId = (req as Request & { userId?: string }).userId
     const { unitId, tenantId, period, status } = req.query as { unitId?: string; tenantId?: string; period?: string; status?: string }
 
-    const $match: mongoose.FilterQuery<env.RentEntry> = {}
+    const $match: Record<string, unknown> = {}
     if (unitId && helper.isValidObjectId(unitId)) {
       const unit = await Unit.findById(unitId).select('property').lean()
       if (unit) {
@@ -28,7 +28,7 @@ export const getRentEntries = async (req: Request, res: Response) => {
     }
     if (tenantId && helper.isValidObjectId(tenantId)) {
       const tenant = await Tenant.findById(tenantId).populate('unit').lean()
-      const unitIdFromTenant = tenant?.unit && (tenant.unit as env.Unit)._id
+      const unitIdFromTenant = tenant?.unit && (tenant.unit as unknown as env.Unit)._id
       if (unitIdFromTenant) {
         const unit = await Unit.findById(unitIdFromTenant).select('property').lean()
         if (unit) {

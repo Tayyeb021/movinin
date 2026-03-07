@@ -87,8 +87,8 @@ const requireTenant = async (req: Request, res: Response, next: NextFunction) =>
       return
     }
     (req as Request & { userId: string; tenant: env.Tenant & { unit: env.Unit }; unit: env.Unit }).userId = userId
-    ;(req as Request & { userId: string; tenant: env.Tenant & { unit: env.Unit }; unit: env.Unit }).tenant = tenant as env.Tenant & { unit: env.Unit }
-    ;(req as Request & { userId: string; tenant: env.Tenant & { unit: env.Unit }; unit: env.Unit }).unit = (tenant as env.Tenant & { unit: env.Unit }).unit as env.Unit
+    ;(req as Request & { userId: string; tenant: env.Tenant & { unit: env.Unit }; unit: env.Unit }).tenant = tenant as unknown as env.Tenant & { unit: env.Unit }
+    ;(req as Request & { userId: string; tenant: env.Tenant & { unit: env.Unit }; unit: env.Unit }).unit = (tenant as unknown as env.Tenant & { unit: env.Unit }).unit as env.Unit
     next()
   } catch (err) {
     logger.info('requireTenant error', err)

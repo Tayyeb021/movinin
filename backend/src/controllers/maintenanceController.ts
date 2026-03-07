@@ -17,7 +17,7 @@ export const getTickets = async (req: Request, res: Response) => {
     const userId = (req as Request & { userId?: string }).userId
     const { propertyId, unitId, status } = req.query as { propertyId?: string; unitId?: string; status?: string }
 
-    const $match: mongoose.FilterQuery<env.MaintenanceTicket> = {}
+    const $match: Record<string, unknown> = {}
     if (propertyId && helper.isValidObjectId(propertyId)) {
       const property = await Property.findById(propertyId).select('agency').lean()
       if (property && String(property.agency) === userId) $match.property = propertyId as unknown as mongoose.Types.ObjectId
@@ -52,7 +52,7 @@ export const getTickets = async (req: Request, res: Response) => {
 /**
  * Get my maintenance tickets (tenant only).
  */
-export const getMyTickets = async (req: Request, res: Response) => {
+export const getMyTickets = async (req: Request, res: Response): Promise<void> => {
   try {
     const tenant = (req as Request & { tenant?: env.Tenant }).tenant
     const unit = (req as Request & { unit?: env.Unit }).unit
@@ -67,9 +67,11 @@ export const getMyTickets = async (req: Request, res: Response) => {
       .sort({ createdAt: -1 })
       .lean()
     res.json(tickets)
+    return
   } catch (err) {
     logger.error(`[maintenance.getMyTickets] ${i18n.t('DB_ERROR')}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)
+    return
   }
 }
 
@@ -86,8 +88,8 @@ export const getTicket = async (req: Request, res: Response) => {
       const Tenant = (await import('../models/Tenant')).default
       const t = await Tenant.findOne({ user: userId, active: true }).populate('unit').lean()
       if (t) {
-        tenant = t as env.Tenant & { unit: env.Unit }
-        unit = (t as { unit: env.Unit }).unit
+        tenant = t as unknown as env.Tenant & { unit: env.Unit }
+        unit = (t as { unit: unknown }).unit as env.Unit
       }
     }
 
@@ -111,9 +113,11 @@ export const getTicket = async (req: Request, res: Response) => {
       if (String(ticket.unit) === String(unitId)) return res.json(ticket)
     }
     res.status(403).send({ message: 'Forbidden' })
+    return
   } catch (err) {
     logger.error(`[maintenance.getTicket] ${i18n.t('DB_ERROR')}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)
+    return
   }
 }
 
@@ -129,8 +133,8 @@ export const createTicket = async (req: Request, res: Response) => {
       const TenantModel = (await import('../models/Tenant')).default
       const t = await TenantModel.findOne({ user: userId, active: true }).populate('unit').lean()
       if (t) {
-        tenant = t as env.Tenant & { unit: env.Unit }
-        unit = (t as { unit: env.Unit }).unit
+        tenant = t as unknown as env.Tenant & { unit: env.Unit }
+        unit = (t as { unit: unknown }).unit as env.Unit
       }
     }
     const body = req.body as {

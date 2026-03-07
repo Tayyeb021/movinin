@@ -20,7 +20,7 @@ export const getPublicUnits = async (req: Request, res: Response) => {
     const body = (req.body || {}) as movininTypes.GetPublicUnitsPayload
     const { location, minRent, maxRent, furnishingStatus } = body
 
-    const $match: mongoose.FilterQuery<env.Unit> = {
+    const $match: Record<string, unknown> = {
       status: movininTypes.UnitStatus.Vacant,
     }
     if (minRent != null) $match.rent = { ...(($match.rent as object) || {}), $gte: minRent }
@@ -51,6 +51,7 @@ export const getPublicUnits = async (req: Request, res: Response) => {
   } catch (err) {
     logger.error(`[unit.getPublicUnits] ${i18n.t('DB_ERROR')}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)
+    return undefined
   }
 }
 
