@@ -1,5 +1,6 @@
 {
   "$schema": "https://schema.railpack.com",
+  "provider": "staticfile",
   "steps": {
     "install": {
       "commands": ["cd frontend && npm ci"]

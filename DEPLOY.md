@@ -55,7 +55,13 @@ Railway injects `PORT`. The backend uses `process.env.PORT` when set (e.g. on Ra
 
 **If you see `can't cd to ../packages/currency-converter`:** Railway is building only the `admin` (or `frontend`) folder. You must use the **repository root** as Root Directory so `packages/` is available. See **[RAILWAY.md](./RAILWAY.md)** for step-by-step settings.
 
-**If you see `node: command not found` when the container starts (Frontend or Admin):** The deploy image for these services is static (Caddy + built files) and does not include Node.js. In Railway → Frontend/Admin service → **Settings** → **Start Command**, clear any custom start command (leave it empty). Railpack will use Caddy to serve the static files.
+**If you see `node: command not found` when the container starts (Frontend or Admin):**
+
+1. **Start Command must be empty.** In Railway → that service → **Settings** → find **Start Command** (or "Custom start command" / "Override start command") → **clear the field** and save. Do **not** set `npm start`, `node`, or any command.
+2. **Set `RAILPACK_STATIC_FILE_ROOT`** so Railpack treats the service as static (Caddy, not Node).  
+   - Frontend: `RAILPACK_STATIC_FILE_ROOT=frontend/build`  
+   - Admin: `RAILPACK_STATIC_FILE_ROOT=admin/build`
+3. **Redeploy** after changing settings. The repo’s `railpack.frontend.json` and `railpack.admin.json` now set `"provider": "staticfile"` so the build uses the static/Caddy path.
 
 Admin and frontend depend on the monorepo `packages` folder, so **Root Directory must be the repository root** (leave empty or `.`), not `admin` or `frontend`. Use the provided Railpack configs.
 

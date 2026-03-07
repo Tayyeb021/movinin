@@ -34,7 +34,9 @@ Then set the variables below so Railpack uses the right config and (for static a
 | **Frontend** | *(empty or `.`)* | `RAILPACK_CONFIG_FILE=railpack.frontend.json`, `RAILPACK_STATIC_FILE_ROOT=frontend/build` |
 | **Admin**    | *(empty or `.`)* | `RAILPACK_CONFIG_FILE=railpack.admin.json`, `RAILPACK_STATIC_FILE_ROOT=admin/build` |
 
-6. **Start Command:** For **Frontend** and **Admin** only, leave **Start Command** empty (do not set `npm start`, `node`, or any custom command). Railpack serves these as static sites with Caddy; the runtime image has no Node.js, so `node: command not found` appears if a Node start command is set. For **Backend**, the start command is set by `railpack.backend.json` and does not need to be overridden.
+6. **Start Command:** For **Frontend** and **Admin** only, leave **Start Command** empty (do not set `npm start`, `node`, or any custom command). Railpack serves these as static sites with Caddy; the runtime image has no Node.js, so `node: command not found` appears if a Node start command is set. For **Backend**, leave Start Command empty so Railway uses the command from `railpack.backend.json` (which includes the Node runtime in the deploy image).
+
+**If Backend build fails with** `"/app/node_modules": not found` **or runtime shows** `node: command not found`: the repo uses a custom `railpack.backend.json` that puts install/build in `backend/`, so the deploy image must include the Mise/Node runtime and only the `backend` folder (not root `node_modules`). Ensure you have the latest `railpack.backend.json` from the repo and redeploy.
 
 After that, redeploy. The build will see the full repo, `packages/` will exist, and the Railpack config will run `cd admin && npm ci` / `cd admin && npm run build` (and the same idea for frontend/backend).
 
