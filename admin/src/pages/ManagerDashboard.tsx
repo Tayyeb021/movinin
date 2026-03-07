@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Card, CardContent, Typography, Button, Grid, CircularProgress } from '@mui/material'
+import { Card, CardContent, Typography, Button, CircularProgress, Grid } from '@mui/material'
 import * as movininTypes from ':movinin-types'
 import Layout from '@/components/Layout'
 import { strings } from '@/lang/btms-dashboard'
@@ -37,7 +37,7 @@ const ManagerDashboard = () => {
           {data && !loading && (
             <>
               <Grid container spacing={2} sx={{ mb: 3 }}>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.TOTAL_PROPERTIES}</Typography>
@@ -45,7 +45,7 @@ const ManagerDashboard = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.TOTAL_UNITS}</Typography>
@@ -53,7 +53,7 @@ const ManagerDashboard = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.OCCUPIED}</Typography>
@@ -61,7 +61,7 @@ const ManagerDashboard = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.VACANT}</Typography>
@@ -69,7 +69,7 @@ const ManagerDashboard = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.RENT_DUE}</Typography>
@@ -77,7 +77,7 @@ const ManagerDashboard = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.RENT_COLLECTED}</Typography>
@@ -85,7 +85,7 @@ const ManagerDashboard = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.OVERDUE}</Typography>
@@ -93,7 +93,7 @@ const ManagerDashboard = () => {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid size={{ xs: 12, sm: 6, md: 3 }}>
                   <Card>
                     <CardContent>
                       <Typography color="textSecondary">{strings.OPEN_MAINTENANCE}</Typography>
@@ -103,17 +103,17 @@ const ManagerDashboard = () => {
                 </Grid>
               </Grid>
               <Grid container spacing={2}>
-                <Grid item>
+                <Grid>
                   <Button variant="contained" onClick={() => navigate('/properties')}>
                     {strings.VIEW_PROPERTIES}
                   </Button>
                 </Grid>
-                <Grid item>
+                <Grid>
                   <Button variant="contained" onClick={() => navigate('/btms-tenants')}>
                     {strings.VIEW_TENANTS}
                   </Button>
                 </Grid>
-                <Grid item>
+                <Grid>
                   <Button variant="contained" onClick={() => navigate('/btms-maintenance')}>
                     {strings.VIEW_MAINTENANCE}
                   </Button>

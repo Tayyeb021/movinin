@@ -9,6 +9,7 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -22,6 +23,7 @@
     "noFallthroughCasesInSwitch": true,
 
     "typeRoots": ["./node_modules/@types", "./types", "./src/types"],
+    "types": ["node"],
 
     "paths": {
       "@/*": ["./src/*"],

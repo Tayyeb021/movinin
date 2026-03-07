@@ -9,6 +9,10 @@
     }
   },
   "deploy": {
+    "inputs": [
+      "...",
+      { "step": "build", "include": ["backend"] }
+    ],
     "startCommand": "cd backend && node --import ./dist/src/monitoring/instrument.js dist/src"
   }
 }
