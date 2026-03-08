@@ -14,7 +14,7 @@ import {
   PhotoCamera as PhotoCameraIcon,
   BrokenImageTwoTone as DeleteIcon
 } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as helper from '@/utils/helper'

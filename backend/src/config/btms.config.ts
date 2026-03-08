@@ -1,4 +1,4 @@
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 /**
  * Default furnishing checklist item keys (configurable list per spec).

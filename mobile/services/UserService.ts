@@ -6,7 +6,7 @@ import * as env from '@/config/env.config'
 import * as AsyncStorage from '@/utils/AsyncStorage'
 import * as axiosHelper from '@/utils/axiosHelper'
 import * as toastHelper from '@/utils/toastHelper'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 axiosHelper.init(axiosInstance)
 

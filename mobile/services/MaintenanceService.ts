@@ -1,6 +1,6 @@
 import axiosInstance from './axiosInstance'
 import * as UserService from './UserService'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 export const getMyTickets = async (): Promise<movininTypes.MaintenanceTicket[]> => {
   const headers = await UserService.authHeader()

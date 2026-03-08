@@ -34,7 +34,6 @@ export default ({ mode }: { mode: string }) => {
         'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
 
         '@': path.resolve(__dirname, './src'),
-        ':movinin-types': path.resolve(__dirname, '../packages/movinin-types'),
         ':movinin-helper': path.resolve(__dirname, '../packages/movinin-helper'),
         ':disable-react-devtools': path.resolve(__dirname, '../packages/disable-react-devtools'),
         ':currency-converter': path.resolve(__dirname, '../packages/currency-converter'),

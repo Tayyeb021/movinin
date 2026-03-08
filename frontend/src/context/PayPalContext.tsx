@@ -1,6 +1,6 @@
 import React from 'react'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
 import * as PaymentService from '@/services/PaymentService'
 import * as PayPalService from '@/services/PayPalService'

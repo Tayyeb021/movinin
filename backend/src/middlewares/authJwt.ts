@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import mongoose from 'mongoose'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as env from '../config/env.config'
 import * as helper from '../utils/helper'
 import * as authHelper from '../utils/authHelper'

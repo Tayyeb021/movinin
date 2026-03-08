@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 
 import i18n from '@/lang/i18n'

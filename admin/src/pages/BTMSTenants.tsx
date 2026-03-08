@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import * as TenantService from '@/services/TenantService'
 

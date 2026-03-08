@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { FormControl, Button } from '@mui/material'
 import { DateTimeValidationError } from '@mui/x-date-pickers'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import * as UserService from '@/services/UserService'

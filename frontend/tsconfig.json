@@ -25,7 +25,6 @@
     
     "paths": {
       "@/*": ["./src/*"],
-      ":movinin-types": ["../packages/movinin-types"],
       ":movinin-helper": ["../packages/movinin-helper"],
       ":disable-react-devtools": ["../packages/disable-react-devtools"],
       ":reactjs-social-login": ["../packages/reactjs-social-login"],
@@ -34,7 +33,6 @@
   "include": ["src"],
   "references": [
     { "path": "./tsconfig.node.json" },
-    { "path": "../packages/movinin-types" },
     { "path": "../packages/movinin-helper" },
     { "path": "../packages/disable-react-devtools" },
     { "path": "../packages/reactjs-social-login" },

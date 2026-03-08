@@ -6,7 +6,7 @@ import {
   RemoteQuery,
   SchedulerRef,
 } from '@/components/scheduler/types'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as helper from '@/utils/helper'
 import * as BookingService from '@/services/BookingService'
 

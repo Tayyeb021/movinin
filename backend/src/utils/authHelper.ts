@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 import axios from 'axios'
 import * as helper from './helper'
 import * as env from '../config/env.config'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 const jwtSecret = new TextEncoder().encode(env.JWT_SECRET)
 const jwtAlg = 'HS256'

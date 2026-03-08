@@ -9,7 +9,7 @@ import {
   Paper
 } from '@mui/material'
 import validator from 'validator'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/sign-up'
 import * as UserService from '@/services/UserService'

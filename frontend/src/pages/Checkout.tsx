@@ -27,7 +27,7 @@ import {
 } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { PayPalButtons } from '@paypal/react-paypal-js'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as BookingService from '@/services/BookingService'

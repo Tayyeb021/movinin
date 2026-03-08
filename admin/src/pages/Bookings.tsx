@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import Layout from '@/components/Layout'
 import env from '@/config/env.config'

@@ -10,8 +10,8 @@
 
 1. Go to [railway.app](https://railway.app) and sign in.
 2. **New Project** → **Deploy from GitHub repo** and select the `movinin` repo.
-3. **Root Directory:** leave **empty** (repository root). Backend needs the full repo for `packages/` and `railpack.backend.json`.
-4. **Variables:** Set `RAILPACK_CONFIG_FILE=railpack.backend.json`. Build runs `cd backend && npm ci` and `cd backend && npm run build`; start command is in the railpack config.
+3. **Root Directory:** you can use **repository root** (empty) or **`backend`**. The backend uses `movinin-types` from `backend/vendor/movinin-types-1.0.0.tgz`, so no `packages/` folder is required at build time.
+4. **Variables:** If using repo root, set `RAILPACK_CONFIG_FILE=railpack.backend.json`. Build: `cd backend && npm ci && npm run build`. Start: `cd backend && node --import ./dist/src/monitoring/instrument.js dist/src`.
 
 ### 1.3 Database (MongoDB)
 

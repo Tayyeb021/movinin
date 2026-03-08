@@ -8,7 +8,7 @@ import {
   CircularProgress,
 } from '@mui/material'
 import validator from 'validator'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/newsletter-form'

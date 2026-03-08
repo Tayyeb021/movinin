@@ -8,7 +8,7 @@ import { useIsFocused } from '@react-navigation/native'
 import { intervalToDuration } from 'date-fns'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import validator from 'validator'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 import i18n from '@/lang/i18n'
 import TextInput from '@/components/TextInput'

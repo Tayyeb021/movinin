@@ -18,7 +18,7 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import validator from 'validator'
 import { intervalToDuration } from 'date-fns'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 
 import Layout from '@/components/Layout'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import NotificationList from '@/components/NotificationList'
 

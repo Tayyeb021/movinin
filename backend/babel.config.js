@@ -1,16 +1,7 @@
 const babel = (api) => {
   const isTest = api.env('test')
 
-  const plugins = [
-    [
-      'module-resolver',
-      {
-        alias: {
-          ':movinin-types': '../packages/movinin-types',
-        },
-      },
-    ],
-  ]
+  const plugins = []
 
   if (!isTest) {
     plugins.push('add-import-extension')

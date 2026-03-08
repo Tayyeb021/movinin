@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TextFieldVariants } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as UserService from '@/services/UserService'

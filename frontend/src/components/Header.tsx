@@ -36,7 +36,7 @@ import {
 } from '@mui/icons-material'
 import { toast } from 'react-toastify'
 import { CircleFlag } from 'react-circle-flags'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as suStrings } from '@/lang/sign-up'

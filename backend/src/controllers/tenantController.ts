@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import { Request, Response } from 'express'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import Tenant from '../models/Tenant'
 import Unit from '../models/Unit'
 import Property from '../models/Property'

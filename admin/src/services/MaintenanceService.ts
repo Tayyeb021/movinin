@@ -1,4 +1,4 @@
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import axiosInstance from './axiosInstance'
 
 export const getTickets = (params?: { propertyId?: string; unitId?: string; status?: string }): Promise<movininTypes.MaintenanceTicket[]> =>

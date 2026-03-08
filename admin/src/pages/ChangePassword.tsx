@@ -4,7 +4,7 @@ import {
   Paper,
   Button
 } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/change-password'

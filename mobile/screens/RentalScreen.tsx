@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, ScrollView, Linking } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 import Layout from '@/components/Layout'
 import i18n from '@/lang/i18n'

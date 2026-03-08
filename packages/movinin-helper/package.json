@@ -14,6 +14,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "movinin-types": "file:../../backend/vendor/movinin-types-1.0.0.tgz",
     "@babel/runtime": "^7.26.0"
   }
 }

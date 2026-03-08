@@ -1,6 +1,6 @@
 import React, { useState, useEffect, CSSProperties, ReactNode } from 'react'
 import { Button } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import { strings } from '@/lang/master'
 import * as UserService from '@/services/UserService'
 import Unauthorized from './Unauthorized'

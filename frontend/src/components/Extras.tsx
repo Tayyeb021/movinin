@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Check as CheckIcon,
 } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as helper from '@/utils/helper'
 import { strings as csStrings } from '@/lang/properties'
 import { strings as commonStrings } from '@/lang/common'

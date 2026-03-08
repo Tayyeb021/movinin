@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FormControl, FormControlLabel, Switch } from '@mui/material'
 import { EventSeat as BookingIcon, } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import { strings as csStrings } from '@/lang/properties'
 import { strings } from '@/lang/checkout'

@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as env from '../config/env.config'
 import * as databaseHelper from '../utils/databaseHelper'
 import User from '../models/User'

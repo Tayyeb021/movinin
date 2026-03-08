@@ -1,4 +1,4 @@
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import axiosInstance from './axiosInstance'
 
 export const getRentEntries = (params: { unitId?: string; tenantId?: string; period?: string; status?: string }): Promise<movininTypes.RentEntry[]> =>

@@ -1,5 +1,5 @@
 import axiosInstance from './axiosInstance'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 export const getPublicUnits = async (
   page: number,

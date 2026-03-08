@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { CommonActions, NavigationRoute, RouteProp } from '@react-navigation/native'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 
 import * as helper from '@/utils/helper'

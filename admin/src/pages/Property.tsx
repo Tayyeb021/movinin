@@ -15,7 +15,7 @@ import {
   Bookmarks as BookingsIcon,
   MeetingRoom as UnitsIcon
 } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import Backdrop from '@/components/SimpleBackdrop'
 import Layout from '@/components/Layout'

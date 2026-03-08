@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Box, Dialog, DialogContent, DialogTitle, IconButton } from '@mui/material'
 import { Close as CloseIcon } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
 import Map from '@/components/Map'
 

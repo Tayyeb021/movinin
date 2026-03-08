@@ -4,7 +4,7 @@ import {
   CardContent,
   Typography,
 } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
 import Const from '@/config/const'
 import { strings } from '@/lang/properties'

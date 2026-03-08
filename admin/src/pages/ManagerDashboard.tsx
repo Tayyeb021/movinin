@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, Typography, Button, CircularProgress, Grid } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import { strings } from '@/lang/btms-dashboard'
 import * as DashboardService from '@/services/DashboardService'

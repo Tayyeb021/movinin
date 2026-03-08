@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as env from '../config/env.config'
 
 export const BOOKING_EXPIRE_AT_INDEX_NAME = 'expireAt'

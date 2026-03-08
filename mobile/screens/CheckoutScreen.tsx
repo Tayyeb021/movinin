@@ -13,7 +13,7 @@ import validator from 'validator'
 import { format, intervalToDuration } from 'date-fns'
 import { enUS, fr } from 'date-fns/locale'
 import { PaymentSheetError, initPaymentSheet, useStripe } from '@stripe/stripe-react-native'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 
 import Layout from '@/components/Layout'

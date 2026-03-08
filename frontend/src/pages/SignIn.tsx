@@ -7,7 +7,7 @@ import {
   Button,
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as suStrings } from '@/lang/sign-up'
 import { strings } from '@/lang/sign-in'

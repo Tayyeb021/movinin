@@ -17,7 +17,7 @@ import {
   AttachMoney as RentalTermIcon,
   PhotoSizeSelectSmall as SizeIcon
 } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import { strings as cpStrings } from '@/lang/property'
 import { strings } from '@/lang/properties'

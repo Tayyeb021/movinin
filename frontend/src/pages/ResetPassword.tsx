@@ -4,7 +4,7 @@ import {
   Paper
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'

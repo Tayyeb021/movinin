@@ -1,4 +1,4 @@
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import axiosInstance from './axiosInstance'
 
 export const getManagerDashboard = (): Promise<movininTypes.ManagerDashboard> =>

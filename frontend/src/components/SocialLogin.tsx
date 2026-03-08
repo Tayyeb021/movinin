@@ -6,7 +6,7 @@ import {
   LoginSocialApple,
   LoginSocialGoogle,
 } from ':reactjs-social-login'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '@/lang/common'
 import env from '@/config/env.config'
 import * as UserService from '@/services/UserService'

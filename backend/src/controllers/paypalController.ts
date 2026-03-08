@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import i18n from '../lang/i18n'
 import * as logger from '../utils/logger'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as env from '../config/env.config'
 import Booking from '../models/Booking'
 import User from '../models/User'

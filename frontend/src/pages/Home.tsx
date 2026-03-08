@@ -11,7 +11,7 @@ import {
   CheckBox,
 } from '@mui/icons-material'
 import L from 'leaflet'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
 import { strings } from '@/lang/home'
 import * as CountryService from '@/services/CountryService'

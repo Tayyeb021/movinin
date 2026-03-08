@@ -19,7 +19,7 @@ import {
   Check as VerifiedIcon,
   LocationOn as LocationIcon,
 } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RouteProp } from '@react-navigation/native'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 
 import * as UserService from '@/services/UserService'
 import Button from './Button'

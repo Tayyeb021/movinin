@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as UserService from '@/services/UserService'
 
 // Create context

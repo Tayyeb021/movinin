@@ -12,7 +12,7 @@ import {
 import validator from 'validator'
 import { intervalToDuration } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import env from '@/config/env.config'
 import * as helper from '@/utils/helper'

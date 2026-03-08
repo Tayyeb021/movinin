@@ -11,7 +11,7 @@ import {
   Info as InfoIcon
 } from '@mui/icons-material'
 import { DateTimeValidationError } from '@mui/x-date-pickers'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as movininHelper from ':movinin-helper'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'

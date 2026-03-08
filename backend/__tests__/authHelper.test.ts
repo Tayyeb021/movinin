@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { jest } from '@jest/globals'
 import { SignJWT } from 'jose'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import * as authHelper from '../src/utils/authHelper'
 import * as env from '../src/config/env.config'
 

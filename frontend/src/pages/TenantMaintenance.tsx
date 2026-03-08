@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, MenuItem } from '@mui/material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import * as MaintenanceService from '@/services/MaintenanceService'
 

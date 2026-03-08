@@ -8,7 +8,7 @@ import {
   LinkedIn,
   Instagram,
 } from '@mui/icons-material'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import { strings } from '@/lang/footer'
 import NewsletterForm from '@/components/NewsletterForm'
 import env from '@/config/env.config'

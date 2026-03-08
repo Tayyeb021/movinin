@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import request from 'supertest'
 import { nanoid } from 'nanoid'
-import * as movininTypes from ':movinin-types'
+import * as movininTypes from 'movinin-types'
 import app from '../src/app'
 import * as databaseHelper from '../src/utils/databaseHelper'
 import * as testHelper from './testHelper'

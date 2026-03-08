@@ -24,6 +24,7 @@
     "prebuild:clean": "expo prebuild --clean"
   },
   "dependencies": {
+    "movinin-types": "file:../backend/vendor/movinin-types-1.0.0.tgz",
     "@babel/runtime": "^7.28.4",
     "@expo/vector-icons": "^15.0.3",
     "@react-native-async-storage/async-storage": "2.2.0",
