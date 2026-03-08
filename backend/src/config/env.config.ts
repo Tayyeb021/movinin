@@ -252,61 +252,63 @@ export const SMTP_FROM = __env__('MI_SMTP_FROM', false, '')
  */
 export const CDN_ROOT = __env__('MI_CDN_ROOT', false, '/var/www/cdn')
 
+const _cdnBase = `${CDN_ROOT}/movinin`
+
 /**
- * Users' cdn folder path.
+ * Users' cdn folder path. Defaults to {CDN_ROOT}/movinin/users if unset.
  *
  * @type {string}
  */
-export const CDN_USERS = __env__('MI_CDN_USERS', true)
+export const CDN_USERS = __env__('MI_CDN_USERS', false, `${_cdnBase}/users`)
 
 /**
  * Users' temp cdn folder path.
  *
  * @type {string}
  */
-export const CDN_TEMP_USERS = __env__('MI_CDN_TEMP_USERS', true)
+export const CDN_TEMP_USERS = __env__('MI_CDN_TEMP_USERS', false, `${_cdnBase}/temp/users`)
 
 /**
  * Properties' cdn folder path.
  *
  * @type {string}
  */
-export const CDN_PROPERTIES = __env__('MI_CDN_PROPERTIES', true)
+export const CDN_PROPERTIES = __env__('MI_CDN_PROPERTIES', false, `${_cdnBase}/properties`)
 
 /**
  * Properties' temp cdn folder path.
  *
  * @type {string}
  */
-export const CDN_TEMP_PROPERTIES = __env__('MI_CDN_TEMP_PROPERTIES', true)
+export const CDN_TEMP_PROPERTIES = __env__('MI_CDN_TEMP_PROPERTIES', false, `${_cdnBase}/temp/properties`)
 
 /**
  * Locations' cdn folder path.
  *
  * @type {string}
  */
-export const CDN_LOCATIONS = __env__('MI_CDN_LOCATIONS', true)
+export const CDN_LOCATIONS = __env__('MI_CDN_LOCATIONS', false, `${_cdnBase}/locations`)
 
 /**
  * Locations' temp cdn folder path.
  *
  * @type {string}
  */
-export const CDN_TEMP_LOCATIONS = __env__('MI_CDN_TEMP_LOCATIONS', true)
+export const CDN_TEMP_LOCATIONS = __env__('MI_CDN_TEMP_LOCATIONS', false, `${_cdnBase}/temp/locations`)
 
 /**
- * Admin host.
+ * Admin host. Optional; set for CORS and redirects.
  *
  * @type {string}
  */
-export const ADMIN_HOST = __env__('MI_ADMIN_HOST', true)
+export const ADMIN_HOST = __env__('MI_ADMIN_HOST', false, '')
 
 /**
- * Frontend host.
+ * Frontend host. Optional; set for CORS and redirects.
  *
  * @type {string}
  */
-export const FRONTEND_HOST = __env__('MI_FRONTEND_HOST', true)
+export const FRONTEND_HOST = __env__('MI_FRONTEND_HOST', false, '')
 
 /**
  * Default language. Default is en. Available options: en, fr.
