@@ -18,6 +18,7 @@ import * as LocationService from '@/services/LocationService'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
 import CountrySelectList from '@/components/CountrySelectList'
@@ -280,9 +281,9 @@ const UpdateLocation = () => {
               </FormControl>
 
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
-                  {commonStrings.SAVE}
-                </Button>
+<LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
+                {commonStrings.SAVE}
+              </LoadingButton>
                 <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/locations')}>
                   {commonStrings.CANCEL}
                 </Button>

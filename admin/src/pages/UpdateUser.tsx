@@ -30,6 +30,7 @@ import * as AgencyService from '@/services/AgencyService'
 import NoMatch from './NoMatch'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import Avatar from '@/components/Avatar'
 import DatePicker from '@/components/DatePicker'
 
@@ -463,15 +464,15 @@ const UpdateUser = () => {
               )}
 
               <div className="buttons">
-                <Button variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" onClick={() => navigate(`/change-password?u=${user._id}`)}>
+                <LoadingButton variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" loading={loading} onClick={() => navigate(`/change-password?u=${user._id}`)}>
                   {commonStrings.RESET_PASSWORD}
-                </Button>
+                </LoadingButton>
 
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                   {commonStrings.SAVE}
-                </Button>
+                </LoadingButton>
 
-                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={handleCancel}>
+                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={handleCancel} disabled={loading}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>

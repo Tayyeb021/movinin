@@ -16,6 +16,7 @@ import { strings } from '@/lang/create-country'
 import * as CountryService from '@/services/CountryService'
 import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
+import LoadingButton from '@/components/LoadingButton'
 
 import '@/assets/css/create-country.css'
 
@@ -23,12 +24,13 @@ const CreateCountry = () => {
   const navigate = useNavigate()
 
   const [visible, setVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [names, setNames] = useState<movininTypes.CountryName[]>([])
   const [nameErrors, setNameErrors] = useState<boolean[]>([])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
+    setLoading(true)
     try {
       let isValid = true
 
@@ -64,6 +66,8 @@ const CreateCountry = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -108,9 +112,9 @@ const CreateCountry = () => {
             ))}
 
             <div className="buttons">
-              <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+              <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                 {commonStrings.CREATE}
-              </Button>
+              </LoadingButton>
               <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/countries')}>
                 {commonStrings.CANCEL}
               </Button>

@@ -20,6 +20,7 @@ import * as UserService from '@/services/UserService'
 import * as AgencyService from '@/services/AgencyService'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import Avatar from '@/components/Avatar'
 import * as helper from '@/utils/helper'
 
@@ -333,9 +334,9 @@ const CreateAgency = () => {
             </FormControl>
 
             <div className="buttons">
-              <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+              <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                 {commonStrings.CREATE}
-              </Button>
+              </LoadingButton>
               <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={handleCancel}>
                 {commonStrings.CANCEL}
               </Button>

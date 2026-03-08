@@ -27,6 +27,7 @@ import * as UserService from '@/services/UserService'
 import * as BookingService from '@/services/BookingService'
 import * as PropertyService from '@/services/PropertyService'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import PropertyList from '@/components/PropertyList'
@@ -151,9 +152,9 @@ const UpdateBooking = () => {
 
   const handleConfirmDelete = async () => {
     if (booking && booking._id) {
+      setLoading(true)
+      setOpenDeleteDialog(false)
       try {
-        setOpenDeleteDialog(false)
-
         const _status = await BookingService.deleteBookings([booking._id])
 
         if (_status === 200) {
@@ -163,6 +164,8 @@ const UpdateBooking = () => {
         }
       } catch (err) {
         helper.error(err)
+      } finally {
+        setLoading(false)
       }
     } else {
       helper.error()
@@ -170,9 +173,9 @@ const UpdateBooking = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       if (!booking || !agency || !property || !renter || !location || !from || !to || !status) {
         helper.error()
         return
@@ -204,6 +207,8 @@ const UpdateBooking = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -434,10 +439,10 @@ const UpdateBooking = () => {
 
               <div>
                 <div className="buttons">
-                  <Button variant="contained" className="btn-primary btn-margin-bottom" size="small" type="submit">
+                  <LoadingButton variant="contained" className="btn-primary btn-margin-bottom" size="small" type="submit" loading={loading}>
                     {commonStrings.SAVE}
-                  </Button>
-                  <Button variant="contained" className="btn-margin-bottom" color="error" size="small" onClick={handleDelete}>
+                  </LoadingButton>
+                  <LoadingButton variant="contained" className="btn-margin-bottom" color="error" size="small" loading={loading} onClick={handleDelete}>
                     {commonStrings.DELETE}
                   </Button>
                   <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
@@ -474,12 +479,12 @@ const UpdateBooking = () => {
             <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
             <DialogContent>{strings.DELETE_BOOKING}</DialogContent>
             <DialogActions className="dialog-actions">
-              <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">
+              <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary" disabled={loading}>
                 {commonStrings.CANCEL}
               </Button>
-              <Button onClick={handleConfirmDelete} variant="contained" color="error">
+              <LoadingButton onClick={handleConfirmDelete} variant="contained" color="error" loading={loading}>
                 {commonStrings.DELETE}
-              </Button>
+              </LoadingButton>
             </DialogActions>
           </Dialog>
         </div>

@@ -12,6 +12,7 @@ import { strings as cpStrings } from '@/lang/change-password'
 import { strings as rpStrings } from '@/lang/reset-password'
 import Error from './Error'
 import NoMatch from './NoMatch'
+import LoadingButton from '@/components/LoadingButton'
 import * as helper from '@/utils/helper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 import PasswordInput from '@/components/PasswordInput'
@@ -27,6 +28,7 @@ const ResetPassword = () => {
   const [email, setEmail] = useState('')
   const [token, setToken] = useState('')
   const [visible, setVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [noMatch, setNoMatch] = useState(false)
   const [password, setPassword] = useState('')
@@ -45,9 +47,9 @@ const ResetPassword = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       if (password.length < 6) {
         setPasswordLengthError(true)
         setConfirmPasswordError(false)
@@ -93,6 +95,8 @@ const ResetPassword = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -170,10 +174,10 @@ const ResetPassword = () => {
               />
 
               <div className="buttons">
-                <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
+                <LoadingButton type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained" loading={loading}>
                   {commonStrings.UPDATE}
-                </Button>
-                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" onClick={() => navigate('/')}>
+                </LoadingButton>
+                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" onClick={() => navigate('/')} disabled={loading}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>

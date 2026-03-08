@@ -23,6 +23,7 @@ import * as UserService from '@/services/UserService'
 import * as helper from '@/utils/helper'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import NoMatch from './NoMatch'
 import Avatar from '@/components/Avatar'
 
@@ -359,13 +360,13 @@ const UpdateAgency = () => {
                 </FormControl>
               )}
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" onClick={() => navigate(`/change-password?u=${agency && agency._id}`)}>
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" loading={loading} onClick={() => navigate(`/change-password?u=${agency && agency._id}`)}>
                   {commonStrings.RESET_PASSWORD}
-                </Button>
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+                </LoadingButton>
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                   {commonStrings.SAVE}
-                </Button>
-                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/agencies')}>
+                </LoadingButton>
+                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/agencies')} disabled={loading}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>

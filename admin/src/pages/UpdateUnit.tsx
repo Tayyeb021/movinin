@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { TextField, Button, MenuItem } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import * as UnitService from '@/services/UnitService'
@@ -80,7 +81,7 @@ const UpdateUnit = () => {
             <TextField fullWidth select margin="normal" label="Status" value={status} onChange={(e) => setStatus(e.target.value as movininTypes.UnitStatus)}>
               {STATUS_OPTIONS.map((o) => <MenuItem key={o.value} value={o.value}>{o.label}</MenuItem>)}
             </TextField>
-            <Button type="submit" variant="contained" disabled={loading} sx={{ mt: 2 }}>Save</Button>
+            <LoadingButton type="submit" variant="contained" loading={loading} sx={{ mt: 2 }}>Save</LoadingButton>
           </form>
         </div>
       )}

@@ -19,6 +19,7 @@ import env from '@/config/env.config'
 import CountrySelectList from '@/components/CountrySelectList'
 import Avatar from '@/components/Avatar'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import PositionInput from '@/components/PositionInput'
 import LocationSelectList from '@/components/LocationSelectList'
 
@@ -200,9 +201,9 @@ const CreateLocation = () => {
             </FormControl>
 
             <div className="buttons">
-              <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+              <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                 {commonStrings.CREATE}
-              </Button>
+              </LoadingButton>
               <Button
                 variant="contained"
                 className="btn-secondary btn-margin-bottom"

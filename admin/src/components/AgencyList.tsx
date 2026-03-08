@@ -27,6 +27,7 @@ import * as AgencyService from '@/services/AgencyService'
 import * as helper from '@/utils/helper'
 import Pager from '@/components/Pager'
 import Progress from '@/components/Progress'
+import LoadingButton from '@/components/LoadingButton'
 
 import '@/assets/css/agency-list.css'
 
@@ -54,6 +55,7 @@ const AgencyList = ({
   const [totalRecords, setTotalRecords] = useState(0)
   const [page, setPage] = useState(1)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   const [agencyId, setAgencyId] = useState('')
   const [agencyIndex, setAgencyIndex] = useState(-1)
 
@@ -135,6 +137,7 @@ const AgencyList = ({
   }
 
   const handleConfirmDelete = async () => {
+    setDeleteLoading(true)
     try {
       if (agencyId !== '' && agencyIndex > -1) {
         setLoading(false)
@@ -169,6 +172,8 @@ const AgencyList = ({
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -237,12 +242,12 @@ const AgencyList = ({
           <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
           <DialogContent>{strings.DELETE_AGENCY}</DialogContent>
           <DialogActions className="dialog-actions">
-            <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">
+            <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary" disabled={deleteLoading}>
               {commonStrings.CANCEL}
             </Button>
-            <Button onClick={handleConfirmDelete} variant="contained" color="error">
+            <LoadingButton onClick={handleConfirmDelete} variant="contained" color="error" loading={deleteLoading}>
               {commonStrings.DELETE}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
       </section>

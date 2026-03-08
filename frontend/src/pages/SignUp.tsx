@@ -24,6 +24,7 @@ import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaCo
 import Layout from '@/components/Layout'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import DatePicker from '@/components/DatePicker'
 import SocialLogin from '@/components/SocialLogin'
 import Footer from '@/components/Footer'
@@ -394,10 +395,10 @@ const SignUp = () => {
                   <SocialLogin redirectToHomepage />
 
                   <div className="buttons">
-                    <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom">
+                    <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" loading={loading}>
                       {strings.SIGN_UP}
-                    </Button>
-                    <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')}>
+                    </LoadingButton>
+                    <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')} disabled={loading}>
                       {commonStrings.CANCEL}
                     </Button>
                   </div>

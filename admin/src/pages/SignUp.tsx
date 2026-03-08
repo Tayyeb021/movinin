@@ -16,6 +16,7 @@ import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import * as helper from '@/utils/helper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 import PasswordInput from '@/components/PasswordInput'
@@ -222,9 +223,9 @@ const SignUp = () => {
               />
 
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                   {strings.SIGN_UP}
-                </Button>
+                </LoadingButton>
                 <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
                   {' '}
                   {commonStrings.CANCEL}

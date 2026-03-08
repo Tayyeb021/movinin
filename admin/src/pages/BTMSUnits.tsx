@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import { strings as commonStrings } from '@/lang/common'
+import Backdrop from '@/components/SimpleBackdrop'
 import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import * as UnitService from '@/services/UnitService'
@@ -31,7 +33,7 @@ const BTMSUnits = () => {
         <div style={{ padding: 24 }}>
           <Typography variant="h5" sx={{ mb: 2 }}>Units{propertyName ? ` - ${propertyName}` : ''}</Typography>
           <Button variant="contained" sx={{ mb: 2 }} onClick={() => navigate(`/btms-create-unit?propertyId=${propertyId}`)}>Add Unit</Button>
-          {loading && <Typography>Loading...</Typography>}
+          {loading && <Backdrop text={commonStrings.LOADING} />}
           {!loading && (
             <TableContainer component={Paper}>
               <Table size="small">

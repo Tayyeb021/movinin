@@ -18,6 +18,7 @@ import * as CountryService from '@/services/CountryService'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
 
@@ -199,7 +200,7 @@ const UpdateCountry = () => {
               ))}
 
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" disabled={!nameChanged}>
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading} disabled={!nameChanged}>
                   {commonStrings.SAVE}
                 </Button>
                 <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/countries')}>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { TextField, Button, MenuItem } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import * as UnitService from '@/services/UnitService'
@@ -57,7 +58,7 @@ const CreateUnit = () => {
               <MenuItem value={movininTypes.UnitStatus.Occupied}>Occupied</MenuItem>
               <MenuItem value={movininTypes.UnitStatus.UnderMaintenance}>Under Maintenance</MenuItem>
             </TextField>
-            <Button type="submit" variant="contained" disabled={loading} sx={{ mt: 2 }}>Create</Button>
+            <LoadingButton type="submit" variant="contained" loading={loading} sx={{ mt: 2 }}>Create</LoadingButton>
           </form>
         </div>
       )}

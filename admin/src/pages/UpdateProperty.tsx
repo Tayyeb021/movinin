@@ -26,6 +26,7 @@ import * as PropertyService from '@/services/PropertyService'
 import * as helper from '@/utils/helper'
 import Error from '@/components/Error'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import AgencySelectList from '@/components/AgencySelectList'
 import LocationSelectList from '@/components/LocationSelectList'
 import PropertyTypeList from '@/components/PropertyTypeList'
@@ -675,9 +676,9 @@ const UpdateProperty = () => {
               </FormControl>
 
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                   {commonStrings.SAVE}
-                </Button>
+                </LoadingButton>
                 <Button
                   variant="contained"
                   className="btn-secondary btn-margin-bottom"

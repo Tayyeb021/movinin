@@ -29,6 +29,7 @@ import PropertySelectList from '@/components/PropertySelectList'
 import StatusList from '@/components/StatusList'
 import DatePicker from '@/components/DatePicker'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 
 import '@/assets/css/create-booking.css'
 
@@ -265,9 +266,9 @@ const CreateBooking = () => {
 
             <div>
               <div className="buttons">
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                   {commonStrings.CREATE}
-                </Button>
+                </LoadingButton>
                 <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
                   {commonStrings.CANCEL}
                 </Button>

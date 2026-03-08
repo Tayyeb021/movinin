@@ -7,6 +7,7 @@ import {
   Input,
   Button,
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/sign-in'
@@ -30,6 +31,7 @@ const SignIn = () => {
   const [visible, setVisible] = useState(false)
   const [blacklisted, setBlacklisted] = useState(false)
   const [stayConnected, setStayConnected] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -40,9 +42,9 @@ const SignIn = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       const data: movininTypes.SignInPayload = {
         email,
         password,
@@ -84,6 +86,8 @@ const SignIn = () => {
     } catch {
       setError(true)
       setBlacklisted(false)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -165,9 +169,9 @@ const SignIn = () => {
               </div>
 
               <div className="signin-buttons">
-                <Button type="submit" variant="contained" size="small" className="btn-primary">
+                <LoadingButton type="submit" variant="contained" size="small" className="btn-primary" loading={loading}>
                   {strings.SIGN_IN}
-                </Button>
+                </LoadingButton>
               </div>
               <div className="form-error">
                 {error && <Error message={strings.ERROR_IN_SIGN_IN} />}

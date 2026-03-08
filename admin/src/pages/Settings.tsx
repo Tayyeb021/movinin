@@ -18,6 +18,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/settings'
 import * as UserService from '@/services/UserService'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import Avatar from '@/components/Avatar'
 import * as helper from '@/utils/helper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
@@ -198,13 +199,13 @@ const Settings = () => {
                 <Input id="bio" type="text" onChange={handleBioChange} autoComplete="off" value={bio} />
               </FormControl>
               <div className="buttons">
-                <Button variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" onClick={() => navigate('/change-password')}>
+                <LoadingButton variant="contained" className="btn-primary btn-margin btn-margin-bottom" size="small" loading={loading} onClick={() => navigate('/change-password')}>
                   {commonStrings.RESET_PASSWORD}
-                </Button>
-                <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+                </LoadingButton>
+                <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                   {commonStrings.SAVE}
-                </Button>
-                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
+                </LoadingButton>
+                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')} disabled={loading}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>

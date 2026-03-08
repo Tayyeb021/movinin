@@ -31,6 +31,7 @@ import PropertyTypeList from '@/components/PropertyTypeList'
 import ImageEditor from '@/components/ImageEditor'
 import RentalTermList from '@/components/RentalTermList'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import PositionInput from '@/components/PositionInput'
 
 import '@/assets/css/create-property.css'
@@ -603,9 +604,9 @@ const CreateProperty = () => {
             </FormControl>
 
             <div className="buttons">
-              <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+              <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading}>
                 {commonStrings.CREATE}
-              </Button>
+              </LoadingButton>
               <Button
                 variant="contained"
                 className="btn-secondary btn-margin-bottom"

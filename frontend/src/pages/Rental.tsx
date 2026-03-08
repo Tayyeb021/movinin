@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Typography, Button, Paper } from '@mui/material'
 import * as movininTypes from 'movinin-types'
+import { strings as commonStrings } from '@/lang/common'
 import Layout from '@/components/Layout'
+import Backdrop from '@/components/SimpleBackdrop'
 import * as UnitService from '@/services/UnitService'
 
 const Rental = () => {
@@ -15,7 +17,7 @@ const Rental = () => {
     UnitService.getPublicUnit(id).then(setUnit).catch(() => setUnit(null)).finally(() => setLoading(false))
   }, [id])
 
-  if (loading) return <Layout><div style={{ padding: 24 }}>Loading...</div></Layout>
+  if (loading) return <Layout><Backdrop text={commonStrings.LOADING} /></Layout>
   if (!unit) return <Layout><div style={{ padding: 24 }}>Unit not found.</div></Layout>
 
   const property = (unit as { property?: movininTypes.Property & { agency?: movininTypes.User } }).property

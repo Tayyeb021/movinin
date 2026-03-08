@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Layout from '@/components/Layout'
+import Backdrop from '@/components/SimpleBackdrop'
 import * as UnitService from '@/services/UnitService'
+import { strings as commonStrings } from '@/lang/common'
 
 type PublicUnit = { _id?: string; name?: string; rent?: number }
 
@@ -20,7 +22,7 @@ const Rentals = () => {
     <Layout>
       <div style={{ padding: 24 }}>
         <h2>Available rentals</h2>
-        {loading && <p>Loading...</p>}
+        {loading && <Backdrop text={commonStrings.LOADING} />}
         <ul>
           {units.map((u) => (
             <li key={u._id}>

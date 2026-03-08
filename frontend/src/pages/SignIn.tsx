@@ -14,6 +14,7 @@ import { strings } from '@/lang/sign-in'
 import * as UserService from '@/services/UserService'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 import Error from '@/components/Error'
+import LoadingButton from '@/components/LoadingButton'
 import Layout from '@/components/Layout'
 import SocialLogin from '@/components/SocialLogin'
 import Footer from '@/components/Footer'
@@ -30,6 +31,7 @@ const SignIn = () => {
   const [error, setError] = useState(false)
   const [visible, setVisible] = useState(false)
   const [blacklisted, setBlacklisted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -70,6 +72,8 @@ const SignIn = () => {
     } catch {
       setError(true)
       setBlacklisted(false)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -154,9 +158,9 @@ const SignIn = () => {
                   <Button variant="outlined" color="primary" onClick={() => navigate('/sign-up')} className="btn-margin btn-margin-bottom">
                     {suStrings.SIGN_UP}
                   </Button>
-                  <Button type="submit" variant="contained" className="btn-primary btn-margin btn-margin-bottom" disableElevation>
+                  <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin btn-margin-bottom" disableElevation loading={loading}>
                     {strings.SIGN_IN}
-                  </Button>
+                  </LoadingButton>
                 </div>
                 <div className="form-error">
                   {error && <Error message={strings.ERROR_IN_SIGN_IN} />}

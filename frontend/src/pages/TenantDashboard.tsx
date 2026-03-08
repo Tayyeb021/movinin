@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import * as movininTypes from 'movinin-types'
+import { strings as commonStrings } from '@/lang/common'
 import Layout from '@/components/Layout'
+import Backdrop from '@/components/SimpleBackdrop'
 import * as TenantService from '@/services/TenantService'
 
 const TenantDashboard = () => {
@@ -18,7 +20,7 @@ const TenantDashboard = () => {
   }, [user])
 
   if (!user) return null
-  if (loading) return <Layout onLoad={onLoad} strict><div style={{ padding: 24 }}>Loading...</div></Layout>
+  if (loading) return <Layout onLoad={onLoad} strict><Backdrop text={commonStrings.LOADING} /></Layout>
   if (error) return <Layout onLoad={onLoad} strict><div style={{ padding: 24 }}>{error}</div></Layout>
   if (!data) return <Layout onLoad={onLoad} strict><div style={{ padding: 24 }}>No data</div></Layout>
 

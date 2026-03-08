@@ -31,6 +31,7 @@ import * as CountryService from '@/services/CountryService'
 import * as helper from '@/utils/helper'
 import Pager from '@/components/Pager'
 import Progress from '@/components/Progress'
+import LoadingButton from '@/components/LoadingButton'
 
 import '@/assets/css/country-list.css'
 
@@ -56,6 +57,7 @@ const CountryList = ({
   const [totalRecords, setTotalRecords] = useState(0)
   const [page, setPage] = useState(1)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
   const [countryId, setCountryId] = useState('')
   const [countryIndex, setCountryIndex] = useState(-1)
@@ -155,6 +157,7 @@ const CountryList = ({
   }
 
   const handleConfirmDelete = async () => {
+    setDeleteLoading(true)
     try {
       if (countryId !== '' && countryIndex > -1) {
         setLoading(true)
@@ -191,6 +194,8 @@ const CountryList = ({
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -261,12 +266,12 @@ const CountryList = ({
           <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
           <DialogContent>{strings.DELETE_COUNTRY}</DialogContent>
           <DialogActions className="dialog-actions">
-            <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">
+            <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary" disabled={deleteLoading}>
               {commonStrings.CANCEL}
             </Button>
-            <Button onClick={handleConfirmDelete} variant="contained" color="error">
+            <LoadingButton onClick={handleConfirmDelete} variant="contained" color="error" loading={deleteLoading}>
               {commonStrings.DELETE}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
       </section>

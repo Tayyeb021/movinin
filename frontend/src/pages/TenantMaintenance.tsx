@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { TextField, Button, MenuItem } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import * as MaintenanceService from '@/services/MaintenanceService'
@@ -31,8 +32,9 @@ const TenantMaintenance = () => {
       MaintenanceService.getMyTickets().then(setTickets)
     } catch (err) {
       // ignore
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   return (
@@ -47,7 +49,7 @@ const TenantMaintenance = () => {
             <MenuItem value={movininTypes.MaintenancePriority.Medium}>Medium</MenuItem>
             <MenuItem value={movininTypes.MaintenancePriority.High}>High</MenuItem>
           </TextField>
-          <Button type="submit" variant="contained" disabled={loading}>Submit</Button>
+          <LoadingButton type="submit" variant="contained" loading={loading}>Submit</LoadingButton>
         </form>
         {submitted && <p>Request submitted.</p>}
         <h3>My tickets</h3>

@@ -13,6 +13,7 @@ import { strings as rpStrings } from '@/lang/reset-password'
 import { strings as mStrings } from '@/lang/master'
 import { strings } from '@/lang/activate'
 import NoMatch from './NoMatch'
+import LoadingButton from '@/components/LoadingButton'
 import * as helper from '@/utils/helper'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 import PasswordInput from '@/components/PasswordInput'
@@ -36,6 +37,8 @@ const Activate = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false)
   const [passwordLengthError, setPasswordLengthError] = useState(false)
   const [reset, setReset] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [resendLoading, setResendLoading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,13 +50,14 @@ const Activate = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       if (password.length < 6) {
         setPasswordLengthError(true)
         setConfirmPasswordError(false)
         setPasswordError(false)
+        setLoading(false)
         return
       }
       setPasswordLengthError(false)
@@ -62,6 +66,7 @@ const Activate = () => {
       if (password !== confirmPassword) {
         setConfirmPasswordError(true)
         setPasswordError(false)
+        setLoading(false)
         return
       }
       setConfirmPasswordError(false)
@@ -94,6 +99,8 @@ const Activate = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -104,6 +111,7 @@ const Activate = () => {
   }
 
   const handleResend = async () => {
+    setResendLoading(true)
     try {
       const status = await UserService.resend(email, false)
 
@@ -114,6 +122,8 @@ const Activate = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setResendLoading(false)
     }
   }
 
@@ -166,9 +176,9 @@ const Activate = () => {
             <h1>{strings.ACTIVATE_HEADING}</h1>
             <div className="resend-form-content">
               <span>{strings.TOKEN_EXPIRED}</span>
-              <Button type="button" variant="contained" size="small" className="btn-primary btn-resend" onClick={handleResend}>
+              <LoadingButton type="button" variant="contained" size="small" className="btn-primary btn-resend" loading={resendLoading} onClick={handleResend}>
                 {mStrings.RESEND}
-              </Button>
+              </LoadingButton>
               <p className="go-to-home">
                 <Button variant="text" onClick={() => navigate('/')} className="btn-lnk">{commonStrings.GO_TO_HOME}</Button>
               </p>
@@ -208,10 +218,10 @@ const Activate = () => {
               />
 
               <div className="buttons">
-                <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
+                <LoadingButton type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained" loading={loading}>
                   {reset ? commonStrings.UPDATE : strings.ACTIVATE}
-                </Button>
-                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" onClick={() => navigate('/')}>
+                </LoadingButton>
+                <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" onClick={() => navigate('/')} disabled={loading}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>

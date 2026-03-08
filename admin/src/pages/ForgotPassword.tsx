@@ -15,6 +15,7 @@ import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/reset-password'
 import NoMatch from './NoMatch'
+import LoadingButton from '@/components/LoadingButton'
 import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
 
@@ -25,6 +26,7 @@ const ForgotPassword = () => {
 
   const [email, setEmail] = useState('')
   const [visible, setVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [emailValid, setEmailValid] = useState(true)
   const [noMatch, setNoMatch] = useState(false)
@@ -77,9 +79,9 @@ const ForgotPassword = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       const _emailValid = await validateEmail(email)
       if (!_emailValid) {
         return
@@ -97,6 +99,8 @@ const ForgotPassword = () => {
     } catch {
       setError(true)
       setEmailValid(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -146,10 +150,10 @@ const ForgotPassword = () => {
                 </FormControl>
 
                 <div className="buttons">
-                  <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained">
+                  <LoadingButton type="submit" className="btn-primary btn-margin btn-margin-bottom" size="small" variant="contained" loading={loading}>
                     {strings.RESET}
-                  </Button>
-                  <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" onClick={() => navigate('/')}>
+                  </LoadingButton>
+                  <Button className="btn-secondary btn-margin-bottom" size="small" variant="contained" onClick={() => navigate('/')} disabled={loading}>
                     {commonStrings.CANCEL}
                   </Button>
                 </div>
