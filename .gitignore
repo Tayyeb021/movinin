@@ -6,4 +6,28 @@
 /**/.DS_Store
 /**/dist
 /node_modules
+node_modules
 .eslintcache
+
+# Local env (do not commit secrets)
+.env
+.env.*
+!.env.example
+
+# Logs and runtime
+*.log
+npm-debug.log*
+
+# Test/coverage
+coverage
+
+# OS/editor
+Thumbs.db
+*.swp
+*.swo
+.idea
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
