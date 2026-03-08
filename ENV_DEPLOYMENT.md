@@ -38,7 +38,7 @@ Set in Railway → your backend service → **Variables**. No trailing slashes f
 | `MI_AUTH_COOKIE_DOMAIN` | No | Your cookie domain or leave default |
 | `MI_DEFAULT_LANGUAGE` | No | `en` |
 | `MI_ADMIN_EMAIL` | No | `admin@movinin.io` (for setup) |
-| `MI_WEBSITE_NAME` | No | `"Movin' In"` |
+| `MI_WEBSITE_NAME` | No | `Bakali` |
 | Others | No | See `backend/.env.example` (Stripe, PayPal, Sentry, etc.) |
 
 ---

@@ -10,12 +10,13 @@
   z-index: 1401 !important;
 }
 
-.side-menu li {
-  cursor: pointer;
+.side-menu .MuiDrawer-paper {
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-.side-menu li:hover {
-  background-color: #f1f1f1;
+.side-menu .MuiListItemButton-root {
+  border-radius: 0 8px 8px 0;
+  margin: 0 8px;
 }
 
 .header-action {

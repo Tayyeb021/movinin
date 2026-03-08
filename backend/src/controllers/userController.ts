@@ -437,15 +437,17 @@ export const signin = async (req: Request, res: Response) => {
     }
 
     const user = await User.findOne({ email })
-    const type = req.params.type.toUpperCase() as movininTypes.AppType
+    const type = req.params.type ? req.params.type.toUpperCase() as movininTypes.AppType : undefined
 
     if (
       !password
       || !user
       || !user.password
+      || !type
       || ![movininTypes.AppType.Frontend, movininTypes.AppType.Admin].includes(type)
+      // Allow "Frontend" users to log in if they are User, Manager, or Admin
       || (type === movininTypes.AppType.Admin && user.type === movininTypes.UserType.User)
-      || (type === movininTypes.AppType.Frontend && user.type !== movininTypes.UserType.User)
+      // Removed the restriction for Frontend: allow all user.type to log in via frontend
     ) {
       res.sendStatus(204)
       return

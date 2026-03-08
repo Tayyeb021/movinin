@@ -1,4 +1,4 @@
-# Movin' In – Login credentials (demo users)
+# Bakali – Login credentials (demo users)
 
 Default password for all demo users: **`M00vinin`**
 

@@ -20,7 +20,7 @@ const env = {
   isMobile: window.innerWidth <= 960,
   isSafari: /^((?!chrome|android).)*safari/i.test(navigator.userAgent),
 
-  WEBSITE_NAME: String(import.meta.env.VITE_MI_WEBSITE_NAME),
+  WEBSITE_NAME: String(import.meta.env.VITE_MI_WEBSITE_NAME || 'Bakali'),
 
   APP_TYPE: movininTypes.AppType.Admin,
   API_HOST: String(import.meta.env.VITE_MI_API_HOST),

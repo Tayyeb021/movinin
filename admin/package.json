@@ -1,6 +1,6 @@
 {
   "name": "movinin-admin",
-  "description": "Admin panel for managing Movin' In",
+  "description": "Admin panel for managing Bakali",
   "version": "6.7.0",
   "private": true,
   "type": "module",

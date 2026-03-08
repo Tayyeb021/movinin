@@ -1,3 +1,19 @@
+/* Landing page – design tokens */
+:root {
+  --home-hero-overlay: rgba(20, 28, 38, 0.65);
+  --home-accent: #e8a735;
+  --home-accent-soft: rgba(232, 167, 53, 0.15);
+  --home-dark: #141c26;
+  --home-text-on-dark: #f5f5f5;
+  --home-section-bg: #fafafa;
+  --home-card-bg: #ffffff;
+  --home-card-hover: #fffbf5;
+  --home-shadow: 0 4px 24px rgba(20, 28, 38, 0.08);
+  --home-shadow-hover: 0 12px 40px rgba(20, 28, 38, 0.12);
+  --home-radius: 16px;
+  --home-radius-sm: 10px;
+}
+
 div.home {
   display: flex;
   flex-direction: column;
@@ -6,17 +22,16 @@ div.home {
   overflow: hidden auto;
 }
 
+/* ----- Hero ----- */
 div.home div.home-content {
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* background-image: url('/cover.jpg');
-  background-size: cover;
-  background-position: bottom; */
   width: 100%;
   z-index: 1;
+  min-height: 420px;
 }
 
 div.home div.home-content .video {
@@ -25,7 +40,7 @@ div.home div.home-content .video {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: -2;
 }
 
 div.home div.home-content video {
@@ -56,259 +71,437 @@ div.home div.home-content::after {
   width: 100%;
   top: 0;
   left: 0;
-  background: #321807;
-  opacity: 0.5;
-  z-index: -1;
+  background: linear-gradient(to bottom, var(--home-hero-overlay) 0%, rgba(20, 28, 38, 0.75) 100%);
+  z-index: 0;
 }
 
-div.home-title {
-  color: #F7B644;
-  font-size: 28px;
-  font-weight: 500;
+div.home div.home-content .home-hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+div.home div.home-content .home-title {
+  color: var(--home-accent);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
   text-align: center;
   padding: 0 20px;
+  margin-bottom: 8px;
 }
 
 div.home div.home-cover {
   z-index: 2;
-  color: #fff;
+  color: var(--home-text-on-dark);
   text-align: center;
+  font-weight: 700;
   -webkit-font-smoothing: antialiased;
-  letter-spacing: .065rem;
-  padding: 0 20px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  padding: 0 24px;
+  max-width: 720px;
 }
 
 div.home-subtitle {
-  color: #fff;
-  font-size: 26px;
+  color: var(--home-text-on-dark);
+  font-size: 1.25rem;
+  opacity: 0.9;
 }
 
+/* ----- Search bar ----- */
 div.home div.search {
   z-index: 2;
-  background-color: #fff;
+  background-color: var(--home-card-bg);
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 2px;
 }
 
 div.home div.search div.home-search {
-  /* box-shadow: 0 3px 5px -1px #0003, 0 1px 18px 0 #0000001F, 0 6px 10px 0 #00000024; */
-  box-shadow: 0px 2px 16px 0px rgba(26, 26, 26, .24);
-  /* box-shadow: 0px 2px 8px 0px rgba(26, 26, 26, .16); */
+  box-shadow: var(--home-shadow);
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 5px;
+  border-radius: var(--home-radius);
   z-index: 2;
-  background-color: #fff;
+  background-color: var(--home-card-bg);
   width: fit-content;
+  border: 1px solid rgba(20, 28, 38, 0.06);
+  transition: box-shadow 0.3s ease;
 }
 
+div.home div.search div.home-search:hover {
+  box-shadow: var(--home-shadow-hover);
+}
+
+/* ----- Services ----- */
 div.home div.services {
-  background-color: #fff;
+  background: linear-gradient(180deg, var(--home-section-bg) 0%, var(--home-card-bg) 100%);
   width: 100%;
-  padding: 40px 0 100px 0;
+  padding: 64px 24px 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 div.home div.services h1 {
-  font-weight: 500;
-  padding: 0 10px;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  color: var(--home-dark);
+  padding: 0 16px;
   text-align: center;
+  margin-bottom: 48px;
+  position: relative;
+}
+
+div.home div.services h1::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 4px;
+  background: var(--home-accent);
+  border-radius: 2px;
+  margin: 16px auto 0;
 }
 
 div.home div.services div.services-boxes {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1100px;
 }
 
 div.home div.services div.services-boxes div.services-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 400px;
-  margin: 20px;
-  background-color: #F9F9F9;
-  padding: 25px;
+  background-color: var(--home-card-bg);
+  padding: 32px 24px;
   text-align: center;
+  border-radius: var(--home-radius);
+  box-shadow: var(--home-shadow);
+  border: 1px solid rgba(20, 28, 38, 0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+div.home div.services div.services-boxes div.services-box:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--home-shadow-hover);
+  background-color: var(--home-card-hover);
 }
 
 div.home div.services div.services-boxes div.services-box div.services-icon-wrapper {
-  padding: 20px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--home-accent-soft);
+  color: var(--home-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+div.home div.services div.services-boxes div.services-box:hover div.services-icon-wrapper {
+  background: var(--home-accent);
+  color: #fff;
 }
 
 div.home div.services div.services-boxes div.services-box div.services-icon-wrapper .services-icon {
-  font-size: 48px;
+  font-size: 32px;
 }
 
 div.home div.services div.services-boxes div.services-box div.services-text-wrapper {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
 div.home div.services div.services-boxes div.services-box div.services-text-wrapper span.services-title {
-  font-weight: bold;
-  margin-bottom: 15px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--home-dark);
 }
 
+div.home div.services div.services-boxes div.services-box div.services-text-wrapper span.services-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(20, 28, 38, 0.75);
+}
+
+/* ----- Destinations ----- */
 div.home div.destinations {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f9f9f9;
-  padding: 50px 0 60px;
+  background-color: var(--home-card-bg);
+  padding: 64px 24px 80px;
 }
 
 div.home div.destinations h1 {
-  width: fit-content;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  color: var(--home-dark);
+  margin-bottom: 40px;
+  position: relative;
+}
+
+div.home div.destinations h1::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 4px;
+  background: var(--home-accent);
+  border-radius: 2px;
+  margin: 16px auto 0;
 }
 
 div.home div.destinations div.tabs {
   width: 100%;
+  max-width: 1200px;
 }
 
+div.home div.destinations .MuiTab-root {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+div.home div.destinations .MuiTab-root.Mui-selected {
+  color: var(--home-accent);
+}
+
+div.home div.destinations .MuiTabs-indicator {
+  background-color: var(--home-accent);
+}
+
+/* ----- Map ----- */
 div.home div.home-map {
-  width: 80%;
-  margin: 15px 0 30px;
-  background-color: #fff;
+  width: 90%;
+  max-width: 1200px;
+  margin: 48px 0 64px;
+  background-color: var(--home-card-bg);
+  border-radius: var(--home-radius);
+  overflow: hidden;
+  box-shadow: var(--home-shadow);
+  border: 1px solid rgba(20, 28, 38, 0.06);
 }
 
+/* ----- Customer care ----- */
 div.home div.customer-care {
-  background-color: #f9f9f9;
+  background: linear-gradient(180deg, var(--home-section-bg) 0%, var(--home-dark) 100%);
   width: 100%;
-  padding: 140px 0;
+  padding: 100px 24px 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 div.home div.customer-care div.customer-care-wrapper {
-  width: 1200px;
+  max-width: 1100px;
+  width: 100%;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  gap: 48px;
 }
 
 div.home div.customer-care div.customer-care-text {
-  padding: 0 160px;
-  width: 900px;
+  flex: 1;
+  min-width: 0;
+}
+
+div.home div.customer-care div.customer-care-text h1 {
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+  color: var(--home-text-on-dark);
+  margin-bottom: 8px;
+}
+
+div.home div.customer-care div.customer-care-text h2 {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--home-accent);
+  margin-bottom: 24px;
+  opacity: 0.95;
 }
 
 div.home div.customer-care div.customer-care-text div.customer-care-content {
-  margin-bottom: 30px;
+  color: rgba(245, 245, 245, 0.9);
+  line-height: 1.6;
+  margin-bottom: 32px;
+  font-size: 1rem;
 }
 
 div.home div.customer-care div.customer-care-text div.customer-care-boxes {
   display: grid;
-  grid-template-columns: auto auto;
-  margin-bottom: 40px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+  margin-bottom: 36px;
 }
 
 div.home div.customer-care div.customer-care-text div.customer-care-boxes div.customer-care-box {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
-  margin: 5px 0;
+  color: var(--home-text-on-dark);
+  font-size: 0.95rem;
 }
 
 div.home div.customer-care div.customer-care-text div.customer-care-boxes .customer-care-icon {
-  margin-right: 10px;
+  margin-right: 12px;
+  color: var(--home-accent);
+  flex-shrink: 0;
+}
+
+div.home div.customer-care .btn-primary.btn-home {
+  background: var(--home-accent);
+  color: var(--home-dark);
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: var(--home-radius-sm);
+  text-transform: none;
+  box-shadow: 0 4px 14px rgba(232, 167, 53, 0.4);
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+div.home div.customer-care .btn-primary.btn-home:hover {
+  background: #f0b84d;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(232, 167, 53, 0.45);
 }
 
 div.home div.customer-care div.customer-care-img {
-  padding: 40px;
-  flex: 40%;
+  flex-shrink: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 div.home div.customer-care div.customer-care-img img {
-  height: 160px;
-  margin-left: -80px;
-  display: none;
+  height: 200px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
 }
 
-/* Device width is less than or equal to 960px */
-
-@media only screen and (width <=960px) {
+/* ----- Mobile ----- */
+@media only screen and (width <= 960px) {
   div.home div.home-content {
-    padding: 85px 0;
-    justify-content: flex-start !important;
-    height: 560px;
+    padding: 72px 0 48px;
+    justify-content: flex-start;
+    min-height: 380px;
   }
 
-  div.home div.home-title {
-    font-size: 22px;
-    font-weight: 500;
-    margin-bottom: 20px;
+  div.home div.home-content .home-title {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
   }
 
   div.home div.home-cover {
-    font-size: 40px;
-    font-weight: 800;
-    padding: 0 10px;
+    font-size: 1.75rem;
+    padding: 0 16px;
   }
 
   div.home div.search div.home-search {
-    padding: 20px 10px;
-    margin: -187px 20px 0 20px;
-    width: calc(100% - 20px);
+    padding: 20px 16px;
+    margin: -140px 16px 0;
+    width: calc(100% - 32px);
     max-width: 480px;
+    border-radius: var(--home-radius-sm);
+  }
+
+  div.home div.services {
+    padding: 48px 16px 64px;
+  }
+
+  div.home div.services h1 {
+    font-size: 1.5rem;
+    margin-bottom: 32px;
   }
 
   div.home div.services div.services-boxes {
     display: flex;
     flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  div.home div.services div.services-boxes div.services-box {
+    padding: 24px 20px;
+    margin: 0;
+  }
+
+  div.home div.destinations {
+    padding: 48px 16px 56px;
+  }
+
+  div.home div.destinations h1 {
+    font-size: 1.5rem;
+    margin-bottom: 24px;
   }
 
   div.home div.home-map {
     width: 100%;
-    padding: 5px;
+    margin: 32px 0 48px;
+    border-radius: var(--home-radius-sm);
   }
 
   div.home div.home-map .map {
     min-height: 0;
-    height: 340px;
+    height: 320px;
+  }
+
+  div.home div.customer-care {
+    padding: 64px 16px 80px;
   }
 
   div.home div.customer-care div.customer-care-wrapper {
-    width: 100%;
-    display: flex;
     flex-direction: column;
+    text-align: center;
   }
 
   div.home div.customer-care div.customer-care-text {
-    padding: 0 20px;
-    width: 100%;
+    padding: 0;
+  }
+
+  div.home div.customer-care div.customer-care-text div.customer-care-boxes {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: left;
   }
 
   div.home div.customer-care div.customer-care-img img {
-    height: 160px;
+    height: 140px;
     margin-left: 0;
   }
 }
 
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >=960px) {
+/* ----- Desktop hero & search ----- */
+@media only screen and (width >= 960px) {
   div.home div.home-content {
-    height: 365px;
+    min-height: 480px;
   }
 
   div.home div.home-cover {
-    font-size: 42px;
-    font-weight: 700;
-    margin-bottom: 5px;
+    font-size: 3rem;
+    margin-bottom: 0;
   }
 
   div.home div.search div.home-search {
-    padding: 20px;
-    margin-top: -75px;
+    padding: 24px 28px;
+    margin-top: -72px;
   }
 }

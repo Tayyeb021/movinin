@@ -45,14 +45,19 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
         $match.$and?.push({ type: { $in: [movininTypes.UserType.User, movininTypes.UserType.Tenant] } })
       }
 
-      if (
-        !sessionData
-        || !helper.isValidObjectId(sessionData.id)
-        || !(await User.exists($match))
-      ) {
-        // Token not valid!
-        logger.info('Token not valid: User not found')
-        res.status(401).send({ message: 'Unauthorized!' })
+      // Improved diagnostics for why "token not valid" may occur.
+      let reason = ''
+      if (!sessionData) {
+        reason = 'Session data missing or token could not be decrypted'
+      } else if (!helper.isValidObjectId(sessionData.id)) {
+        reason = 'Session id is not a valid ObjectId'
+      } else if (!(await User.exists({ _id: sessionData.id }))) {
+        reason = 'User not found in database'
+      }
+
+      if (reason) {
+        logger.info(`Token not valid: ${reason}`)
+        res.status(401).send({ message: 'Unauthorized!', reason })
       } else {
         ;(req as Request & { userId?: string }).userId = sessionData.id
         next()

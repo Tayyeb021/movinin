@@ -13,10 +13,13 @@ import {
   List,
   ListItemIcon,
   ListItemText,
-  ListItem
+  ListItemButton,
+  Divider,
+  Box,
 } from '@mui/material'
 import {
   Menu as MenuIcon,
+  Close as CloseIcon,
   Mail as MailIcon,
   Notifications as NotificationsIcon,
   More as MoreIcon,
@@ -74,7 +77,22 @@ const Header = ({
 
   const classes = {
     list: {
-      width: 250,
+      width: 280,
+    },
+    drawerPaper: {
+      width: 280,
+      boxSizing: 'border-box',
+    },
+    drawerHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: '16px 16px 12px',
+      minHeight: 56,
+    },
+    navItem: {
+      py: 1.25,
+      px: 2,
     },
     formControl: {
       margin: 1,
@@ -278,107 +296,71 @@ const Header = ({
             </IconButton>
           )}
           <>
-            <Drawer open={isSideMenuOpen} onClose={handleSideMenuClose} className="menu side-menu">
-              <List sx={classes.list}>
-                <ListItem
-                  onClick={() => {
-                    navigate('/')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><DashboardIcon /></ListItemIcon>
-                  <ListItemText primary={strings.DASHBOARD} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/scheduler')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><SchedulerIcon /></ListItemIcon>
-                  <ListItemText primary={strings.SCHEDULER} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/agencies')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><AgenciesIcon /></ListItemIcon>
-                  <ListItemText primary={strings.AGENCIES} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/countries')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><CountriesIcon /></ListItemIcon>
-                  <ListItemText primary={strings.COUNTRIES} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/locations')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><LocationsIcon /></ListItemIcon>
-                  <ListItemText primary={strings.LOCATIONS} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/properties')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><PropertiesIcon /></ListItemIcon>
-                  <ListItemText primary={strings.PROPERTIES} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/btms-dashboard')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><DashboardIcon /></ListItemIcon>
-                  <ListItemText primary={strings.BTMS_DASHBOARD} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/users')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><UsersIcon /></ListItemIcon>
-                  <ListItemText primary={strings.USERS} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('about/')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><AboutIcon /></ListItemIcon>
-                  <ListItemText primary={strings.ABOUT} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/tos')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><TosIcon /></ListItemIcon>
-                  <ListItemText primary={strings.TOS} />
-                </ListItem>
-                <ListItem
-                  onClick={() => {
-                    navigate('/contact')
-                    handleSideMenuClose()
-                  }}
-                >
-                  <ListItemIcon><MailIcon /></ListItemIcon>
-                  <ListItemText primary={strings.CONTACT} />
-                </ListItem>
+            <Drawer
+              open={isSideMenuOpen}
+              onClose={handleSideMenuClose}
+              className="menu side-menu"
+              variant="temporary"
+              anchor="left"
+              PaperProps={{ sx: classes.drawerPaper }}
+            >
+              <Box sx={classes.drawerHeader}>
+                <Typography variant="h6" component="span" fontWeight={600}>
+                  {env.WEBSITE_NAME}
+                </Typography>
+                <IconButton aria-label="close menu" onClick={handleSideMenuClose} size="small">
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              <Divider />
+              <List sx={classes.list} disablePadding>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><DashboardIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.DASHBOARD} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/scheduler'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><SchedulerIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.SCHEDULER} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <Divider component="li" sx={{ my: 1 }} />
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/agencies'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><AgenciesIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.AGENCIES} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/countries'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><CountriesIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.COUNTRIES} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/locations'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><LocationsIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.LOCATIONS} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/properties'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><PropertiesIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.PROPERTIES} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <Divider component="li" sx={{ my: 1 }} />
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/btms-dashboard'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><DashboardIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.BTMS_DASHBOARD} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/users'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><UsersIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.USERS} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <Divider component="li" sx={{ my: 1 }} />
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('about/'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><AboutIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.ABOUT} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/tos'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><TosIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.TOS} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/contact'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><MailIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary={strings.CONTACT} primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
               </List>
             </Drawer>
           </>

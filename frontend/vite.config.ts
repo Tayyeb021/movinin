@@ -21,7 +21,7 @@ export default ({ mode }: { mode: string }) => {
       createHtmlPlugin({
         inject: {
           data: {
-            WEBSITE_NAME: process.env.VITE_MI_WEBSITE_NAME || "Movin' In",
+            WEBSITE_NAME: process.env.VITE_MI_WEBSITE_NAME || 'Bakali',
           },
         },
       }),

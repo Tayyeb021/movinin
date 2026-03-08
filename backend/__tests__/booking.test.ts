@@ -183,7 +183,7 @@ describe('POST /api/checkout', () => {
       currency: 'usd',
       receiptEmail,
       customerName: 'John Doe',
-      description: "Movin' In Testing Service",
+      description: "Bakali Testing Service",
       locale: 'en',
       name: 'Test',
     }

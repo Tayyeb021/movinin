@@ -22,6 +22,8 @@ Set in Railway **Variables**:
 
 - `MI_DB_URI` = your MongoDB URI (e.g. `mongodb+srv://user:pass@cluster.mongodb.net/movinin?retryWrites=true&w=majority` or Railway’s `MONGO_URL`).
 
+**Location data:** Countries and locations are stored in MongoDB and are not seeded by default. If the frontend location dropdown or map is empty, run `npm run seed:locations` in the backend (or add countries/locations via the Admin panel). See **[backend/docs/LOCATION_DATA.md](./backend/docs/LOCATION_DATA.md)** for details.
+
 ### 1.4 Backend environment variables
 
 In the Railway service **Variables**, add the same variables as in `backend/.env.example`. At minimum:

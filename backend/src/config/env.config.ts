@@ -48,7 +48,7 @@ export const expireAt = 'expireAt'
  *
  * @type {string}
  */
-export const WEBSITE_NAME = __env__('MI_WEBSITE_NAME', false, "Movin' In")
+export const WEBSITE_NAME = __env__('MI_WEBSITE_NAME', false, 'Bakali')
 
 /**
  * Indicate whether we are in CI environment or not.
