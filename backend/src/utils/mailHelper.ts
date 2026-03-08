@@ -3,7 +3,9 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import * as env from '../config/env.config'
 
 const createTransporter = async (): Promise<nodemailer.Transporter> => {
-  if (env.CI) {
+  const hasSmtp = Boolean(env.SMTP_HOST && env.SMTP_USER && env.SMTP_PASS)
+
+  if (env.CI || !hasSmtp) {
     const testAccount = await nodemailer.createTestAccount()
     return nodemailer.createTransport({
       host: 'smtp.ethereal.email',

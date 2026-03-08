@@ -15,7 +15,7 @@ import * as helper from '../utils/helper'
 export const __env__ = (name: string, required?: boolean, defaultValue?: string): string => {
   const value = process.env[name]
   if (required && !value) {
-    throw new Error(`'${name} not found`)
+    throw new Error(`'${name}' not found`)
   }
   if (!value) {
     return defaultValue || ''
@@ -211,39 +211,39 @@ export const JWT_EXPIRE_AT = Number.parseInt(__env__('MI_JWT_EXPIRE_AT', false, 
 export const TOKEN_EXPIRE_AT = Number.parseInt(__env__('MI_TOKEN_EXPIRE_AT', false, '86400'), 10) // in seconds (default: 1d)
 
 /**
- * SMTP host.
+ * SMTP host. Optional; if unset, mail uses Ethereal test account (inbox visible in logs).
  *
  * @type {string}
  */
-export const SMTP_HOST = __env__('MI_SMTP_HOST', true)
+export const SMTP_HOST = __env__('MI_SMTP_HOST', false, '')
 
 /**
  * SMTP port.
  *
  * @type {number}
  */
-export const SMTP_PORT = Number.parseInt(__env__('MI_SMTP_PORT', true), 10)
+export const SMTP_PORT = Number.parseInt(__env__('MI_SMTP_PORT', false, '587'), 10)
 
 /**
  * SMTP username.
  *
  * @type {string}
  */
-export const SMTP_USER = __env__('MI_SMTP_USER', true)
+export const SMTP_USER = __env__('MI_SMTP_USER', false, '')
 
 /**
  * SMTP password.
  *
  * @type {string}
  */
-export const SMTP_PASS = __env__('MI_SMTP_PASS', true)
+export const SMTP_PASS = __env__('MI_SMTP_PASS', false, '')
 
 /**
  * SMTP from email.
  *
  * @type {string}
  */
-export const SMTP_FROM = __env__('MI_SMTP_FROM', true)
+export const SMTP_FROM = __env__('MI_SMTP_FROM', false, '')
 
 /**
  * CDN root folder path.
