@@ -442,6 +442,7 @@ const UpdateBooking = () => {
                   <LoadingButton variant="contained" className="btn-primary btn-margin-bottom" size="small" type="submit" loading={loading}>
                     {commonStrings.SAVE}
                   </LoadingButton>
+                  {/* Delete button - use LoadingButton for spinner */}
                   <LoadingButton variant="contained" className="btn-margin-bottom" color="error" size="small" loading={loading} onClick={handleDelete}>
                     {commonStrings.DELETE}
                   </LoadingButton>

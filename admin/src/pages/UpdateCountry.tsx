@@ -200,6 +200,7 @@ const UpdateCountry = () => {
               ))}
 
               <div className="buttons">
+                {/* Save button - use LoadingButton for spinner */}
                 <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading} disabled={!nameChanged}>
                   {commonStrings.SAVE}
                 </LoadingButton>
