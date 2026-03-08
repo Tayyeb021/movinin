@@ -444,7 +444,7 @@ const UpdateBooking = () => {
                   </LoadingButton>
                   <LoadingButton variant="contained" className="btn-margin-bottom" color="error" size="small" loading={loading} onClick={handleDelete}>
                     {commonStrings.DELETE}
-                  </Button>
+                  </LoadingButton>
                   <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
                     {commonStrings.CANCEL}
                   </Button>

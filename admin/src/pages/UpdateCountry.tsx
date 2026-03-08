@@ -202,7 +202,7 @@ const UpdateCountry = () => {
               <div className="buttons">
                 <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={loading} disabled={!nameChanged}>
                   {commonStrings.SAVE}
-                </Button>
+                </LoadingButton>
                 <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/countries')}>
                   {commonStrings.CANCEL}
                 </Button>
