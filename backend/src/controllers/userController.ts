@@ -428,46 +428,44 @@ export const signin = async (req: Request, res: Response) => {
 
   logger.info(`[user.signin] attempt type=${type || 'missing'} email=${emailFromBody ? `${String(emailFromBody).slice(0, 3)}***` : 'missing'}`)
 
+  const sendSignInError = (logMsg: string, reason: string) => {
+    logger.info(`[user.signin] ${logMsg}`)
+    res.status(401).send({ message: 'Incorrect email or password.', reason })
+  }
+
   try {
     if (!body || typeof body !== 'object') {
-      logger.info('[user.signin] 204: body missing (send JSON with Content-Type: application/json)')
-      res.sendStatus(204)
+      sendSignInError('401: body missing', 'Send JSON with Content-Type: application/json.')
       return
     }
     if (!emailFromBody) {
-      logger.info('[user.signin] 204: body.email missing (check Content-Type: application/json and request body)')
-      res.sendStatus(204)
+      sendSignInError('401: body.email missing', 'Email is required.')
       return
     }
 
     const email = helper.trim(String(emailFromBody), ' ').toLowerCase()
 
     if (!helper.isValidEmail(email)) {
-      logger.info('[user.signin] 204: invalid email format')
-      res.sendStatus(204)
+      sendSignInError('401: invalid email format', 'Invalid email format.')
       return
     }
 
     const user = await User.findOne({ email })
 
     if (!password) {
-      logger.info('[user.signin] 204: no password provided')
-      res.sendStatus(204)
+      sendSignInError('401: no password provided', 'Password is required.')
       return
     }
     if (!user) {
-      logger.info('[user.signin] 204: user not found (check that this email exists in the database; run backend setup for demo users)')
-      res.sendStatus(204)
+      sendSignInError('401: user not found', 'No account with this email. Run backend setup to create demo users.')
       return
     }
     if (!user.password) {
-      logger.info('[user.signin] 204: user has no password set')
-      res.sendStatus(204)
+      sendSignInError('401: user has no password set', 'This account has no password set.')
       return
     }
     if (!type || ![movininTypes.AppType.Frontend, movininTypes.AppType.Admin].includes(type)) {
-      logger.info('[user.signin] 204: invalid or missing app type')
-      res.sendStatus(204)
+      sendSignInError('401: invalid or missing app type', 'Invalid sign-in request.')
       return
     }
     if (type === movininTypes.AppType.Admin && user.type === movininTypes.UserType.User) {
@@ -542,8 +540,7 @@ export const signin = async (req: Request, res: Response) => {
       return
     }
 
-    logger.info('[user.signin] 204: password mismatch (default demo password is M00vinin if you ran backend setup)')
-    res.sendStatus(204)
+    sendSignInError('401: password mismatch', 'Wrong password. Default demo password is M00vinin if you ran backend setup.')
   } catch (err) {
     logger.error(`[user.signin] ${i18n.t('DB_ERROR')} ${emailFromBody}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)

@@ -5,7 +5,7 @@ import * as tenantController from '../controllers/tenantController'
 
 const routes = express.Router()
 
-routes.route(routeNames.getMyTenancy).get(authJwt.verifyToken, authJwt.requireTenant, tenantController.getMyTenancy)
+routes.route(routeNames.getMyTenancy).get(authJwt.verifyToken, tenantController.getMyTenancy)
 routes.route(routeNames.getTenants).get(authJwt.verifyToken, tenantController.getTenants)
 routes.route(routeNames.getTenantsByProperty).get(authJwt.verifyToken, tenantController.getTenantsByProperty)
 routes.route(routeNames.getTenantsByUnit).get(authJwt.verifyToken, tenantController.getTenantsByUnit)

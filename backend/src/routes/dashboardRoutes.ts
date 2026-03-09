@@ -6,6 +6,6 @@ import * as dashboardController from '../controllers/dashboardController'
 const routes = express.Router()
 
 routes.route(routeNames.getManagerDashboard).get(authJwt.verifyToken, dashboardController.getManagerDashboard)
-routes.route(routeNames.getTenantDashboard).get(authJwt.verifyToken, authJwt.requireTenant, dashboardController.getTenantDashboard)
+routes.route(routeNames.getTenantDashboard).get(authJwt.verifyToken, dashboardController.getTenantDashboard)
 
 export default routes

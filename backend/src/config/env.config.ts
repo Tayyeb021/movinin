@@ -149,24 +149,36 @@ export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'Movinin')
 
 /**
  * Authentication cookie domain.
- * Default is localhost.
+ * Default is localhost. Leave empty for cross-origin (e.g. Railway) so the cookie is set for the backend host only.
  *
  * @type {string}
  */
 export const AUTH_COOKIE_DOMAIN = __env__('MI_AUTH_COOKIE_DOMAIN', false, 'localhost')
 
 /**
+ * Cookie SameSite: 'strict' (default) or 'none'.
+ * Use 'none' when admin/frontend and backend are on different origins (e.g. Railway). Requires HTTPS for Secure cookie.
+ *
+ * @type {'strict' | 'lax' | 'none'}
+ */
+const _COOKIE_SAME_SITE = (__env__('MI_COOKIE_SAME_SITE', false, 'strict').toLowerCase() === 'none' ? 'none' : 'strict') as 'strict' | 'lax' | 'none'
+
+/**
  * Cookie options.
  *
- * On production, authentication cookies are httpOnly, signed, secure and strict sameSite.
- * This will prevent XSS attacks by not allowing access to the cookie via JavaScript.
- * This will prevent CSRF attacks by not allowing the browser to send the cookie along with cross-site requests.
- * This will prevent MITM attacks by only allowing the cookie to be sent over HTTPS.
- * Authentication cookies are protected against XST attacks as well by disabling TRACE HTTP method via allowedMethods middleware.
+ * On production, authentication cookies are httpOnly, signed, secure.
+ * sameSite: 'strict' for same-origin; use MI_COOKIE_SAME_SITE=none for cross-origin (admin/frontend on different host than backend).
+ * When sameSite is 'none', secure is forced true (required by browsers).
  *
  * @type {CookieOptions}
  */
-export const COOKIE_OPTIONS: CookieOptions = { httpOnly: true, secure: HTTPS, signed: true, sameSite: 'strict', domain: AUTH_COOKIE_DOMAIN }
+export const COOKIE_OPTIONS: CookieOptions = {
+  httpOnly: true,
+  secure: _COOKIE_SAME_SITE === 'none' ? true : HTTPS,
+  signed: true,
+  sameSite: _COOKIE_SAME_SITE,
+  ...(AUTH_COOKIE_DOMAIN ? { domain: AUTH_COOKIE_DOMAIN } : {}),
+}
 
 /**
  * frontend authentication cookie name.

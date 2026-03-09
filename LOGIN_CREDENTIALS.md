@@ -12,8 +12,8 @@ These users are created when you run the backend setup:
 | **User** (customer) | `user@movinin.io` | Frontend (e.g. http://localhost:3004) |
 | **Tenant** (BTMS tenant) | `tenant@movinin.io` | Frontend (“My tenancy” / tenant dashboard) |
 
-- **Admin** and **Agency** use the **admin** app.
-- **User** and **Tenant** use the **frontend** (public) app.
+- **Admin** and **Agency** must use the **admin app URL** (e.g. `https://your-admin.up.railway.app`). If you open the frontend site and sign in with admin/agency email, login will be rejected.
+- **User** and **Tenant** must use the **frontend (public) app URL**.
 
 To (re)create these users, run from the project root:
 
@@ -46,6 +46,9 @@ If login works locally but fails in production with "Incorrect email or password
    - `[user.signin] 204: invalid or missing app type` → frontend/admin are calling the wrong sign-in URL.
    - `[user.signin] 204: body.email missing` → request body not JSON or not sent; check `Content-Type: application/json`.
 
-3. **Cookie fix (production):** The backend now sets the auth cookie based on the sign-in URL (`/api/sign-in/Admin` vs `/api/sign-in/Frontend`), not the `Origin` header. So login works even if `MI_ADMIN_HOST` / `MI_FRONTEND_HOST` are not set or don’t match the deployed app URLs. You still need them for CORS; set them to your admin and frontend app URLs (e.g. `https://your-admin.up.railway.app`).
+3. **Cookie fix (production):** The backend sets the auth cookie from the sign-in URL (`/api/sign-in/Admin` vs `/api/sign-in/Frontend`). For **cross-origin** (admin/frontend on a different host than the backend, e.g. Railway), set in the **backend** service:
+   - `MI_COOKIE_SAME_SITE=none` — so the browser sends the cookie on cross-origin requests.
+   - `MI_AUTH_COOKIE_DOMAIN=` (empty) — so the cookie is scoped to the backend host.
+   - Keep `MI_ADMIN_HOST` and `MI_FRONTEND_HOST` set to your admin and frontend app URLs for CORS.
 
 4. **Set `MI_ADMIN_EMAIL` in production** if you use a custom admin email; the setup script uses it to create the admin user.
