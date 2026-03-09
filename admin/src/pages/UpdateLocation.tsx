@@ -32,6 +32,8 @@ import '@/assets/css/update-location.css'
 const UpdateLocation = () => {
   const navigate = useNavigate()
 
+
+  
   const [visible, setVisible] = useState(false)
   const [loading, setLoading] = useState(false)
   const [names, setNames] = useState<movininTypes.LocationName[]>([])
