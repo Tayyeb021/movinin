@@ -439,16 +439,28 @@ export const signin = async (req: Request, res: Response) => {
     const user = await User.findOne({ email })
     const type = req.params.type ? req.params.type.toUpperCase() as movininTypes.AppType : undefined
 
-    if (
-      !password
-      || !user
-      || !user.password
-      || !type
-      || ![movininTypes.AppType.Frontend, movininTypes.AppType.Admin].includes(type)
-      // Allow "Frontend" users to log in if they are User, Manager, or Admin
-      || (type === movininTypes.AppType.Admin && user.type === movininTypes.UserType.User)
-      // Removed the restriction for Frontend: allow all user.type to log in via frontend
-    ) {
+    if (!password) {
+      logger.info('[user.signin] 204: no password provided')
+      res.sendStatus(204)
+      return
+    }
+    if (!user) {
+      logger.info('[user.signin] 204: user not found (check that this email exists in the database; run backend setup for demo users)')
+      res.sendStatus(204)
+      return
+    }
+    if (!user.password) {
+      logger.info('[user.signin] 204: user has no password set')
+      res.sendStatus(204)
+      return
+    }
+    if (!type || ![movininTypes.AppType.Frontend, movininTypes.AppType.Admin].includes(type)) {
+      logger.info('[user.signin] 204: invalid or missing app type')
+      res.sendStatus(204)
+      return
+    }
+    if (type === movininTypes.AppType.Admin && user.type === movininTypes.UserType.User) {
+      logger.info('[user.signin] 204: Admin app cannot log in as User type; use frontend app for this account')
       res.sendStatus(204)
       return
     }
@@ -516,6 +528,7 @@ export const signin = async (req: Request, res: Response) => {
       return
     }
 
+    logger.info('[user.signin] 204: password mismatch (default demo password is M00vinin if you ran backend setup)')
     res.sendStatus(204)
   } catch (err) {
     logger.error(`[user.signin] ${i18n.t('DB_ERROR')} ${emailFromBody}`, err)
