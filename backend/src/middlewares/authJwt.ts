@@ -17,26 +17,40 @@ import Tenant from '../models/Tenant'
  */
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   let token: string
-  const isAdmin = authHelper.isAdmin(req)
-  const isFrontend = authHelper.isFrontend(req)
+  let isAdmin = authHelper.isAdmin(req)
+  let isFrontend = authHelper.isFrontend(req)
 
   if (isAdmin) {
-    token = req.signedCookies[env.ADMIN_AUTH_COOKIE_NAME] as string // admin
+    token = req.signedCookies[env.ADMIN_AUTH_COOKIE_NAME] as string
   } else if (isFrontend) {
-    token = req.signedCookies[env.FRONTEND_AUTH_COOKIE_NAME] as string // frontend
+    token = req.signedCookies[env.FRONTEND_AUTH_COOKIE_NAME] as string
   } else {
-    token = req.headers[env.X_ACCESS_TOKEN] as string // mobile app and unit tests
+    // Fallback: when Origin does not match MI_ADMIN_HOST/MI_FRONTEND_HOST (e.g. misconfigured env),
+    // try to infer channel from which cookie is present so admin/frontend still work.
+    const adminCookie = req.signedCookies[env.ADMIN_AUTH_COOKIE_NAME] as string | undefined
+    const frontendCookie = req.signedCookies[env.FRONTEND_AUTH_COOKIE_NAME] as string | undefined
+    if (adminCookie) {
+      token = adminCookie
+      isAdmin = true
+      if (req.headers.origin && !env.ADMIN_HOST) {
+        logger.warn(`Auth: Origin "${req.headers.origin}" present but MI_ADMIN_HOST not set. Set MI_ADMIN_HOST to your admin app URL (e.g. ${req.headers.origin}) so the backend recognizes admin requests.`)
+      }
+    } else if (frontendCookie) {
+      token = frontendCookie
+      isFrontend = true
+      if (req.headers.origin && !env.FRONTEND_HOST) {
+        logger.warn(`Auth: Origin "${req.headers.origin}" present but MI_FRONTEND_HOST not set. Set MI_FRONTEND_HOST to your frontend app URL.`)
+      }
+    } else {
+      token = req.headers[env.X_ACCESS_TOKEN] as string // mobile app and unit tests
+    }
   }
 
   if (token) {
-    // Check token
     try {
       const sessionData = await authHelper.decryptJWT(token)
       const $match: mongoose.QueryFilter<env.User> = {
-        $and: [
-          { _id: sessionData?.id },
-          // { blacklisted: false },
-        ],
+        $and: [{ _id: sessionData?.id }],
       }
 
       if (isAdmin) {
@@ -45,30 +59,43 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
         $match.$and?.push({ type: { $in: [movininTypes.UserType.User, movininTypes.UserType.Tenant] } })
       }
 
-      // Improved diagnostics for why "token not valid" may occur.
       let reason = ''
       if (!sessionData) {
         reason = 'Session data missing or token could not be decrypted'
       } else if (!helper.isValidObjectId(sessionData.id)) {
         reason = 'Session id is not a valid ObjectId'
-      } else if (!(await User.exists({ _id: sessionData.id }))) {
-        reason = 'User not found in database'
+      } else {
+        const user = await User.findOne($match).select('_id').lean()
+        if (!user) {
+          const exists = await User.exists({ _id: sessionData.id }).lean()
+          if (exists) {
+            reason = 'User type not allowed for this app. Set MI_ADMIN_HOST (admin app URL) and MI_FRONTEND_HOST (frontend app URL) on the backend to match the browser Origin exactly.'
+          } else {
+            reason = 'User not found in database'
+          }
+        }
       }
 
       if (reason) {
         logger.info(`Token not valid: ${reason}`)
         res.status(401).send({ message: 'Unauthorized!', reason })
       } else {
-        ;(req as Request & { userId?: string }).userId = sessionData.id
+        ;(req as Request & { userId?: string }).userId = sessionData!.id
         next()
       }
     } catch (err) {
-      // Token not valid!
       logger.info('Token not valid', err)
       res.status(401).send({ message: 'Unauthorized!' })
     }
   } else {
-    // Token not found!
+    if (req.headers.origin && env.ADMIN_HOST && env.FRONTEND_HOST) {
+      const o = helper.trimEnd(String(req.headers.origin), '/')
+      const ah = helper.trimEnd(env.ADMIN_HOST, '/')
+      const fh = helper.trimEnd(env.FRONTEND_HOST, '/')
+      if (o !== ah && o !== fh) {
+        logger.warn(`Auth: Origin "${req.headers.origin}" does not match MI_ADMIN_HOST (${env.ADMIN_HOST}) or MI_FRONTEND_HOST (${env.FRONTEND_HOST}). Set the matching host so auth cookies are recognized.`)
+      }
+    }
     res.status(403).send({ message: 'No token provided!' })
   }
 }
