@@ -422,22 +422,33 @@ export const activate = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const signin = async (req: Request, res: Response) => {
-  const { body }: { body: movininTypes.SignInPayload } = req
+  const body = (req.body || {}) as movininTypes.SignInPayload
   const { email: emailFromBody, password, stayConnected, mobile } = body
+  const type = req.params.type ? req.params.type.toUpperCase() as movininTypes.AppType : undefined
+
+  logger.info(`[user.signin] attempt type=${type || 'missing'} email=${emailFromBody ? `${String(emailFromBody).slice(0, 3)}***` : 'missing'}`)
 
   try {
+    if (!body || typeof body !== 'object') {
+      logger.info('[user.signin] 204: body missing (send JSON with Content-Type: application/json)')
+      res.sendStatus(204)
+      return
+    }
     if (!emailFromBody) {
-      throw new Error('body.email not found')
+      logger.info('[user.signin] 204: body.email missing (check Content-Type: application/json and request body)')
+      res.sendStatus(204)
+      return
     }
 
-    const email = helper.trim(emailFromBody, ' ')
+    const email = helper.trim(String(emailFromBody), ' ').toLowerCase()
 
     if (!helper.isValidEmail(email)) {
-      throw new Error('body.email is not valid')
+      logger.info('[user.signin] 204: invalid email format')
+      res.sendStatus(204)
+      return
     }
 
     const user = await User.findOne({ email })
-    const type = req.params.type ? req.params.type.toUpperCase() as movininTypes.AppType : undefined
 
     if (!password) {
       logger.info('[user.signin] 204: no password provided')
@@ -517,14 +528,17 @@ export const signin = async (req: Request, res: Response) => {
 
       //
       // On web, we return the token in a httpOnly, signed, secure and strict sameSite cookie.
+      // Use the sign-in URL type (Admin/Frontend) to choose cookie name so it works even when
+      // MI_ADMIN_HOST / MI_FRONTEND_HOST do not match the request Origin (e.g. production).
       //
-      const cookieName = authHelper.getAuthCookieName(req)
+      const cookieName = type === movininTypes.AppType.Admin ? env.ADMIN_AUTH_COOKIE_NAME : env.FRONTEND_AUTH_COOKIE_NAME
 
       res
         .clearCookie(cookieName)
         .cookie(cookieName, token, cookieOptions)
         .status(200)
         .send(loggedUser)
+      logger.info(`[user.signin] 200 OK type=${type} userId=${user._id}`)
       return
     }
 
@@ -664,10 +678,10 @@ export const socialSignin = async (req: Request, res: Response) => {
  * @returns {unknown}
  */
 export const signout = async (req: Request, res: Response) => {
-  const cookieName = authHelper.getAuthCookieName(req)
-
+  // Clear both auth cookies so sign-out works even when Origin does not match MI_*_HOST
   res
-    .clearCookie(cookieName)
+    .clearCookie(env.ADMIN_AUTH_COOKIE_NAME)
+    .clearCookie(env.FRONTEND_AUTH_COOKIE_NAME)
     .sendStatus(200)
 }
 

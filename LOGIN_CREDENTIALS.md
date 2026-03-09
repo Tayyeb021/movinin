@@ -38,8 +38,14 @@ If login works locally but fails in production with "Incorrect email or password
    ```
    Or set `MI_DB_URI` in `backend/.env` to the production URI, run `npm run setup`, then switch back to local if needed.
 
-2. **Check Railway (or host) logs:** After the change above, the backend logs a reason for sign-in failure, e.g.:
+2. **Check Railway (or host) logs:** After deploying, each sign-in attempt logs a line. Look for:
+   - `[user.signin] attempt type=ADMIN email=age***` → request reached the backend; then one of:
+   - `[user.signin] 200 OK type=ADMIN userId=...` → login succeeded; cookie was set.
    - `[user.signin] 204: user not found` → run setup or ensure the user exists in the production DB.
    - `[user.signin] 204: password mismatch` → use password `M00vinin` (or whatever you set when running setup).
+   - `[user.signin] 204: invalid or missing app type` → frontend/admin are calling the wrong sign-in URL.
+   - `[user.signin] 204: body.email missing` → request body not JSON or not sent; check `Content-Type: application/json`.
 
-3. **Set `MI_ADMIN_EMAIL` in production** if you use a custom admin email; the setup script uses it to create the admin user.
+3. **Cookie fix (production):** The backend now sets the auth cookie based on the sign-in URL (`/api/sign-in/Admin` vs `/api/sign-in/Frontend`), not the `Origin` header. So login works even if `MI_ADMIN_HOST` / `MI_FRONTEND_HOST` are not set or don’t match the deployed app URLs. You still need them for CORS; set them to your admin and frontend app URLs (e.g. `https://your-admin.up.railway.app`).
+
+4. **Set `MI_ADMIN_EMAIL` in production** if you use a custom admin email; the setup script uses it to create the admin user.
