@@ -41,6 +41,11 @@ const start = async (): Promise<void> => {
 
     server.listen(env.PORT, () => {
       logger.info(`HTTP server is running on port ${env.PORT}`)
+      const sameSite = env.COOKIE_OPTIONS.sameSite ?? 'strict'
+      logger.info(`Auth cookie: sameSite=${sameSite}, domain=${env.AUTH_COOKIE_DOMAIN || '(not set)'}, secure=${env.COOKIE_OPTIONS.secure}`)
+      if (env.FRONTEND_HOST && sameSite === 'strict') {
+        logger.warn('Frontend host is set but cookie sameSite=strict; login may fail if frontend and backend are on different origins. Set MI_COOKIE_SAME_SITE=none for cross-origin.')
+      }
     })
 
     const shutdown = async (signal: string): Promise<void> => {

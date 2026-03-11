@@ -121,11 +121,11 @@ export const COOKIE_SECRET = __env__('MI_COOKIE_SECRET', false, 'Movinin')
 
 /**
  * Authentication cookie domain.
- * Default is localhost. Leave empty for cross-origin (e.g. Railway) so the cookie is set for the backend host only.
+ * Leave empty (default) so the cookie is set for the backend host only. Set to e.g. 'localhost' only for same-host local dev.
  *
  * @type {string}
  */
-export const AUTH_COOKIE_DOMAIN = __env__('MI_AUTH_COOKIE_DOMAIN', false, 'localhost')
+export const AUTH_COOKIE_DOMAIN = __env__('MI_AUTH_COOKIE_DOMAIN', false, '')
 
 /**
  * Cookie SameSite: 'strict' (default) or 'none'.
