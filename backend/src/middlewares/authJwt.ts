@@ -22,15 +22,18 @@ declare module 'express-serve-static-core' {
  * @param {NextFunction} next
  */
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
-  // 1. Get token from cookies or headers
-  let token: string
+  // 1. Get token: x-access-token header first (works cross-origin), then cookies
+  const headerToken = req.headers[env.X_ACCESS_TOKEN] as string | undefined
   const isAdmin = authHelper.isAdmin(req)
   const isFrontend = authHelper.isFrontend(req)
 
-  if (isAdmin) {
-    token = req.signedCookies[env.ADMIN_AUTH_COOKIE_NAME] as string // admin
+  let token: string
+  if (headerToken) {
+    token = headerToken
+  } else if (isAdmin) {
+    token = req.signedCookies[env.ADMIN_AUTH_COOKIE_NAME] as string
   } else if (isFrontend) {
-    token = req.signedCookies[env.FRONTEND_AUTH_COOKIE_NAME] as string // frontend
+    token = req.signedCookies[env.FRONTEND_AUTH_COOKIE_NAME] as string
   } else {
     token = req.headers[env.X_ACCESS_TOKEN] as string // mobile app and unit tests
   }

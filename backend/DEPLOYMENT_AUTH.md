@@ -1,24 +1,33 @@
 # Auth / login when frontend and backend are on different hosts
 
-If sign-in returns **200 OK** on the server but the user is not actually logged in (e.g. next request fails or UI doesn’t show as logged in), the auth **cookie is not being sent** on later requests.
+## Recommended: token in header (no cookie dependency)
 
-## Cause
+The app supports **two** auth methods so login works even when cookies are blocked or misconfigured:
 
-When the frontend (e.g. Vercel) and backend (e.g. Railway) are on **different origins**, the browser only sends cookies on cross-origin requests if the cookie was set with **`SameSite=None`** and **`Secure=true`**. The default is `SameSite=strict`, so the cookie is set by the backend but never sent on the next request (e.g. `getUser`), and the backend responds with 403 "No token provided!". Also, if **`MI_AUTH_COOKIE_DOMAIN`** is set to `localhost` on a deployed server, the browser will **reject** the cookie because the response host (e.g. `api.railway.app`) does not match that domain.
+1. **Cookie** – backend sets an httpOnly cookie (requires correct SameSite/domain on cross-origin).
+2. **Token in header** – backend returns `accessToken` in the sign-in response body; the frontend stores it and sends it in the **`x-access-token`** header on every request. This works reliably across origins.
 
-## Fix: set these on the **backend** (server)
+The backend **always returns `accessToken` in the response body** for web sign-in and social sign-in. The frontend **stores it in sessionStorage** and the axios client **sends it in the `x-access-token` header** for all API requests. The auth middleware accepts **either** the header or the cookie. So **no extra server configuration is required** for cross-origin login when using this flow.
 
-In your backend environment (Railway, etc.), set:
+---
+
+## If you still use cookies only
+
+If sign-in returns **200 OK** but the user is not logged in and you are not using the token header, the auth **cookie** may not be sent on later requests.
+
+## Cookie-based auth (optional)
+
+If you want cookie-based auth to work as well, set in your backend environment:
 
 | Variable | Value | Notes |
 |----------|--------|--------|
-| `MI_COOKIE_SAME_SITE` | `none` | Required for cross-origin; cookie will be sent with requests from the frontend to the backend. |
-| `MI_HTTPS` | `true` | Required when `SameSite=none` (browsers require `Secure` cookies). Backend must be reachable over HTTPS. |
-| `MI_AUTH_COOKIE_DOMAIN` | *(empty)* | **Do not set**, or set to empty. Otherwise the cookie may be rejected (e.g. if set to `localhost` on a non-localhost server). |
 | `MI_FRONTEND_HOST` | `https://your-frontend-domain.com` | Exact origin of the frontend (no trailing slash). Required for CORS. |
+| `MI_HTTPS` | `true` | Required when sameSite is `none`. |
+| `MI_AUTH_COOKIE_DOMAIN` | *(empty)* | Leave unset so the cookie is for the backend host only. |
 | `MI_ADMIN_HOST` | `https://your-admin-domain.com` | If you use the admin app on a separate host. |
+| `MI_COOKIE_SAME_SITE` | `none` (or leave unset when MI_FRONTEND_HOST is set) | So the cookie is sent cross-origin. |
 
-After changing these, **redeploy the backend**. The frontend must use `withCredentials: true` (it does in this project) and the backend allows credentials in CORS.
+The frontend sends **both** the cookie (when present) and the **`x-access-token`** header when it has a token; the backend accepts either. Token-in-header is the most reliable for cross-origin and does not depend on cookie configuration.
 
 ## Check server logs
 
@@ -28,7 +37,7 @@ On startup the backend logs the auth cookie config, for example:
 Auth cookie: sameSite=none, domain=(not set), secure=true
 ```
 
-- If you see `sameSite=strict` and you have a separate frontend host, you should set `MI_COOKIE_SAME_SITE=none`.
+- If you see `sameSite=strict` and you have a separate frontend host, set `MI_FRONTEND_HOST` (or `MI_ADMIN_HOST`); the backend then defaults sameSite to `none`. Or set `MI_COOKIE_SAME_SITE=none` explicitly.
 - If you see `domain=localhost` and the server is not localhost, **unset** `MI_AUTH_COOKIE_DOMAIN` or set it to empty.
 
 ## Summary

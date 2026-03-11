@@ -525,11 +525,12 @@ export const signin = async (req: Request, res: Response) => {
       }
 
       //
-      // On web, we return the token in a httpOnly, signed, secure and strict sameSite cookie.
-      // Use the sign-in URL type (Admin/Frontend) to choose cookie name so it works even when
-      // MI_ADMIN_HOST / MI_FRONTEND_HOST do not match the request Origin (e.g. production).
+      // On web: set cookie and also return token in body so the frontend can send it in the
+      // x-access-token header when cookies are not sent (e.g. cross-origin). Header auth is
+      // reliable across origins and avoids SameSite/cookie domain issues.
       //
       const cookieName = type === movininTypes.AppType.Admin ? env.ADMIN_AUTH_COOKIE_NAME : env.FRONTEND_AUTH_COOKIE_NAME
+      loggedUser.accessToken = token
 
       res
         .clearCookie(cookieName)
@@ -650,9 +651,10 @@ export const socialSignin = async (req: Request, res: Response) => {
     }
 
     //
-    // On web, we return the token in a httpOnly, signed, secure and strict sameSite cookie.
+    // On web: set cookie and also return token in body for x-access-token header auth (cross-origin).
     //
     const cookieName = authHelper.getAuthCookieName(req)
+    loggedUser.accessToken = token
 
     res
       .clearCookie(cookieName)

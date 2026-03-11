@@ -129,11 +129,19 @@ export const AUTH_COOKIE_DOMAIN = __env__('MI_AUTH_COOKIE_DOMAIN', false, '')
 
 /**
  * Cookie SameSite: 'strict' (default) or 'none'.
- * Use 'none' when admin/frontend and backend are on different origins (e.g. Railway). Requires HTTPS for Secure cookie.
+ * When MI_FRONTEND_HOST or MI_ADMIN_HOST is set, defaults to 'none' so cross-origin login works without setting MI_COOKIE_SAME_SITE.
+ * Explicit MI_COOKIE_SAME_SITE=none or =strict overrides. Requires HTTPS for Secure cookie when sameSite is 'none'.
  *
  * @type {'strict' | 'lax' | 'none'}
  */
-const _COOKIE_SAME_SITE = (__env__('MI_COOKIE_SAME_SITE', false, 'strict').toLowerCase() === 'none' ? 'none' : 'strict') as 'strict' | 'lax' | 'none'
+const _sameSiteEnv = __env__('MI_COOKIE_SAME_SITE', false, '').toLowerCase()
+const _hasRemoteHost = !!(__env__('MI_FRONTEND_HOST', false, '') || __env__('MI_ADMIN_HOST', false, ''))
+const _COOKIE_SAME_SITE = (
+  _sameSiteEnv === 'none' ? 'none'
+    : _sameSiteEnv === 'strict' ? 'strict'
+      : _hasRemoteHost ? 'none'
+        : 'strict'
+) as 'strict' | 'lax' | 'none'
 
 /**
  * Cookie options.
