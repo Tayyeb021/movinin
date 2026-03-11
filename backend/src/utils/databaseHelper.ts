@@ -37,13 +37,7 @@ export const connect = async (uri: string, ssl: boolean, debug: boolean): Promis
     return true
   }
 
-  const options: ConnectOptions = ssl
-    ? {
-      tls: true,
-      tlsCertificateKeyFile: env.DB_SSL_CERT,
-      tlsCAFile: env.DB_SSL_CA,
-    }
-    : {}
+  const options: ConnectOptions = ssl ? { tls: true } : {}
 
   mongoose.set('debug', debug)
   mongoose.set('autoIndex', process.env.NODE_ENV !== 'production')

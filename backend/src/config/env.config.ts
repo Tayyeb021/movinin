@@ -85,20 +85,6 @@ export const PORT = Number.parseInt(
 export const HTTPS = helper.StringToBoolean(__env__('MI_HTTPS'))
 
 /**
- * Private SSL key filepath.
- *
- * @type {string}
- */
-export const PRIVATE_KEY = __env__('MI_PRIVATE_KEY', HTTPS)
-
-/**
- * Private SSL certificate filepath.
- *
- * @type {string}
- */
-export const CERTIFICATE = __env__('MI_CERTIFICATE', HTTPS)
-
-/**
  * MongoDB database URI. Default is: mongodb://127.0.0.1:27017/movinin?authSource=admin&appName=movinin
  *
  * @type {string}
@@ -111,20 +97,6 @@ export const DB_URI = __env__('MI_DB_URI', false, 'mongodb://127.0.0.1:27017/mov
  * @type {boolean}
  */
 export const DB_SSL = helper.StringToBoolean(__env__('MI_DB_SSL', false, 'false'))
-
-/**
- * MongoDB SSL certificate filepath.
- *
- * @type {string}
- */
-export const DB_SSL_CERT = __env__('MI_DB_SSL_CERT', DB_SSL)
-
-/**
- * MongoDB SSL CA certificate filepath.
- *
- * @type {string}
- */
-export const DB_SSL_CA = __env__('MI_DB_SSL_CA', DB_SSL)
 
 /**
  * Indicate whether MongoDB debug is enabled or not.

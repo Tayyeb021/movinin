@@ -1,29 +1,17 @@
 import 'dotenv/config'
 import process from 'node:process'
-import fs from 'node:fs/promises'
 import http from 'node:http'
-import https, { ServerOptions } from 'node:https'
 import * as env from './config/env.config'
 import * as databaseHelper from './utils/databaseHelper'
 import app from './app'
 import * as logger from './utils/logger'
 
 /**
- * Creates and returns an HTTP or HTTPS server based on environment configuration.
- * 
- * @returns {Promise<http.Server | https.Server>} The server instance
+ * Creates and returns an HTTP server.
+ *
+ * @returns {http.Server} The server instance
  */
-const createServer = async (): Promise<http.Server | https.Server> => {
-  if (env.HTTPS) {
-    https.globalAgent.maxSockets = Infinity
-    const [privateKey, certificate] = await Promise.all([
-      fs.readFile(env.PRIVATE_KEY, 'utf8'),
-      fs.readFile(env.CERTIFICATE, 'utf8'),
-    ])
-    const credentials: ServerOptions = { key: privateKey, cert: certificate }
-    return https.createServer(credentials, app)
-  }
-
+const createServer = (): http.Server => {
   http.globalAgent.maxSockets = Infinity
   return http.createServer(app)
 }
@@ -49,11 +37,10 @@ const start = async (): Promise<void> => {
       process.exit(1)
     }
 
-    const protocol = env.HTTPS ? 'HTTPS' : 'HTTP'
-    const server = await createServer()
+    const server = createServer()
 
     server.listen(env.PORT, () => {
-      logger.info(`${protocol} server is running on port ${env.PORT}`)
+      logger.info(`HTTP server is running on port ${env.PORT}`)
     })
 
     const shutdown = async (signal: string): Promise<void> => {
@@ -67,7 +54,7 @@ const start = async (): Promise<void> => {
 
       server.close(async () => {
         clearTimeout(shutdownTimeout)
-        logger.info(`${protocol} server closed`)
+        logger.info('HTTP server closed')
         await databaseHelper.close(true)
         process.exit(0)
       })
