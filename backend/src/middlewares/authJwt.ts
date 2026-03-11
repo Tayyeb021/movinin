@@ -15,15 +15,22 @@ declare module 'express-serve-static-core' {
 }
 
 /**
- * Verify authentication token middleware.
- *
- * @param {Request} req
- * @param {Response} res
- * @param {NextFunction} next
+ * Get token from request: x-access-token header, or Authorization: Bearer, or cookies.
+ * Express lowercases header names, so use lowercase.
+ */
+function getTokenFromRequest(req: Request): string | undefined {
+  const customHeader = req.headers[env.X_ACCESS_TOKEN.toLowerCase()] as string | undefined
+  if (customHeader && typeof customHeader === 'string') return customHeader.trim()
+  const auth = req.headers.authorization
+  if (auth && typeof auth === 'string' && auth.startsWith('Bearer ')) return auth.slice(7).trim()
+  return undefined
+}
+
+/**
+ * Verify authentication token (header or cookie); attach user to request.
  */
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
-  // 1. Get token: x-access-token header first (works cross-origin), then cookies
-  const headerToken = req.headers[env.X_ACCESS_TOKEN] as string | undefined
+  const headerToken = getTokenFromRequest(req)
   const isAdmin = authHelper.isAdmin(req)
   const isFrontend = authHelper.isFrontend(req)
 
@@ -35,7 +42,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   } else if (isFrontend) {
     token = req.signedCookies[env.FRONTEND_AUTH_COOKIE_NAME] as string
   } else {
-    token = req.headers[env.X_ACCESS_TOKEN] as string // mobile app and unit tests
+    token = getTokenFromRequest(req) as string
   }
 
   if (!token) {

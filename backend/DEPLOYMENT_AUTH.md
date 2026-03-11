@@ -1,5 +1,7 @@
 # Auth / login when frontend and backend are on different hosts
 
+**Deploying on Railway?** See **[RAILWAY.md](../RAILWAY.md)** in the project root for a step-by-step checklist (env vars, CORS, and token-in-header).
+
 ## Recommended: token in header (no cookie dependency)
 
 The app supports **two** auth methods so login works even when cookies are blocked or misconfigured:
