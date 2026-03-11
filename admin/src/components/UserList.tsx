@@ -31,6 +31,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/user-list'
 import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
+import LoadingButton from '@/components/LoadingButton'
 
 import '@/assets/css/user-list.css'
 
@@ -63,6 +64,7 @@ const UserList = ({
   const [selectedId, setSelectedId] = useState('')
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   const [types, setTypes] = useState<movininTypes.UserType[]>()
   const [keyword, setKeyword] = useState(userListKeyword)
   const [reloadColumns, setReloadColumns] = useState(false)
@@ -326,6 +328,7 @@ const UserList = ({
   }
 
   const handleConfirmDelete = async () => {
+    setDeleteLoading(true)
     try {
       const ids = selectedIds.length > 0 ? selectedIds : [selectedId]
 
@@ -386,9 +389,9 @@ const UserList = ({
           <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">
             {commonStrings.CANCEL}
           </Button>
-          <Button onClick={handleConfirmDelete} variant="contained" color="error">
+          <LoadingButton onClick={handleConfirmDelete} variant="contained" color="error" loading={deleteLoading}>
             {commonStrings.DELETE}
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </div>

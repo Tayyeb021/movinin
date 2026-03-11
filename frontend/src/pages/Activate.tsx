@@ -3,6 +3,7 @@ import {
   Button,
   Paper,
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as UserService from '@/services/UserService'
@@ -37,6 +38,8 @@ const Activate = () => {
   const [passwordLengthError, setPasswordLengthError] = useState(false)
   const [reset, setReset] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [resendLoading, setResendLoading] = useState(false)
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
@@ -49,9 +52,9 @@ const Activate = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       if (password.length < 6) {
         setPasswordLengthError(true)
         setConfirmPasswordError(false)
@@ -96,6 +99,8 @@ const Activate = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -106,6 +111,7 @@ const Activate = () => {
   }
 
   const handleResend = async () => {
+    setResendLoading(true)
     try {
       const status = await UserService.resend(email, false)
 
@@ -116,6 +122,8 @@ const Activate = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setResendLoading(false)
     }
   }
 
@@ -168,9 +176,9 @@ const Activate = () => {
             <h1>{strings.ACTIVATE_HEADING}</h1>
             <div className="resend-form-content">
               <span>{strings.TOKEN_EXPIRED}</span>
-              <Button type="button" variant="contained" className="btn-primary btn-resend" onClick={handleResend}>
+              <LoadingButton type="button" variant="contained" className="btn-primary btn-resend" onClick={handleResend} loading={resendLoading}>
                 {mStrings.RESEND}
-              </Button>
+              </LoadingButton>
               <p className="go-to-home">
                 <Button variant="text" onClick={() => navigate('/')} className="btn-lnk">{commonStrings.GO_TO_HOME}</Button>
               </p>
@@ -210,9 +218,9 @@ const Activate = () => {
               />
 
               <div className="buttons">
-                <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation>
+                <LoadingButton type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation loading={loading}>
                   {reset ? commonStrings.UPDATE : strings.ACTIVATE}
-                </Button>
+                </LoadingButton>
                 <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')}>
                   {commonStrings.CANCEL}
                 </Button>

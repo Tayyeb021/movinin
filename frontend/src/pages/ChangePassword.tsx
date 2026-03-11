@@ -4,6 +4,7 @@ import {
   Paper,
   Button
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import { strings as commonStrings } from '@/lang/common'
@@ -28,6 +29,7 @@ const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState('')
   const [currentPasswordError, setCurrentPasswordError] = useState(false)
   const [hasPassword, setHasPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewPassword(e.target.value)
@@ -48,9 +50,9 @@ const ChangePassword = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       if (!user) {
         error()
         return
@@ -113,10 +115,12 @@ const ChangePassword = () => {
       setConfirmPasswordError(false)
 
       if (status === 200) {
-        submit()
+        await submit()
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -181,9 +185,9 @@ const ChangePassword = () => {
                 />
 
                 <div className="buttons">
-                  <Button type="submit" className="btn-primary btn-margin btn-margin-bottom btn-cp" variant="contained">
+                  <LoadingButton type="submit" className="btn-primary btn-margin btn-margin-bottom btn-cp" variant="contained" loading={loading}>
                     {commonStrings.RESET_PASSWORD}
-                  </Button>
+                  </LoadingButton>
                   <Button
                     className="btn-margin-bottom btn-cp"
                     variant="outlined"

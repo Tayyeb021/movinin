@@ -42,9 +42,9 @@ const SignIn = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       const data: movininTypes.SignInPayload = {
         email,
         password,

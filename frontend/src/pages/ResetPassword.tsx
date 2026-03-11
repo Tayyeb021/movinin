@@ -3,6 +3,7 @@ import {
   Button,
   Paper
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
 import * as UserService from '@/services/UserService'
@@ -35,6 +36,7 @@ const ResetPassword = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState(false)
   const [passwordLengthError, setPasswordLengthError] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleNewPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value)
@@ -47,9 +49,9 @@ const ResetPassword = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       if (password.length < 6) {
         setPasswordLengthError(true)
         setConfirmPasswordError(false)
@@ -95,6 +97,8 @@ const ResetPassword = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -172,9 +176,9 @@ const ResetPassword = () => {
               />
 
                 <div className="buttons">
-                  <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation>
+                  <LoadingButton type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation loading={loading}>
                     {commonStrings.SAVE}
-                  </Button>
+                  </LoadingButton>
                   <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')}>
                     {commonStrings.CANCEL}
                   </Button>

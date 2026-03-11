@@ -6,8 +6,8 @@ import {
   FormHelperText,
   Button,
   Paper,
-  CircularProgress,
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import validator from 'validator'
 import { useNavigate } from 'react-router-dom'
 import * as movininTypes from 'movinin-types'
@@ -170,13 +170,9 @@ const ContactForm = ({ user, className }: ContactFormProps) => {
         </FormControl>
 
         <div className="buttons">
-          <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom btn" size="small" disabled={sending}>
-            {
-              sending
-                ? <CircularProgress color="inherit" size={24} />
-                : strings.SEND
-            }
-          </Button>
+          <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom btn" size="small" loading={sending}>
+            {strings.SEND}
+          </LoadingButton>
           <Button
             variant="outlined"
             className="btn-margin-bottom btn"

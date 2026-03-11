@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactNode } from 'react'
 import { Button } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import * as movininTypes from 'movinin-types'
 import { strings } from '@/lang/master'
 import * as UserService from '@/services/UserService'
@@ -23,6 +24,7 @@ const Layout = ({
 
   const { user, userLoaded, unauthorized } = useUserContext() as UserContextType
   const [loading, setLoading] = useState(true)
+  const [resendLoading, setResendLoading] = useState(false)
 
   useEffect(() => {
     const currentUser = UserService.getCurrentUser()
@@ -40,7 +42,7 @@ const Layout = ({
 
   const handleResend = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault()
-
+    setResendLoading(true)
     try {
       if (user) {
         const data = { email: user.email }
@@ -54,6 +56,8 @@ const Layout = ({
       }
     } catch (err) {
       helper.error(err, strings.VALIDATION_EMAIL_ERROR)
+    } finally {
+      setResendLoading(false)
     }
   }
 
@@ -67,9 +71,9 @@ const Layout = ({
             !loading && (
               <div className="validate-email">
                 <span>{strings.VALIDATE_EMAIL}</span>
-                <Button type="button" variant="contained" className="btn-primary btn-resend" onClick={handleResend}>
+                <LoadingButton type="button" variant="contained" className="btn-primary btn-resend" onClick={handleResend} loading={resendLoading}>
                   {strings.RESEND}
-                </Button>
+                </LoadingButton>
               </div>
             )
           )

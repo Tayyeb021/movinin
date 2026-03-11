@@ -34,6 +34,7 @@ import * as helper from '@/utils/helper'
 import * as BookingService from '@/services/BookingService'
 import StatusList from './StatusList'
 import BookingStatus from './BookingStatus'
+import LoadingButton from './LoadingButton'
 
 import '@/assets/css/booking-list.css'
 
@@ -89,6 +90,7 @@ const BookingList = ({
   const [property, setProperty] = useState<string>(bookingProperty || '')
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false)
   const [openDeleteDialog, setopenDeleteDialog] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
   const [offset, setOffset] = useState(0)
   const [paginationModel, setPaginationModel] = useState<GridPaginationModel>({
     pageSize: env.BOOKINGS_PAGE_SIZE,
@@ -446,6 +448,7 @@ const BookingList = ({
   }
 
   const handleConfirmDelete = async () => {
+    setDeleteLoading(true)
     try {
       if (env.isMobile) {
         const ids = [selectedId]
@@ -481,6 +484,8 @@ const BookingList = ({
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -633,9 +638,9 @@ const BookingList = ({
           <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">
             {commonStrings.CANCEL}
           </Button>
-          <Button onClick={handleConfirmDelete} variant="contained" color="error">
+          <LoadingButton onClick={handleConfirmDelete} variant="contained" color="error" loading={deleteLoading}>
             {commonStrings.DELETE}
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </div>

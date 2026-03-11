@@ -8,6 +8,7 @@ import {
   Button,
   Paper,
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import validator from 'validator'
 import * as movininTypes from 'movinin-types'
 import * as UserService from '@/services/UserService'
@@ -30,6 +31,7 @@ const ForgotPassword = () => {
   const [emailValid, setEmailValid] = useState(true)
   const [noMatch, setNoMatch] = useState(false)
   const [sent, setSent] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -78,9 +80,9 @@ const ForgotPassword = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       const _emailValid = await validateEmail(email)
       if (!_emailValid) {
         return
@@ -98,6 +100,8 @@ const ForgotPassword = () => {
     } catch {
       setError(true)
       setEmailValid(true)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -150,9 +154,9 @@ const ForgotPassword = () => {
                   <SocialLogin redirectToHomepage />
 
                   <div className="buttons">
-                    <Button type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation>
+                    <LoadingButton type="submit" className="btn-primary btn-margin btn-margin-bottom" variant="contained" disableElevation loading={loading}>
                       {strings.RESET}
-                    </Button>
+                    </LoadingButton>
                     <Button variant="outlined" color="primary" className="btn-margin-bottom" onClick={() => navigate('/')}>
                       {commonStrings.CANCEL}
                     </Button>

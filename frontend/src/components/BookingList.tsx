@@ -18,6 +18,7 @@ import {
   Stack,
   CircularProgress
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import {
   Visibility as ViewIcon,
   Cancel as CancelIcon
@@ -507,10 +508,10 @@ const BookingList = ({
               {commonStrings.CLOSE}
             </Button>
           )}
-          {!cancelRequestSent && !cancelRequestProcessing && (
-            <Button onClick={handleConfirmCancelBooking} variant="contained" className="btn-primary">
+          {!cancelRequestSent && (
+            <LoadingButton onClick={handleConfirmCancelBooking} variant="contained" className="btn-primary" loading={cancelRequestProcessing}>
               {commonStrings.CONFIRM}
-            </Button>
+            </LoadingButton>
           )}
         </DialogActions>
       </Dialog>

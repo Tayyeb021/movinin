@@ -216,9 +216,9 @@ const Checkout = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoading(true)
     try {
-      e.preventDefault()
-
       if (!property || !location || !from || !to) {
         helper.error()
         return
@@ -263,7 +263,6 @@ const Checkout = () => {
         }
       }
 
-      setLoading(true)
       setPaymentFailed(false)
 
       let renter: movininTypes.User | undefined

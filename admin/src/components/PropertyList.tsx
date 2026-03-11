@@ -30,6 +30,7 @@ import Pager from './Pager'
 import PropertyInfo from './PropertyInfo'
 import AgencyBadge from './AgencyBadge'
 import Progress from './Progress'
+import LoadingButton from './LoadingButton'
 
 import '@/assets/css/property-list.css'
 
@@ -84,6 +85,7 @@ const PropertyList = ({
   const [propertyId, setPropertyId] = useState('')
   const [propertyIndex, setPropertyIndex] = useState(-1)
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
+  const [deleteLoading, setDeleteLoading] = useState(false)
 
   useEffect(() => {
     if (env.PAGINATION_MODE === Const.PAGINATION_MODE.INFINITE_SCROLL || env.isMobile) {
@@ -225,6 +227,7 @@ const PropertyList = ({
   }
 
   const handleConfirmDelete = async () => {
+    setDeleteLoading(true)
     try {
       if (propertyId !== '' && propertyIndex > -1) {
         setOpenDeleteDialog(false)
@@ -242,12 +245,10 @@ const PropertyList = ({
           if (onDelete) {
             onDelete(_rowCount)
           }
-          setLoading(false)
         } else {
           helper.error()
           setPropertyId('')
           setPropertyIndex(-1)
-          setLoading(false)
         }
       } else {
         helper.error()
@@ -257,6 +258,8 @@ const PropertyList = ({
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -368,9 +371,9 @@ const PropertyList = ({
               <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">
                 {commonStrings.CANCEL}
               </Button>
-              <Button onClick={handleConfirmDelete} variant="contained" color="error">
+              <LoadingButton onClick={handleConfirmDelete} variant="contained" color="error" loading={deleteLoading}>
                 {commonStrings.DELETE}
-              </Button>
+              </LoadingButton>
             </DialogActions>
           </Dialog>
         </section>

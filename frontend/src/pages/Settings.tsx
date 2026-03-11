@@ -21,6 +21,7 @@ import { strings } from '@/lang/settings'
 import * as UserService from '@/services/UserService'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 import Backdrop from '@/components/SimpleBackdrop'
+import LoadingButton from '@/components/LoadingButton'
 import DatePicker from '@/components/DatePicker'
 import Avatar from '@/components/Avatar'
 import * as helper from '@/utils/helper'
@@ -42,6 +43,7 @@ const Settings = () => {
   const [birthDateValid, setBirthDateValid] = useState(true)
   const [phoneValid, setPhoneValid] = useState(true)
   const [enableEmailNotifications, setEnableEmailNotifications] = useState(false)
+  const [formLoading, setFormLoading] = useState(false)
 
   const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFullName(e.target.value)
@@ -124,9 +126,9 @@ const Settings = () => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setFormLoading(true)
     try {
-      e.preventDefault()
-
       if (!user || !user._id) {
         helper.error()
         return
@@ -160,6 +162,8 @@ const Settings = () => {
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setFormLoading(false)
     }
   }
 
@@ -244,9 +248,9 @@ const Settings = () => {
                   >
                     {commonStrings.RESET_PASSWORD}
                   </Button>
-                  <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small">
+                  <LoadingButton type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" loading={formLoading}>
                     {commonStrings.SAVE}
-                  </Button>
+                  </LoadingButton>
                   <Button
                     variant="outlined"
                     className="btn-margin-bottom"

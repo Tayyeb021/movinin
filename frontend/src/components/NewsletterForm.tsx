@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import {
-  Button,
   FormControl,
   FormHelperText,
   InputLabel,
   OutlinedInput,
-  CircularProgress,
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import validator from 'validator'
 import * as movininTypes from 'movinin-types'
 import env from '@/config/env.config'
@@ -114,13 +113,9 @@ const NewsletterForm = () => {
           <FormHelperText error={!emailValid}>{(!emailValid && commonStrings.EMAIL_NOT_VALID) || ''}</FormHelperText>
         </FormControl>
 
-        <Button type="submit" variant="contained" className="btn-primary btn" aria-label="Subscribe">
-          {
-            submitting
-              ? <CircularProgress color="inherit" size={24} />
-              : strings.SUBSCRIBE
-          }
-        </Button>
+        <LoadingButton type="submit" variant="contained" className="btn-primary btn" aria-label="Subscribe" loading={submitting}>
+          {strings.SUBSCRIBE}
+        </LoadingButton>
       </div>
     </form>
   )

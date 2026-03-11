@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogActions
 } from '@mui/material'
+import LoadingButton from '@/components/LoadingButton'
 import {
   AccountCircle,
   PhotoCamera as PhotoCameraIcon,
@@ -45,6 +46,7 @@ const Avatar = ({
   const [error, setError] = useState(false)
   const [open, setOpen] = useState(false)
   const [user, setUser] = useState<movininTypes.User>()
+  const [deleteLoading, setDeleteLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !user) {
@@ -119,6 +121,7 @@ const Avatar = ({
   }
 
   const handleDelete = async () => {
+    setDeleteLoading(true)
     try {
       if (!user) {
         helper.error()
@@ -151,6 +154,8 @@ const Avatar = ({
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setDeleteLoading(false)
     }
   }
 
@@ -253,12 +258,12 @@ const Avatar = ({
         <DialogTitle className="dialog-header">{commonStrings.CONFIRM_TITLE}</DialogTitle>
         <DialogContent>{commonStrings.DELETE_AVATAR_CONFIRM}</DialogContent>
         <DialogActions className="dialog-actions">
-          <Button variant="outlined" onClick={handleCancelDelete}>
+          <Button variant="outlined" onClick={handleCancelDelete} disabled={deleteLoading}>
             {commonStrings.CANCEL}
           </Button>
-          <Button onClick={handleDelete} className="btn-primary">
+          <LoadingButton onClick={handleDelete} className="btn-primary" loading={deleteLoading}>
             {commonStrings.DELETE}
-          </Button>
+          </LoadingButton>
         </DialogActions>
       </Dialog>
     </div>

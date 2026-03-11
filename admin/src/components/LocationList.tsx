@@ -30,6 +30,7 @@ import * as helper from '@/utils/helper'
 import Avatar from '@/components/Avatar'
 import Pager from '@/components/Pager'
 import Progress from '@/components/Progress'
+import LoadingButton from '@/components/LoadingButton'
 
 import '@/assets/css/location-list.css'
 
@@ -58,6 +59,7 @@ const LocationList = ({
   const [openInfoDialog, setOpenInfoDialog] = useState(false)
   const [locationId, setLocationId] = useState('')
   const [locationIndex, setLocationIndex] = useState(-1)
+  const [deleteLoading, setDeleteLoading] = useState(false)
 
   const fetchData = async (_page: number, _keyword?: string) => {
     try {
@@ -154,9 +156,10 @@ const LocationList = ({
   }
 
   const handleConfirmDelete = async () => {
+    setDeleteLoading(true)
+    setLoading(true)
     try {
       if (locationId !== '' && locationIndex > -1) {
-        setLoading(true)
         setOpenDeleteDialog(false)
 
         const status = await LocationService.deleteLocation(locationId)
@@ -171,7 +174,6 @@ const LocationList = ({
           setTotalRecords(totalRecords - 1)
           setLocationId('')
           setLocationIndex(-1)
-          setLoading(false)
 
           if (onDelete) {
             onDelete(_rowCount)
@@ -180,7 +182,6 @@ const LocationList = ({
           helper.error()
           setLocationId('')
           setLocationIndex(-1)
-          setLoading(false)
         }
       } else {
         helper.error()
@@ -190,6 +191,9 @@ const LocationList = ({
       }
     } catch (err) {
       helper.error(err)
+    } finally {
+      setDeleteLoading(false)
+      setLoading(false)
     }
   }
 
@@ -274,9 +278,9 @@ const LocationList = ({
             <Button onClick={handleCancelDelete} variant="contained" className="btn-secondary">
               {commonStrings.CANCEL}
             </Button>
-            <Button onClick={handleConfirmDelete} variant="contained" color="error">
+            <LoadingButton onClick={handleConfirmDelete} variant="contained" color="error" loading={deleteLoading}>
               {commonStrings.DELETE}
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Dialog>
       </section>
