@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as movininTypes from 'movinin-types'
-import axiosInstance from './axiosInstance'
+import axiosInstance, { clearAccessToken, setAccessToken } from './axiosInstance'
 import env from '@/config/env.config'
 
 /**
@@ -118,7 +118,11 @@ export const signin = (data: movininTypes.SignInPayload): Promise<{ status: numb
       { withCredentials: true }
     )
     .then((res) => {
-      localStorage.setItem('mi-be-user', JSON.stringify(res.data))
+      if (res.data.accessToken) {
+        setAccessToken(res.data.accessToken)
+      }
+      const { accessToken: _omit, ...userData } = res.data as movininTypes.User & { accessToken?: string }
+      localStorage.setItem('mi-be-user', JSON.stringify(userData))
       return { status: res.status, data: res.data }
     })
 
@@ -138,6 +142,7 @@ export const signout = async (redirect = true) => {
     }
   }
 
+  clearAccessToken()
   sessionStorage.clear()
   localStorage.removeItem('mi-be-user')
   deleteAllCookies()

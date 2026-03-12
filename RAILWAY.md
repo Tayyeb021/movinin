@@ -1,8 +1,8 @@
 # Deploying on Railway – login and CORS
 
-If login returns 200 but the app does not stay logged in on Railway, use this checklist.
+If login returns 200 but the app does not stay logged in on Railway, use this checklist. The same token-in-header flow is used for **frontend** and **admin**; both store the token and send it in `x-access-token` and `Authorization: Bearer` on every request.
 
-## 1. Two services (frontend + backend)
+## 1. Two services (frontend + backend, or admin + backend)
 
 You need **two** Railway services (or backend on Railway + frontend elsewhere).
 
@@ -29,9 +29,13 @@ In **Variables** set these **before the first build** (Vite bakes them in at bui
 
 If `VITE_MI_API_HOST` is missing or wrong, the frontend will call the wrong URL (or same origin) and login will fail.
 
-After changing variables, **redeploy both** services so:
-- Backend uses the new env (and returns `accessToken` in the body).
-- Frontend is **rebuilt** with the correct `VITE_MI_API_HOST` and sends the token in the `x-access-token` and `Authorization: Bearer` headers.
+### Admin service (Vite/static)
+
+Same as frontend: set **`VITE_MI_API_HOST`** to the backend URL before the first build. The admin app uses the same token-in-header flow (token stored in sessionStorage, sent on every request).
+
+After changing variables, **redeploy** so:
+- Backend uses the new env (and returns `accessToken` in the body for both frontend and admin).
+- Frontend and/or admin are **rebuilt** with the correct `VITE_MI_API_HOST` and send the token in the `x-access-token` and `Authorization: Bearer` headers.
 
 ## 2. Check in the browser
 
