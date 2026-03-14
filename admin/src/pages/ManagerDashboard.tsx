@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Card, CardContent, Typography, Button, CircularProgress, Grid } from '@mui/material'
+import { Card, CardContent, Typography, Button, CircularProgress, Grid, Box } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
 import { strings } from '@/lang/btms-dashboard'
@@ -28,7 +28,7 @@ const ManagerDashboard = () => {
   return (
     <Layout onLoad={onLoad} strict>
       {user && (
-        <div style={{ padding: 24 }}>
+        <Box sx={{ p: 3 }}>
           <Typography variant="h5" sx={{ mb: 2 }}>
             {strings.BTMS_DASHBOARD}
           </Typography>
@@ -102,26 +102,26 @@ const ManagerDashboard = () => {
                   </Card>
                 </Grid>
               </Grid>
-              <Grid container spacing={2}>
-                <Grid>
-                  <Button variant="contained" onClick={() => navigate('/properties')}>
-                    {strings.VIEW_PROPERTIES}
-                  </Button>
-                </Grid>
-                <Grid>
-                  <Button variant="contained" onClick={() => navigate('/btms-tenants')}>
-                    {strings.VIEW_TENANTS}
-                  </Button>
-                </Grid>
-                <Grid>
-                  <Button variant="contained" onClick={() => navigate('/btms-maintenance')}>
-                    {strings.VIEW_MAINTENANCE}
-                  </Button>
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                <Button variant="contained" onClick={() => navigate('/properties')}>
+                  {strings.VIEW_PROPERTIES}
+                </Button>
+                <Button variant="contained" onClick={() => navigate('/btms-tenants')}>
+                  {strings.VIEW_TENANTS}
+                </Button>
+                <Button variant="contained" onClick={() => navigate('/btms-create-tenant')}>
+                  Assign tenant
+                </Button>
+                <Button variant="contained" onClick={() => navigate('/btms-rent')}>
+                  Rent tracking
+                </Button>
+                <Button variant="contained" onClick={() => navigate('/btms-maintenance')}>
+                  {strings.VIEW_MAINTENANCE}
+                </Button>
+              </Box>
             </>
           )}
-        </div>
+        </Box>
       )}
     </Layout>
   )

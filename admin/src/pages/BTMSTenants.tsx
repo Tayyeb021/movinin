@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '@/lang/common'
 import Layout from '@/components/Layout'
@@ -26,11 +26,12 @@ const BTMSTenants = () => {
   return (
     <Layout onLoad={onLoad} strict>
       {user && (
-        <div style={{ padding: 24 }}>
+        <Box sx={{ p: 3 }}>
           <Typography variant="h5" sx={{ mb: 2 }}>Tenants</Typography>
+          <Button variant="contained" sx={{ mb: 2 }} onClick={() => navigate('/btms-create-tenant')}>Assign tenant</Button>
           {loading && <Backdrop text={commonStrings.LOADING} />}
           {!loading && (
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper} variant="outlined">
               <Table size="small">
                 <TableHead>
                   <TableRow>
@@ -56,7 +57,7 @@ const BTMSTenants = () => {
               </Table>
             </TableContainer>
           )}
-        </div>
+        </Box>
       )}
     </Layout>
   )

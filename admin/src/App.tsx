@@ -45,9 +45,11 @@ const Scheduler = lazy(() => import('@/pages/Scheduler'))
 const ManagerDashboard = lazy(() => import('@/pages/ManagerDashboard'))
 const BTMSTenants = lazy(() => import('@/pages/BTMSTenants'))
 const BTMSMaintenance = lazy(() => import('@/pages/BTMSMaintenance'))
+const BTSMRent = lazy(() => import('@/pages/BTSMRent'))
 const BTMSUnits = lazy(() => import('@/pages/BTMSUnits'))
 const CreateUnit = lazy(() => import('@/pages/CreateUnit'))
 const UpdateUnit = lazy(() => import('@/pages/UpdateUnit'))
+const CreateTenant = lazy(() => import('@/pages/CreateTenant'))
 
 const AppLayout = () => {
   const location = useLocation()
@@ -115,6 +117,8 @@ const router = createBrowserRouter([
       { path: '/scheduler', element: <Scheduler /> },
       { path: '/btms-dashboard', element: <ManagerDashboard /> },
       { path: '/btms-tenants', element: <BTMSTenants /> },
+      { path: '/btms-create-tenant', element: <CreateTenant /> },
+      { path: '/btms-rent', element: <BTSMRent /> },
       { path: '/btms-maintenance', element: <BTMSMaintenance /> },
       { path: '/btms-units/:propertyId', element: <BTMSUnits /> },
       { path: '/btms-create-unit', element: <CreateUnit /> },

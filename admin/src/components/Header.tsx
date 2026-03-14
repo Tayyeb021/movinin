@@ -344,6 +344,22 @@ const Header = ({
                   <ListItemIcon sx={{ minWidth: 40 }}><DashboardIcon fontSize="small" /></ListItemIcon>
                   <ListItemText primary={strings.BTMS_DASHBOARD} primaryTypographyProps={{ variant: 'body2' }} />
                 </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/btms-tenants'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><UsersIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary="Tenants" primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/btms-create-tenant'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><UsersIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary="Assign tenant" primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/btms-rent'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><DashboardIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary="Rent tracking" primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
+                <ListItemButton sx={classes.navItem} onClick={() => { navigate('/btms-maintenance'); handleSideMenuClose() }}>
+                  <ListItemIcon sx={{ minWidth: 40 }}><SettingsIcon fontSize="small" /></ListItemIcon>
+                  <ListItemText primary="Maintenance" primaryTypographyProps={{ variant: 'body2' }} />
+                </ListItemButton>
                 <ListItemButton sx={classes.navItem} onClick={() => { navigate('/users'); handleSideMenuClose() }}>
                   <ListItemIcon sx={{ minWidth: 40 }}><UsersIcon fontSize="small" /></ListItemIcon>
                   <ListItemText primary={strings.USERS} primaryTypographyProps={{ variant: 'body2' }} />

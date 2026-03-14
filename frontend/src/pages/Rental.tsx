@@ -33,10 +33,20 @@ const Rental = () => {
           {property?.address && <Typography>Address: {property.address}</Typography>}
         </Paper>
         {agency && (
-          <Typography sx={{ mt: 2 }}>
-            Contact: {agency.fullName}
-            {agency.email && <Button href={`mailto:${agency.email}`} size="small" sx={{ ml: 1 }}>Email</Button>}
-          </Typography>
+          <Paper sx={{ p: 2, mt: 2, bgcolor: 'grey.100' }}>
+            <Typography variant="subtitle1" fontWeight="600" gutterBottom>Contact manager</Typography>
+            <Typography>{agency.fullName}</Typography>
+            {agency.email && (
+              <Button href={`mailto:${agency.email}`} variant="contained" size="small" sx={{ mt: 1, mr: 1 }}>
+                Email
+              </Button>
+            )}
+            {(agency as { phone?: string }).phone && (
+              <Button href={`tel:${(agency as { phone?: string }).phone}`} variant="outlined" size="small" sx={{ mt: 1 }}>
+                Call
+              </Button>
+            )}
+          </Paper>
         )}
       </div>
     </Layout>
