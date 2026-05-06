@@ -116,7 +116,8 @@ const Avatar = ({
     reader.onloadend = async () => {
       if (type === movininTypes.RecordType.Admin
         || type === movininTypes.RecordType.Agency
-        || type === movininTypes.RecordType.User) {
+        || type === movininTypes.RecordType.User
+        || type === movininTypes.RecordType.Tenant) {
         if (mode === 'create') {
           const createAvatar = async () => {
             try {
@@ -270,7 +271,7 @@ const Avatar = ({
 
   const handleDelete = async () => {
     try {
-      if (type === movininTypes.RecordType.Admin || type === movininTypes.RecordType.Agency || type === movininTypes.RecordType.User) {
+      if (type === movininTypes.RecordType.Admin || type === movininTypes.RecordType.Agency || type === movininTypes.RecordType.User || type === movininTypes.RecordType.Tenant) {
         if (avatarRecord && mode === 'update') {
           const { _id } = avatarRecord
 

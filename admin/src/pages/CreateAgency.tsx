@@ -228,6 +228,7 @@ const CreateAgency = () => {
       const status = await UserService.create(data)
 
       if (status === 200) {
+        helper.info(strings.CREATE_AGENCY_SUCCESS)
         navigate('/agencies')
       } else {
         setError(true)

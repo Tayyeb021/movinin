@@ -78,6 +78,7 @@ const strings = new LocalizedStrings({
     BACK: 'Précédant',
     NEXT: 'Suivant',
     LOCATION_TERM: 'Lieu / terme',
+    SIGN_IN_AFTER_REGISTER: 'Utilisez la page Connexion une fois votre compte activé par e-mail.',
   },
   en: {
     GENERIC_ERROR: 'An unhandled error occurred.',
@@ -153,6 +154,7 @@ const strings = new LocalizedStrings({
     BACK: 'Back',
     NEXT: 'Next',
     LOCATION_TERM: 'Location / term',
+    SIGN_IN_AFTER_REGISTER: 'Use Sign in after you activate your account from the email.',
   },
 })
 

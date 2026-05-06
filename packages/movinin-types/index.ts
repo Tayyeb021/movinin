@@ -71,6 +71,7 @@ export enum RecordType {
   Admin = 'ADMIN',
   Agency = 'AGENCY',
   User = 'USER',
+  Tenant = 'TENANT',
   Property = 'PROPERTY',
   Location = 'LOCATION',
   Country = 'COUNTRY',
@@ -163,6 +164,8 @@ export interface Renter {
   blacklisted: boolean
 }
 
+export type BookingKind = 'SHORT_TERM' | 'TENANCY'
+
 export interface Booking {
   _id?: string
   agency: string | User
@@ -180,6 +183,10 @@ export interface Booking {
   customerId?: string
   expireAt?: Date
   paypalOrderId?: string
+  /** Populated for BTMS tenancy-linked bookings */
+  unit?: string
+  tenant?: string
+  kind?: BookingKind
 }
 
 export interface CheckoutPayload {

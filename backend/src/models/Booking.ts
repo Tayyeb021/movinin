@@ -73,6 +73,21 @@ const bookingSchema = new Schema<env.Booking>(
     paypalOrderId: {
       type: String,
     },
+    unit: {
+      type: Schema.Types.ObjectId,
+      ref: 'Unit',
+      index: true,
+    },
+    tenant: {
+      type: Schema.Types.ObjectId,
+      ref: 'Tenant',
+      index: true,
+    },
+    kind: {
+      type: String,
+      enum: ['SHORT_TERM', 'TENANCY'],
+      default: 'SHORT_TERM',
+    },
     expireAt: {
       //
       // Bookings created from checkout with Stripe are temporary and

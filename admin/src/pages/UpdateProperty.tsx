@@ -58,7 +58,7 @@ const UpdateProperty = () => {
   const [address, setAddress] = useState('')
   const [type, setType] = useState('')
   const [price, setPrice] = useState('')
-  const [minimumAge, setMinimumAge] = useState(String(env.MINIMUM_AGE))
+  const [minimumAge, setMinimumAge] = useState('0')
   const [minimumAgeValid, setMinimumAgeValid] = useState(true)
   const [available, setAvailable] = useState(false)
   const [description, setDescription] = useState('')
@@ -124,7 +124,7 @@ const UpdateProperty = () => {
   const validateMinimumAge = (age: string, updateState = true) => {
     if (age) {
       const _age = Number.parseInt(age, 10)
-      const _minimumAgeValid = _age >= env.MINIMUM_AGE && _age <= 99
+      const _minimumAgeValid = _age >= 0 && _age <= 99
       if (updateState) {
         setMinimumAgeValid(_minimumAgeValid)
       }
@@ -372,14 +372,19 @@ const UpdateProperty = () => {
                   setImageUpdated(true)
                 }}
                 onAdd={(img) => {
-                  images.push(img.filename)
-                  tempImages.push(img.filename)
-                  setImages(images)
+                  setImages((prev) => [...prev, img.filename])
+                  if (img.temp) {
+                    setTempImages((prev) => [...prev, img.filename])
+                  }
                 }}
                 onDelete={(img) => {
-                  images.splice(images.indexOf(img.filename), 1)
-                  tempImages.splice(tempImages.indexOf(img.filename), 1)
-                  setImages(images)
+                  setImages((prev) => prev.filter((f) => f !== img.filename))
+                  if (img.temp) {
+                    setTempImages((prev) => prev.filter((f) => f !== img.filename))
+                  }
+                }}
+                onReorder={(ordered) => {
+                  setImages(ordered.map((i) => i.filename))
                 }}
                 onImageViewerOpen={() => {
                   setImageViewerOpen(true)
@@ -454,6 +459,7 @@ const UpdateProperty = () => {
                     setLongitude(e.target.value)
                   }}
                 />
+                <FormHelperText>{strings.OPTIONAL_COORDINATES}</FormHelperText>
               </FormControl>
 
               <FormControl fullWidth margin="dense">
@@ -499,7 +505,7 @@ const UpdateProperty = () => {
                   value={minimumAge}
                   autoComplete="off"
                   onChange={handleMinimumAgeChange}
-                  inputProps={{ inputMode: 'numeric', pattern: '^\\d{2}$' }}
+                  inputProps={{ inputMode: 'numeric', pattern: '^\\d{1,2}$' }}
                 />
                 <FormHelperText error={!minimumAgeValid}>
                   {(!minimumAgeValid && strings.MINIMUM_AGE_NOT_VALID) || ''}

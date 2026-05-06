@@ -1,13 +1,46 @@
-import mongoose from 'mongoose'
+import { Types } from 'mongoose'
 import { Request, Response } from 'express'
 import * as movininTypes from 'movinin-types'
 import Tenant from '../models/Tenant'
 import Unit from '../models/Unit'
 import Property from '../models/Property'
+import Booking from '../models/Booking'
 import i18n from '../lang/i18n'
 import * as env from '../config/env.config'
 import * as helper from '../utils/helper'
 import * as logger from '../utils/logger'
+
+type TenancyBookingSummary = { _id: string; status: string; from: Date; to: Date; price: number }
+
+async function attachTenancyBookings<T extends { _id: Types.ObjectId }>(
+  tenants: T[],
+): Promise<Array<T & { tenancyBooking: TenancyBookingSummary | null }>> {
+  if (!tenants.length) {
+    return tenants.map((t) => ({ ...t, tenancyBooking: null }))
+  }
+  const bookingRows = await Booking.find({
+    tenant: { $in: tenants.map((t) => t._id) },
+    kind: 'TENANCY',
+  })
+    .select('_id tenant status from to price')
+    .lean()
+  const bookingByTenant = new Map<string, TenancyBookingSummary>()
+  for (const b of bookingRows) {
+    if (b.tenant) {
+      bookingByTenant.set(String(b.tenant), {
+        _id: String(b._id),
+        status: String(b.status),
+        from: b.from as Date,
+        to: b.to as Date,
+        price: Number(b.price),
+      })
+    }
+  }
+  return tenants.map((t) => ({
+    ...t,
+    tenancyBooking: bookingByTenant.get(String(t._id)) ?? null,
+  }))
+}
 
 /**
  * Get my tenancy (tenant only, after requireTenant).
@@ -48,7 +81,8 @@ export const getTenants = async (req: Request, res: Response) => {
       .populate('user', 'fullName email phone')
       .populate('unit', 'name rent status')
       .lean()
-    res.json(tenants)
+    const enriched = await attachTenancyBookings(tenants)
+    res.json(enriched)
   } catch (err) {
     logger.error(`[tenant.getTenants] ${i18n.t('DB_ERROR')}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)
@@ -77,7 +111,8 @@ export const getTenantsByProperty = async (req: Request, res: Response) => {
       .populate('user', 'fullName email phone')
       .populate('unit', 'name rent status')
       .lean()
-    res.json(tenants)
+    const enriched = await attachTenancyBookings(tenants)
+    res.json(enriched)
   } catch (err) {
     logger.error(`[tenant.getTenantsByProperty] ${i18n.t('DB_ERROR')}`, err)
     res.status(400).send(i18n.t('DB_ERROR') + err)
@@ -122,15 +157,17 @@ export const createTenant = async (req: Request, res: Response) => {
     const body = req.body as { user: string; unit: string; moveInDate: string; contractStart: string; contractEnd: string }
     const { user: userIdParam, unit: unitId, moveInDate, contractStart, contractEnd } = body
 
-    if (!unitId || !moveInDate || !contractStart || !contractEnd) {
-      res.status(400).send({ message: 'Missing required fields: unit, moveInDate, contractStart, contractEnd' })
+    if (!unitId || !userIdParam || !moveInDate || !contractStart || !contractEnd) {
+      res.status(400).send({
+        message: 'Missing required fields: user, unit, moveInDate, contractStart, contractEnd',
+      })
       return
     }
-    const userToAssign = userIdParam || userId
-    if (!userToAssign || !helper.isValidObjectId(userToAssign)) {
-      res.status(400).send({ message: 'Valid user is required' })
+    if (!helper.isValidObjectId(userIdParam)) {
+      res.status(400).send({ message: 'Valid user id is required' })
       return
     }
+    const userToAssign = userIdParam
 
     const unit = await Unit.findById(unitId)
     if (!unit) {
@@ -161,6 +198,32 @@ export const createTenant = async (req: Request, res: Response) => {
 
     unit.status = movininTypes.UnitStatus.Occupied
     await unit.save()
+
+    const propFull = await Property.findById(unit.property).select('agency location').lean()
+    if (propFull && propFull.location) {
+      try {
+        const existingTenancyBooking = await Booking.findOne({ tenant: tenant._id, kind: 'TENANCY' })
+        if (!existingTenancyBooking) {
+          const tenancyBooking = new Booking({
+            agency: propFull.agency,
+            location: propFull.location,
+            property: unit.property,
+            renter: userToAssign,
+            from: new Date(contractStart),
+            to: new Date(contractEnd),
+            status: movininTypes.BookingStatus.Reserved,
+            cancellation: false,
+            price: Number(unit.rent ?? 0),
+            unit: unit._id,
+            tenant: tenant._id,
+            kind: 'TENANCY',
+          })
+          await tenancyBooking.save()
+        }
+      } catch (bookingErr) {
+        logger.error('[tenant.createTenant] tenancy booking sync failed', bookingErr)
+      }
+    }
 
     const populated = await Tenant.findById(tenant._id)
       .populate('user', 'fullName email phone')
@@ -206,6 +269,17 @@ export const updateTenant = async (req: Request, res: Response) => {
     if (contractStart != null) tenant.contractStart = new Date(contractStart)
     if (contractEnd != null) tenant.contractEnd = new Date(contractEnd)
     await tenant.save()
+
+    const tenancyBooking = await Booking.findOne({ tenant: tenant._id, kind: 'TENANCY' })
+    if (tenancyBooking) {
+      const unitDoc = await Unit.findById(tenant.unit).select('rent').lean()
+      const rent = Number(unitDoc?.rent ?? tenancyBooking.price ?? 0)
+      tenancyBooking.from = tenant.contractStart
+      tenancyBooking.to = tenant.contractEnd
+      tenancyBooking.price = rent
+      await tenancyBooking.save()
+    }
+
     res.json(tenant)
   } catch (err) {
     logger.error(`[tenant.updateTenant] ${i18n.t('DB_ERROR')}`, err)
@@ -244,6 +318,10 @@ export const endTenancy = async (req: Request, res: Response) => {
     await tenant.save()
     unit.status = movininTypes.UnitStatus.Vacant
     await unit.save()
+    await Booking.updateMany(
+      { tenant: tenant._id, kind: 'TENANCY' },
+      { $set: { status: movininTypes.BookingStatus.Cancelled, cancellation: true } },
+    )
     res.json({ message: 'OK' })
   } catch (err) {
     logger.error(`[tenant.endTenancy] ${i18n.t('DB_ERROR')}`, err)

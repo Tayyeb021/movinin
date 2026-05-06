@@ -307,7 +307,7 @@ export const getRenters = (keyword: string, page: number, size: number): Promise
   axiosInstance
     .post(
       `/api/users/${page}/${size}/?s=${encodeURIComponent(keyword)}`,
-      { types: [movininTypes.RecordType.User] },
+      { types: [movininTypes.UserType.User, movininTypes.UserType.Tenant] },
       { withCredentials: true }
     )
     .then((res) => res.data)

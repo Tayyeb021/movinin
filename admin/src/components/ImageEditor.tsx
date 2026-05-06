@@ -1,6 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Delete as DeleteIcon,
+  KeyboardArrowDown as ArrowDownIcon,
+  KeyboardArrowUp as ArrowUpIcon,
   PhotoCamera as ImageIcon
 } from '@mui/icons-material'
 import * as movininHelper from ':movinin-helper'
@@ -22,6 +24,8 @@ interface ImageEditorProps {
   onMainImageUpsert?: (image: ImageItem) => void
   onAdd?: (image: ImageItem) => void
   onDelete?: (image: ImageItem, index?: number) => void
+  /** Called when gallery order changes (drag targets may use this later); order is list order for API payloads */
+  onReorder?: (orderedImages: ImageItem[]) => void
   onImageViewerOpen?: () => void
   onImageViewerClose?: () => void
 }
@@ -33,6 +37,7 @@ const ImageEditor = ({
   onMainImageUpsert,
   onAdd,
   onDelete,
+  onReorder,
   onImageViewerOpen,
   onImageViewerClose
 }: ImageEditorProps) => {
@@ -44,6 +49,32 @@ const ImageEditor = ({
 
   const uploadImageRef = useRef<HTMLInputElement>(null)
   const uploadImagesRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    setImage(mainImage)
+  }, [mainImage?.filename])
+
+  const imagesFingerprint = (ieImages || []).map((i) => i.filename).join('|')
+  useEffect(() => {
+    setImages(ieImages || [])
+  }, [imagesFingerprint])
+
+  const moveGalleryImage = (from: number, to: number) => {
+    if (to < 0 || to >= images.length || from === to) {
+      return
+    }
+    const nextImages = movininHelper.cloneArray(images) as ImageItem[]
+    const nextFilenames = movininHelper.cloneArray(filenames) as string[]
+    const [imgRow] = nextImages.splice(from, 1)
+    nextImages.splice(to, 0, imgRow)
+    if (nextFilenames.length === images.length) {
+      const [fnRow] = nextFilenames.splice(from, 1)
+      nextFilenames.splice(to, 0, fnRow)
+      setFilenames(nextFilenames)
+    }
+    setImages(nextImages)
+    onReorder?.(nextImages)
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader()
@@ -171,7 +202,7 @@ const ImageEditor = ({
       <div className="images">
         {
           images.map((_image, index) => (
-            <div key={_image.filename} className="container">
+            <div key={`${index}-${_image.filename}`} className="container">
               <div
                 className="image"
                 onClick={() => {
@@ -188,6 +219,30 @@ const ImageEditor = ({
                 <img alt="" className="image" src={src(_image)} />
               </div>
               <div className="ai-action">
+                <span
+                  className="button"
+                  title={strings.MOVE_IMAGE_UP}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="move-up"
+                  onClick={() => {
+                    moveGalleryImage(index, index - 1)
+                  }}
+                >
+                  <ArrowUpIcon className="button" style={{ opacity: index === 0 ? 0.3 : 1 }} />
+                </span>
+                <span
+                  className="button"
+                  title={strings.MOVE_IMAGE_DOWN}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="move-down"
+                  onClick={() => {
+                    moveGalleryImage(index, index + 1)
+                  }}
+                >
+                  <ArrowDownIcon className="button" style={{ opacity: index === images.length - 1 ? 0.3 : 1 }} />
+                </span>
                 <span
                   className="button"
                   title={commonStrings.DELETE}

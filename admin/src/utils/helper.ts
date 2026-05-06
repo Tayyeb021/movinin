@@ -272,6 +272,10 @@ export const getUserTypes = () => [
     value: movininTypes.UserType.User,
     label: commonStrings.RECORD_TYPE_USER
   },
+  {
+    value: movininTypes.UserType.Tenant,
+    label: commonStrings.RECORD_TYPE_TENANT
+  },
 ]
 
 /**
@@ -290,6 +294,9 @@ export const getUserType = (type?: movininTypes.UserType) => {
 
     case movininTypes.UserType.User:
       return commonStrings.RECORD_TYPE_USER
+
+    case movininTypes.UserType.Tenant:
+      return commonStrings.RECORD_TYPE_TENANT
 
     default:
       return ''

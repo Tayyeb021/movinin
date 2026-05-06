@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {
   Button,
   Paper,
+  Typography,
 } from '@mui/material'
 import LoadingButton from '@/components/LoadingButton'
 import { useNavigate } from 'react-router-dom'
@@ -13,8 +14,8 @@ import { strings as cpStrings } from '@/lang/change-password'
 import { strings as rpStrings } from '@/lang/reset-password'
 import { strings as mStrings } from '@/lang/master'
 import { strings } from '@/lang/activate'
+import { strings as signInStrings } from '@/lang/sign-in'
 import { useUserContext, UserContextType } from '@/context/UserContext'
-import NoMatch from './NoMatch'
 import * as helper from '@/utils/helper'
 import Footer from '@/components/Footer'
 import PasswordInput from '@/components/PasswordInput'
@@ -229,7 +230,18 @@ const Activate = () => {
           </Paper>
         </div>
       )}
-      {!isAuthenticated && noMatch && <NoMatch hideHeader />}
+      {!isAuthenticated && noMatch && (
+        <div className="activate" style={{ padding: 24, maxWidth: 480, margin: '0 auto' }}>
+          <Paper className="activate-form" elevation={10} sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>{strings.LINK_INVALID_TITLE}</Typography>
+            <Typography variant="body2" sx={{ mb: 2 }}>{strings.LINK_INVALID_BODY}</Typography>
+            <Button variant="contained" className="btn-primary" onClick={() => navigate('/sign-in')}>
+              {signInStrings.SIGN_IN}
+            </Button>
+            <Button variant="text" sx={{ ml: 1 }} onClick={() => navigate('/')}>{commonStrings.GO_TO_HOME}</Button>
+          </Paper>
+        </div>
+      )}
 
       {(resend || visible) && <Footer />}
     </Layout>

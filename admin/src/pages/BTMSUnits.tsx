@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 import { strings as commonStrings } from '@/lang/common'
 import Backdrop from '@/components/SimpleBackdrop'
@@ -11,6 +11,7 @@ import * as PropertyService from '@/services/PropertyService'
 const BTMSUnits = () => {
   const { propertyId } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
   const [user, setUser] = useState<movininTypes.User>()
   const [units, setUnits] = useState<movininTypes.Unit[]>([])
   const [propertyName, setPropertyName] = useState('')
@@ -20,12 +21,13 @@ const BTMSUnits = () => {
 
   useEffect(() => {
     if (!user || !propertyId) return
+    setLoading(true)
     UnitService.getUnitsByProperty(propertyId)
       .then(setUnits)
       .catch(() => setUnits([]))
       .finally(() => setLoading(false))
     PropertyService.getProperty(propertyId).then((p) => setPropertyName(p?.name || '')).catch(() => {})
-  }, [user, propertyId])
+  }, [user, propertyId, location.key])
 
   return (
     <Layout onLoad={onLoad} strict>

@@ -9,6 +9,7 @@ import {
   Checkbox,
   Link
 } from '@mui/material'
+import axios from 'axios'
 import validator from 'validator'
 import { intervalToDuration } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
@@ -235,6 +236,7 @@ const SignUp = () => {
       const status = await UserService.signup(data)
 
       if (status === 200) {
+        helper.info(strings.SIGN_UP_SUCCESS)
         const signInResult = await UserService.signin({
           email,
           password,
@@ -246,11 +248,8 @@ const SignUp = () => {
           setUserLoaded(true)
           navigate(`/${window.location.search}`)
         } else {
-          setPasswordError(false)
-          setRecaptchaError(false)
-          setPasswordsDontMatch(false)
-          setError(true)
-          setTosError(false)
+          helper.info(commonStrings.SIGN_IN_AFTER_REGISTER)
+          navigate('/sign-in')
         }
       } else {
         setPasswordError(false)
@@ -261,10 +260,19 @@ const SignUp = () => {
       }
     } catch (err) {
       console.error(err)
+      let apiMsg = strings.SIGN_UP_ERROR
+      if (axios.isAxiosError(err)) {
+        const d = err.response?.data
+        if (typeof d === 'string') apiMsg = d
+        else if (d && typeof d === 'object' && 'message' in d && typeof (d as { message: string }).message === 'string') {
+          apiMsg = (d as { message: string }).message
+        }
+      }
+      helper.error(undefined, apiMsg)
       setPasswordError(false)
       setRecaptchaError(false)
       setPasswordsDontMatch(false)
-      setError(true)
+      setError(false)
       setTosError(false)
     } finally {
       setLoading(false)

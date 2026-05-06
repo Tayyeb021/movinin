@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box } from '@mui/material'
+import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Box, Link } from '@mui/material'
 import * as movininTypes from 'movinin-types'
 import { strings as commonStrings } from '@/lang/common'
 import Layout from '@/components/Layout'
@@ -39,17 +39,48 @@ const BTMSTenants = () => {
                     <TableCell>Unit</TableCell>
                     <TableCell>Move-in</TableCell>
                     <TableCell>Contract</TableCell>
+                    <TableCell>Tenancy booking</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {(tenants as { user?: { fullName?: string; email?: string }; unit?: { name?: string }; moveInDate?: string; contractStart?: string; contractEnd?: string }[]).map((t: unknown, i: number) => {
-                    const row = t as { _id?: string; user?: { fullName?: string; email?: string }; unit?: { name?: string }; moveInDate?: string; contractStart?: string; contractEnd?: string }
+                  {(tenants as {
+                    user?: { fullName?: string; email?: string }
+                    unit?: { name?: string }
+                    moveInDate?: string
+                    contractStart?: string
+                    contractEnd?: string
+                    tenancyBooking?: { _id?: string; status?: string } | null
+                  }[]).map((t: unknown, i: number) => {
+                    const row = t as {
+                      _id?: string
+                      user?: { fullName?: string; email?: string }
+                      unit?: { name?: string }
+                      moveInDate?: string
+                      contractStart?: string
+                      contractEnd?: string
+                      tenancyBooking?: { _id?: string; status?: string } | null
+                    }
                     return (
                       <TableRow key={row._id || i}>
                         <TableCell>{row.user?.fullName || row.user?.email || '-'}</TableCell>
                         <TableCell>{row.unit?.name || '-'}</TableCell>
                         <TableCell>{row.moveInDate ? new Date(row.moveInDate).toLocaleDateString() : '-'}</TableCell>
                         <TableCell>{row.contractStart && row.contractEnd ? `${new Date(row.contractStart).toLocaleDateString()} - ${new Date(row.contractEnd).toLocaleDateString()}` : '-'}</TableCell>
+                        <TableCell>
+                          {row.tenancyBooking?._id ? (
+                            <Link
+                              component="button"
+                              type="button"
+                              variant="body2"
+                              onClick={() => navigate(`/update-booking?b=${row.tenancyBooking!._id}`)}
+                              sx={{ verticalAlign: 'baseline', cursor: 'pointer' }}
+                            >
+                              {row.tenancyBooking.status || 'View'}
+                            </Link>
+                          ) : (
+                            '—'
+                          )}
+                        </TableCell>
                       </TableRow>
                     )
                   })}

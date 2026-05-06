@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TextField, MenuItem, Button, Box, Typography, Paper } from '@mui/material'
+import axios from 'axios'
+import { toast } from 'react-toastify'
 import LoadingButton from '@/components/LoadingButton'
 import * as movininTypes from 'movinin-types'
 import Layout from '@/components/Layout'
@@ -67,7 +69,14 @@ const CreateTenant = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!unitId || !userId || !moveInDate || !contractStart || !contractEnd) return
+    if (!unitId || !moveInDate || !contractStart || !contractEnd) {
+      toast('Select property, unit, and contract dates.', { type: 'warning' })
+      return
+    }
+    if (!userId) {
+      toast('Search and select the tenant user.', { type: 'warning' })
+      return
+    }
     setLoading(true)
     try {
       await TenantService.createTenant({
@@ -77,8 +86,18 @@ const CreateTenant = () => {
         contractStart,
         contractEnd,
       })
+      toast('Tenant assigned successfully.', { type: 'success' })
       navigate('/btms-tenants')
-    } catch (_) {
+    } catch (err: unknown) {
+      let msg = 'Could not assign tenant.'
+      if (axios.isAxiosError(err)) {
+        const d = err.response?.data
+        if (typeof d === 'string') msg = d
+        else if (d && typeof d === 'object' && 'message' in d && typeof (d as { message: string }).message === 'string') {
+          msg = (d as { message: string }).message
+        }
+      }
+      toast(msg, { type: 'error' })
       setLoading(false)
     }
   }
@@ -141,7 +160,8 @@ const CreateTenant = () => {
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
                 required
-                disabled={!userSearch && userOptions.length === 0}
+                disabled={userOptions.length === 0 && !userSearch.trim()}
+                helperText={searching ? 'Searching…' : 'Type at least a few characters to search registered users, then pick one.'}
               >
                 <MenuItem value="">Select user</MenuItem>
                 {userOptions.map((u) => (

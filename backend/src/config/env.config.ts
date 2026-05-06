@@ -530,6 +530,9 @@ export interface Booking extends Document {
   customerId?: string
   expireAt?: Date
   paypalOrderId?: string
+  unit?: Types.ObjectId
+  tenant?: Types.ObjectId
+  kind?: 'SHORT_TERM' | 'TENANCY'
 }
 
 /**

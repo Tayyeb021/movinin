@@ -87,7 +87,7 @@ const propertySchema = new Schema<env.Property>(
     minimumAge: {
       type: Number,
       required: [true, "can't be blank"],
-      min: env.MINIMUM_AGE,
+      min: 0,
       max: 99,
     },
     location: {

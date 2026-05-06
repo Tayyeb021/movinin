@@ -14,7 +14,7 @@ const strings = new LocalizedStrings({
     PROPERTY_TYPE: 'Type',
     PRICE: 'Prix',
     MINIMUM_AGE: 'Âge minimum',
-    MINIMUM_AGE_NOT_VALID: `L'âge minimum doit être supérieur ou égal à ${env.MINIMUM_AGE} ans.`,
+    MINIMUM_AGE_NOT_VALID: 'L’âge minimum doit être un nombre entre 0 et 99.',
     ADDRESS: 'Adresse',
     DESCRIPTION: 'Description',
     BEDROOMS: 'Chambres à couche',
@@ -31,6 +31,7 @@ const strings = new LocalizedStrings({
     DESCRIPTION_REQUIRED: 'Le champ description est requis',
     RENTAL_TERM: 'Durée de location',
     BLOCK_ON_PAY: 'Bloquer la propriété après un paiement réussi',
+    OPTIONAL_COORDINATES: 'Optionnel — utilisé pour les cartes ; laissez vide si inconnu.',
   },
   en: {
     NEW_PROPERTY_HEADING: 'New property',
@@ -43,7 +44,7 @@ const strings = new LocalizedStrings({
     PROPERTY_TYPE: 'Type',
     PRICE: 'Price',
     MINIMUM_AGE: 'Minimum age',
-    MINIMUM_AGE_NOT_VALID: `Minimum age must be greater than or equal to ${env.MINIMUM_AGE} years old.`,
+    MINIMUM_AGE_NOT_VALID: 'Minimum age must be a number from 0 to 99.',
     ADDRESS: 'Address',
     DESCRIPTION: 'Description',
     BEDROOMS: 'Bedrooms',
@@ -60,6 +61,7 @@ const strings = new LocalizedStrings({
     DESCRIPTION_REQUIRED: 'Description is required',
     RENTAL_TERM: 'Rental term',
     BLOCK_ON_PAY: 'Block Property On Successful Payment',
+    OPTIONAL_COORDINATES: 'Optional — used for maps; leave blank if unknown.',
   },
 })
 
